@@ -16,7 +16,9 @@ public class Promgram {
 		list.add(7);
 		int num = list.get(0);
 		System.out.printf("num : %d\n", num);
-		num = list.get(1);
+		
+//		num = list.get(1);
+		// java.lang.IndexOutOfBoundsException ¹ß»ý
 	}
 
 }
