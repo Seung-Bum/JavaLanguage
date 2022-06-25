@@ -1,5 +1,7 @@
 package com.newlecture.app.util;
 
+// Object를 사용하여
+// int뿐 아니라 다른 객체에도 대응할 수 있게 되었다.
 public class ObjectList {
 	
 	private Object[] nums;
