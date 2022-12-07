@@ -1,4 +1,4 @@
-import java.security.MessageDigest;
+import java.security.MessageDigest; // Hash 알고리즘
 import java.security.NoSuchAlgorithmException;
 
 
