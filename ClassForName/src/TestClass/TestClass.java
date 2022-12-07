@@ -30,14 +30,14 @@ public class TestClass {
 
 			try {
 				Class classExample = null;
-				classExample = Class.forName(TestClass.class.getPackage().getName() + ".LoadClass"); // 메모리로 로드
+				classExample = Class.forName(TestClass.class.getPackage().getName() + ".LoadClass"); // 메모리로 로드(물리적경로)
 
-				System.out.println(LoadClass.getStaticstr());
+				System.out.println(LoadClass.getStaticstr());	   // 정적 변수 로딩 되었습니다. 
 
 				try {
 
-					Object obj = classExample.newInstance(); // 여기서 객체가 생성 됨.
-					System.out.println(LoadClass.getStaticstr());
+					Object obj = classExample.newInstance();       // 여기서 객체가 생성 됨. (생성자호출)
+					System.out.println(LoadClass.getStaticstr());  // 동적 로딩 성공과 객체 생성 됨
 
 				} catch (InstantiationException e) {
 					// TODO Auto-generated catch block
