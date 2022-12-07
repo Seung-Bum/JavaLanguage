@@ -1,6 +1,12 @@
 package TestClass;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /* https://blog.hyper-link.kr/2011/11/24/java-class-for-name/
+ * https://www.javatpoint.com/java-class-getmethod-method
+ * https://carrotweb.tistory.com/56
+ * ★ https://nowonbun.tistory.com/519 
  * 
  * string [] args는 스트링 타입의 배열인 args를 선언한것으로서
  * 자바를 실행시에 넣는 인수값을 받습니다. (규칙)
@@ -31,27 +37,51 @@ public class TestClass {
 			try {
 				Class classExample = null;
 				classExample = Class.forName(TestClass.class.getPackage().getName() + ".LoadClass"); // 메모리로 로드(물리적경로)
-
+				
 				System.out.println(LoadClass.getStaticstr());	   // 정적 변수 로딩 되었습니다. 
-
+				
 				try {
-
-					Object obj = classExample.newInstance();       // 여기서 객체가 생성 됨. (생성자호출)
+					
+					Object obj = classExample.newInstance();       // 여기서 객체가 생성 됨. (LoadClass 생성자호출)
 					System.out.println(LoadClass.getStaticstr());  // 동적 로딩 성공과 객체 생성 됨
+					Class cls = obj.getClass();
+					
+					try {
+						// method는 object에서 바로 접근 못하고 class를 거쳐야한다.
+						Method method = cls.getMethod("getStaticstr", null);  
+				    	Method method2 = cls.getMethod("print");
+				    	Method method3 = cls.getMethod("print", String.class);
+				    	Method method4 = cls.getMethod("print", String.class, Integer.TYPE);
+						//System.out.println(method.toString());
+						
+						// 취득한 함수에 생성한 인스턴스를 넣고 실행시킨다.
+					    try {
+					    	method2.invoke(obj);
+					    	method3.invoke(obj, "test");
+					    	method4.invoke(obj, "test2", 100);
+					    	System.out.println( method.invoke(obj) ); // 동적 로딩 성공과 객체 생성 됨을 프린트
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						}
+					    
+					    
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						e.printStackTrace();
+					}
 
 				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		//}
 	}
 }
 /* 출력결과
