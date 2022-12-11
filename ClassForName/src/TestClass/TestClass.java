@@ -43,7 +43,7 @@ public class TestClass {
 				try {
 					
 					Object obj = classExample.newInstance();       // 여기서 객체가 생성 됨. (LoadClass 생성자호출)
-					System.out.println(LoadClass.getStaticstr());  // 동적 로딩 성공과 객체 생성 됨
+					//System.out.println(LoadClass.getStaticstr());  // 동적 로딩 성공과 객체 생성 됨
 					Class cls = obj.getClass();
 					
 					try {
@@ -56,9 +56,9 @@ public class TestClass {
 						
 						// 취득한 함수에 생성한 인스턴스를 넣고 실행시킨다.
 					    try {
-					    	method2.invoke(obj);
-					    	method3.invoke(obj, "test");
-					    	method4.invoke(obj, "test2", 100);
+					    	System.out.println( method2.invoke(obj) );
+					    	System.out.println( method3.invoke(obj, "test") );
+					    	System.out.println( method4.invoke(obj, "test2", 100) );
 					    	System.out.println( method.invoke(obj) ); // 동적 로딩 성공과 객체 생성 됨을 프린트
 						} catch (IllegalArgumentException e) {
 							e.printStackTrace();
