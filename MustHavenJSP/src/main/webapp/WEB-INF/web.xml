@@ -15,6 +15,7 @@
   	<param-value>web.xml,에 저장한 초기화 매개변수</param-value>
   </context-param>
   
+  <!-- 오류 발생 시 코드가 고객에게 그대로 노출되느 문제를 피하기 위해
   <error-page>
   	<error-code>404</error-code>
   	<location>/02ImplicitObject/Exception.jsp</location>
@@ -27,4 +28,5 @@
   	<error-code>500</error-code>
   	<location>/02ImplicitObject/Exception.jsp</location>
   </error-page>
+  -->
 </web-app>
