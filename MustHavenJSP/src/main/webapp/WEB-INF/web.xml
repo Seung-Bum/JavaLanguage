@@ -12,7 +12,27 @@
   
   <context-param>
   	<param-name>INIT_PARAM</param-name>
-  	<param-value>web.xml,에 저장한 초기화 매개변수</param-value>
+  	<param-value>web.xml에 저장한 초기화 매개변수</param-value>
+  </context-param>
+
+  <context-param>
+   	<param-name>OracleDriver</param-name>
+  	<param-value>oracle.jdbc.OracleDriver</param-value>
+  </context-param>
+  
+  <context-param>
+   	<param-name>OracleURL</param-name>
+  	<param-value>jdbc:oracle:thin:@localhost:1522:xe</param-value>
+  </context-param>
+  
+  <context-param>
+   	<param-name>OracleId</param-name>
+  	<param-value>musthave</param-value>
+  </context-param>
+  
+  <context-param>
+   	<param-name>OraclePwd</param-name>
+  	<param-value>1111</param-value>
   </context-param>
   
   <!-- 오류 발생 시 코드가 고객에게 그대로 노출되느 문제를 피하기 위해

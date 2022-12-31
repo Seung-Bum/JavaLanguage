@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/java/common/DBConnPool.java=UTF-8
+encoding//src/main/java/common/JDBConnect.java=UTF-8
 encoding//src/main/java/utils/CookieManager.java=UTF-8
 encoding//src/main/java/utils/JSFunction.java=UTF-8
