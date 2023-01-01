@@ -20,7 +20,7 @@ public class DBConnPool {
         try {
             // 커넥션풀(DataSource) 얻기
             Context initCtx = new InitialContext();
-            Context ctx = (Context)initCtx.lookup("java:comp/env"); // java:comp/env
+            Context ctx = (Context)initCtx.lookup("java:comp/env");
             DataSource source = (DataSource)ctx.lookup("dbcp_myoracle");
 
             // 커넥션풀을 통해 연결 얻기

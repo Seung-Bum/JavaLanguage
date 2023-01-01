@@ -31,8 +31,8 @@
     
     <h2>커넥션 풀 테스트</h2>
     <%
-    DBConnPool pool = new DBConnPool();
-    pool.close();
+    //DBConnPool pool = new DBConnPool();
+    //pool.close();
     %>
 
 </body>
