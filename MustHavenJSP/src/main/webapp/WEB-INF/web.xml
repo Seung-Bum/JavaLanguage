@@ -35,6 +35,12 @@
   	<param-value>1111</param-value>
   </context-param>
   
+  <!-- 세션 유지기간 설정 (분단위) -->
+  <session-config>
+  	<session-timeout>20</session-timeout>
+  </session-config>
+  
+  
   <!-- 오류 발생 시 코드가 고객에게 그대로 노출되느 문제를 피하기 위해
   <error-page>
   	<error-code>404</error-code>
