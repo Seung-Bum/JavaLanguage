@@ -14,12 +14,12 @@ String oracleId = application.getInitParameter("OracleId");
 String oraclePwd = application.getInitParameter("OraclePwd");
 
 // 회원 테이블 DAO를 통해 회원 정보 DTO 획득
-//MemberDAO dao = new MemberDAO(oracleDriver, oracleURL, oracleId, oraclePwd);
-//MemberDTO memberDTO = dao.getMemberDTO(userId, userPwd);
-//dao.close();
+MemberDAO dao = new MemberDAO(oracleDriver, oracleURL, oracleId, oraclePwd);
+MemberDTO memberDTO = dao.getMemberDTO(userId, userPwd);
+dao.close();
 
 // 로그인 성공 여부에 따른 처리
-if (memberDTO.getId() != null) {
+if (memberDTO.getId() != null) { // 로그인 결과 값이 없으면 실패 => 비밀번호나 아이디가 일치하지 않는다면 값이 없다.
     // 로그인 성공
     session.setAttribute("UserId", memberDTO.getId()); 
     session.setAttribute("UserName", memberDTO.getName()); 

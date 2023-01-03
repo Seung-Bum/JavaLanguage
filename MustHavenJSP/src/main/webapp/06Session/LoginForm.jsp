@@ -3,7 +3,7 @@
 <html>
 <head><title>Session</title></head>
 <body>
-	<!-- <jsp:include page="../Common/Link.jsp" /> -->
+	<jsp:include page="../Common/Link.jsp" />
     <h2>로그인 페이지</h2>
     
     <!-- 에러 발생시 에러 메시지, 에러가 아니면 빈칸 -->
