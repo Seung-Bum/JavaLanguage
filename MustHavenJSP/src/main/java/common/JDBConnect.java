@@ -39,10 +39,10 @@ public class JDBConnect {
         try {
             // JDBC 드라이버 로드
             Class.forName(driver);  
-
+            
             // DB에 연결
             con = DriverManager.getConnection(url, id, pwd);
-
+            
             System.out.println("DB 연결 성공 - web.xml 설정(인수 생성자1)");
         }
         catch (Exception e) {            
