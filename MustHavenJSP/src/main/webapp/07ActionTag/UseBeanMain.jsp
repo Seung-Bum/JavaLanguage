@@ -10,12 +10,11 @@
     <h2>useBean 액션 태그</h2>
     <h3>자바빈즈 생성하기</h3>
     <jsp:useBean id="person" class="common.Person" scope="request" />
+    <jsp:useBean id="person1" class="common.Person" scope="request" />
 
     <h3>setProperty 액션 태그로 자바빈즈 속성 지정하기</h3>
     <jsp:setProperty name="person" property="name" value="임꺽정" /> 
     <jsp:setProperty name="person" property="age" value="41" />
-    
-    <jsp:useBean id="person1" class="common.Person" scope="request" />
     <jsp:setProperty name="person1" property="name" value="홍길동" /> 
     <jsp:setProperty name="person1" property="age" value="45" /> 
 
@@ -32,7 +31,7 @@
    		Person person = (Person)request.getAttribute("Person"); // request 영역에서 가져옴
     	if (person == null) {
     		person = new Person();
-    		request.setAttribute("person", person);
+    		request.setAttribute("person", person);  // request 영역에 셋팅
     	}
      -->
 </body>

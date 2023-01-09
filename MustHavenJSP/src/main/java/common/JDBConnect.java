@@ -50,7 +50,7 @@ public class JDBConnect {
         }
     }
 
-    // 컨텍스트 초기화 매개변수를 생성자에서 직접 가져올 수 있도록 정의
+    // 컨텍스트 초기화 매개변수를 생성자에서 직접 가져올 수 있도록 정의(web.xml)
     public JDBConnect(ServletContext application) {
         try {
             // JDBC 드라이버 로드

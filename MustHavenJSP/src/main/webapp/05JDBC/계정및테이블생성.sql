@@ -41,7 +41,7 @@ alter table board
     add constraint board_mem_fk foreign key (id)
     references member (id);
     
---
+--시퀀스 생성
 create sequence seq_board_num 
     increment by 1
     start with 1
@@ -50,8 +50,8 @@ create sequence seq_board_num
     nocycle
     nocache;
     
---
-insert into member (id, pass, name) values ('musthave', '1234', '');
+--실행확인
+insert into member (id, pass, name) values ('musthave', '1234', '머스트해브');
 insert into board  (num, title, content, id, postdate, visitcount) 
-	values (seq_board_num.nextval, '', '', 'musthave', sysdate, 0);
+	values (seq_board_num.nextval, '제목', '콘텐츠', 'musthave', sysdate, 0);
 commit;
