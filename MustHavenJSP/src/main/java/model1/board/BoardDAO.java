@@ -45,12 +45,12 @@ public class BoardDAO extends JDBConnect{
 		List<BoardDTO> bbs = new Vector<BoardDTO>(); // 게시물 목록 조회 결과를 담을 변수
 		// Vector - ArrayList와 비슷함 스레드 환경에서의 안정성은 높지만 ArrayList와 비교하여 추가, 검색, 삭제 성능 떨어짐
 		
-		String query = "SELECT * FROM board";
-		if(map.get("searchWord") != null) {
-			query += "WHERE" + map.get("searchField") + " "
-					+ " LIKE '%" + map.get("searchWord") + "%' ";
-		}
-		query += "ORDER BY num DESC";
+        String query = "SELECT * FROM board "; 
+        if (map.get("searchWord") != null) { // 사용자가 검색한 내용이 있으면 아래로 내려감
+            query += " WHERE " + map.get("searchField") + " "
+                   + " LIKE '%" + map.get("searchWord") + "%' ";
+        }
+        query += " ORDER BY num DESC "; 
 		
 		try {
 			stmt = con.createStatement(); // 쿼리 생성
