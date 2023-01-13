@@ -79,4 +79,29 @@ public class BoardDAO extends JDBConnect{
 		return bbs;
 	}
 	
+	public int insertWrite(BoardDTO dto) {
+		int result = 0;
+		
+		try {
+			// INSERT 쿼리문 작성
+			String query = "INSERT INTO board ("
+						 + "num,title,content,id,visitcount)"
+						 + "VALUES ("
+						 + "seq_board_num.NEXVAL, ?, ?, ?, 0)";
+			
+			psmt = con.prepareStatement(query); // extends JDBConnect 가 되어있어서 con 사용가능 생성자로 연결해놓음
+			psmt.setString(1, dto.getTitle());	// psmt의 setString으로 insert할 dto 값인 Title이 첫번째 ?(인파라미터)에 입력된다.
+			psmt.setString(2, dto.getContent());// psmt의 setString으로 insert할 dto 값인 Content가 두번째 ?에 입력된다.
+			psmt.setString(3, dto.getId());		// psmt의 setString으로 insert할 dto 값인 Id가 세번째 ?에 입력된다.
+			
+			result = psmt.executeUpdate(); // INSERT 쿼리를 성공한 행의 개수를 리턴한다.
+		} 
+		catch (Exception e){
+			System.out.println("게시물 입력 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 }

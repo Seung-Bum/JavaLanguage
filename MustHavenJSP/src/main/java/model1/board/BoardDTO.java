@@ -4,7 +4,7 @@ public class BoardDTO {
 	private String num;
 	private String title;
 	private String content;
-	private String id;
+	private String id; // member 테이블의 id 컬럼과 외래키로 설정
 	private java.sql.Date postdate;
 	private String visitcount;
 	private String name;
