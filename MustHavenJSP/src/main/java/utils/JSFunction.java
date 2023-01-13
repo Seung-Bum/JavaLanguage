@@ -40,7 +40,7 @@ public class JSFunction {
             String script = ""
                           + "<script>"
                           + "    alert('" + msg + "');"
-                          + "    location.href='" + url + "';"
+                          + "    location.href='" + url + "';" // 지정한 페이지로 이동
                           + "</script>";
             writer.print(script);
         }
