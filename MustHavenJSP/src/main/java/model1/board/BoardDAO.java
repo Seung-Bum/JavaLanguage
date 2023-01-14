@@ -87,14 +87,14 @@ public class BoardDAO extends JDBConnect{
 			String query = "INSERT INTO board ("
 						 + "num,title,content,id,visitcount)"
 						 + "VALUES ("
-						 + "seq_board_num.NEXVAL, ?, ?, ?, 0)";
+						 + "seq_board_num.NEXTVAL, ?, ?, ?, 0)"; // NEXTVAL 해당 시퀀스의 값을 증가 시킴
 			
 			psmt = con.prepareStatement(query); // extends JDBConnect 가 되어있어서 con 사용가능 생성자로 연결해놓음
 			psmt.setString(1, dto.getTitle());	// psmt의 setString으로 insert할 dto 값인 Title이 첫번째 ?(인파라미터)에 입력된다.
 			psmt.setString(2, dto.getContent());// psmt의 setString으로 insert할 dto 값인 Content가 두번째 ?에 입력된다.
 			psmt.setString(3, dto.getId());		// psmt의 setString으로 insert할 dto 값인 Id가 세번째 ?에 입력된다.
 			
-			result = psmt.executeUpdate(); // INSERT 쿼리를 성공한 행의 개수를 리턴한다.
+			result = psmt.executeUpdate(); // ★★INSERT 쿼리를 성공한 행의 개수를 리턴한다.
 		} 
 		catch (Exception e){
 			System.out.println("게시물 입력 중 예외 발생");
@@ -104,4 +104,54 @@ public class BoardDAO extends JDBConnect{
 		return result;
 	}
 	
+	public BoardDTO selectView(String num) {
+		BoardDTO dto = new BoardDTO();
+		
+		// 쿼리문 준비
+		String query = "SELECT B.*, M.name "
+					 + "FORM member M INNER JOIN board B "
+					 + "ON M.id = B.id "
+					 + "WHERE num=?";
+		
+		try {
+			psmt = con.prepareStatement(query); // extends JDBConnect DB연결
+			psmt.setString(1, num); // 인파라미터를 일련번호로 설정
+			rs = psmt.executeQuery(); // 쿼리실행
+			
+			// 결과처리
+			if (rs.next()) {
+				dto.setNum(rs.getString(1));
+				dto.setTitle(rs.getString(2));
+				dto.setContent(rs.getString("content"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setId(rs.getString("id"));
+				dto.setVisitcount(rs.getString(6));
+				dto.setName(rs.getString("name"));				
+			}
+		} 
+		catch (Exception e) {
+			System.out.println("게시물 상세보기 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
+	// 지정한 게수물의 조회수를 1 증가시킵니다.
+	public void updateVisitCount(String num) {
+		// 쿼리문 준비
+		String query = "UPDATE board "
+					 + "SET visitcount=visitcount + 1"
+					 + "WHERE num = ?";
+		
+		try {
+			psmt = con.prepareStatement(query); // DB연결 query 입력 psmt 생성
+			psmt.setString(1, num);	// 인파라미터를 일련번호로 설
+			psmt.executeQuery(); // 쿼리 실행
+		} 
+		catch (Exception e) {
+			System.out.println("게시물 조회수 증가 중 예외 발생");
+			e.printStackTrace();
+		}
+	}
 }
