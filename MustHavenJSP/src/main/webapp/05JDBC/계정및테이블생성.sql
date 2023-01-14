@@ -49,7 +49,10 @@ create sequence seq_board_num
     nomaxvalue
     nocycle
     nocache;
-    
+
+-- 시퀀스 삭제
+drop sequence seq_board_num;
+
 --실행확인
 insert into member (id, pass, name) values ('musthave', '1234', '머스트해브');
 insert into board  (num, title, content, id, postdate, visitcount) 

@@ -74,7 +74,7 @@ else {
     // 게시물이 있을 때 
     int virtualNum = 0;  // 화면상에서의 게시물 번호
     for (BoardDTO dto : boardLists)
-    {
+    {	
         virtualNum = totalCount--;  // 전체 게시물 수에서 시작해 1씩 감소
 %>
         <tr align="center">

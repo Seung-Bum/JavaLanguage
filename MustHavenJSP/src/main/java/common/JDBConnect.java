@@ -22,6 +22,7 @@ public class JDBConnect {
             Class.forName("oracle.jdbc.OracleDriver");
 
             // DB에 연결
+            // Release 11.2.0.2.0 Production
             String url = "jdbc:oracle:thin:@localhost:1522:xe";  
             String id = "musthave";
             String pwd = "1111"; 

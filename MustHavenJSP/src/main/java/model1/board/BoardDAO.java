@@ -106,12 +106,12 @@ public class BoardDAO extends JDBConnect{
 	
 	public BoardDTO selectView(String num) {
 		BoardDTO dto = new BoardDTO();
-		
+
 		// 쿼리문 준비
 		String query = "SELECT B.*, M.name "
-					 + "FORM member M INNER JOIN board B "
-					 + "ON M.id = B.id "
-					 + "WHERE num=?";
+					 + " FROM member M INNER JOIN board B "
+					 + " ON M.id = B.id "
+					 + " WHERE num=?";
 		
 		try {
 			psmt = con.prepareStatement(query); // extends JDBConnect DB연결
@@ -153,5 +153,55 @@ public class BoardDAO extends JDBConnect{
 			System.out.println("게시물 조회수 증가 중 예외 발생");
 			e.printStackTrace();
 		}
+	}
+	
+	// 지정한 게시물을 수정합니다.
+	public int updateEdit(BoardDTO dto) {
+		int result = 0;
+
+		try {
+			// 쿼리문 템플릿 (띄어쓰기 제대로 안하면 SQL 오류발생함)
+			String query = "UPDATE board "
+						 + "SET title=?, content=?"
+						 + "WHERE num=?";
+			// 쿼리문 완성
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getNum());
+			
+			// 쿼리문 실행
+			result = psmt.executeUpdate();
+		} 
+		catch (Exception e) {
+			System.out.println("게시물 수정 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// 지정한 게시물을 삭제합니다.
+	public int deletePost(BoardDTO dto) {
+		int result = 0;
+		
+		try {
+			// 쿼리문 템플릿
+			String query = "DELETE FROM board WHERE num = ?";
+			
+			// 쿼리문 완성
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, dto.getNum()); //인파라미터 설정 (?)
+			
+			// 쿼리문 실행
+			result = psmt.executeUpdate();
+			
+		} 
+		catch (Exception e) {
+			System.out.println("게시물 삭제 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

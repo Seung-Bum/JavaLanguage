@@ -31,7 +31,7 @@ function deletePost() {
 <jsp:include page="../Common/Link.jsp" />
 <h2>회원제 게시판 - 상세 보기(View)</h2>
 <form name="writeFrm">
-    <input type="hidden" name="num" value="<%= num %>" />  <!-- 공통 링크 -->
+    <input type="hidden" name="num" value="<%= num %>" />  <!-- 공통 링크, hidden 으로 num을 같이 넘긴다. -->
 
     <table border="1" width="90%">
         <tr>
@@ -53,13 +53,13 @@ function deletePost() {
         <tr>
             <td>내용</td>
             <td colspan="3" height="100">
-                <%= dto.getContent().replace("\r\n", "<br/>") %></td> <!-- 가져온 content의 개행문자를 태그로 변경 -->
+            <%= dto.getContent().replace("\r\n", "<br/>") %></td>
         </tr>
         <tr>
             <td colspan="4" align="center">
             <%
-            if (session.getAttribute("UserId") != null								// 모두 볼수는 있으나 수정 삭제는 글쓴이만 할 수 있게함
-                && session.getAttribute("UserId").toString().equals(dto.getId())) { // 로그인 되어잇는 UserId와 글쓴이 UserId가 일치해야 수정/삭제 가능
+            if (session.getAttribute("UserId") != null								// 모두 게시글을 볼수는 있으나 수정 삭제는 글쓴이만 할 수 있게함
+                && session.getAttribute("UserId").toString().equals(dto.getId())) { // 로그인 되어있는 UserId와 글쓴이 UserId가 일치해야 수정/삭제 가능
             %>
                 <button type="button"
                         onclick="location.href='Edit.jsp?num=<%= dto.getNum() %>';">
