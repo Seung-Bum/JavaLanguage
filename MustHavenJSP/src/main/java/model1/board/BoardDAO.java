@@ -13,11 +13,11 @@ public class BoardDAO extends JDBConnect{
 		super(application);
 	}
 	
-	// °Ë»ö Á¶°Ç¿¡ ¸Â´Â °Ô½Ã¹°ÀÇ °³¼ö¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+	// ê²€ìƒ‰ ì¡°ê±´ì— ë§ëŠ” ê²Œì‹œë¬¼ì˜ ê°œìˆ˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
 	public int selectCount(Map<String, Object> map) {
 		int totalCount = 0;
 		
-		// °Ô½Ã¹° ¼ö¸¦ ¾ò¾î¿À´Â Äõ¸®¹® ÀÛ¼º
+		// ê²Œì‹œë¬¼ ìˆ˜ë¥¼ ì–»ì–´ì˜¤ëŠ” ì¿¼ë¦¬ë¬¸ ì‘ì„±
 		String query = "SELECT COUNT(*) FROM board";
 		if (map.get("searchWord") != null) {
 			query += "WHERE" + map.get("searchField") + " "
@@ -25,13 +25,13 @@ public class BoardDAO extends JDBConnect{
 		}
 		
 		try {
-			stmt = con.createStatement(); // Äõ¸®¹® »ı¼º
+			stmt = con.createStatement(); // ì¿¼ë¦¬ë¬¸ ìƒì„±
 			rs = stmt.executeQuery(query);
 			rs.next();
-			totalCount = rs.getInt(1); // Ã¹¹øÂ° ÄÃ·³À» °¡Á®¿È
+			totalCount = rs.getInt(1); // ì²«ë²ˆì§¸ ì»¬ëŸ¼ì„ ê°€ì ¸ì˜´
 		}
 		catch (Exception e){
-			System.out.println("°Ô½Ã¹° ¼ö¸¦ ±¸ÇÏ´Â Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ìˆ˜ë¥¼ êµ¬í•˜ëŠ” ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 		
@@ -39,28 +39,28 @@ public class BoardDAO extends JDBConnect{
 	}
 	
 	
-	// °Ë»ö Á¶°Ç¿¡ ¸Â´Â °Ô½Ã¹° ¸ñ·ÏÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+	// ê²€ìƒ‰ ì¡°ê±´ì— ë§ëŠ” ê²Œì‹œë¬¼ ëª©ë¡ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
 	public List<BoardDTO> selectList(Map<String, Object> map) {
 		
-		List<BoardDTO> bbs = new Vector<BoardDTO>(); // °Ô½Ã¹° ¸ñ·Ï Á¶È¸ °á°ú¸¦ ´ãÀ» º¯¼ö
-		// Vector - ArrayList¿Í ºñ½ÁÇÔ ½º·¹µå È¯°æ¿¡¼­ÀÇ ¾ÈÁ¤¼ºÀº ³ôÁö¸¸ ArrayList¿Í ºñ±³ÇÏ¿© Ãß°¡, °Ë»ö, »èÁ¦ ¼º´É ¶³¾îÁü
+		List<BoardDTO> bbs = new Vector<BoardDTO>(); // ê²Œì‹œë¬¼ ëª©ë¡ ì¡°íšŒ ê²°ê³¼ë¥¼ ë‹´ì„ ë³€ìˆ˜
+		// Vector - ArrayListì™€ ë¹„ìŠ·í•¨ ìŠ¤ë ˆë“œ í™˜ê²½ì—ì„œì˜ ì•ˆì •ì„±ì€ ë†’ì§€ë§Œ ArrayListì™€ ë¹„êµí•˜ì—¬ ì¶”ê°€, ê²€ìƒ‰, ì‚­ì œ ì„±ëŠ¥ ë–¨ì–´ì§
 		
         String query = "SELECT * FROM board "; 
-        if (map.get("searchWord") != null) { // »ç¿ëÀÚ°¡ °Ë»öÇÑ ³»¿ëÀÌ ÀÖÀ¸¸é ¾Æ·¡·Î ³»·Á°¨
+        if (map.get("searchWord") != null) { // ì‚¬ìš©ìê°€ ê²€ìƒ‰í•œ ë‚´ìš©ì´ ìˆìœ¼ë©´ ì•„ë˜ë¡œ ë‚´ë ¤ê°
             query += " WHERE " + map.get("searchField") + " "
                    + " LIKE '%" + map.get("searchWord") + "%' ";
         }
         query += " ORDER BY num DESC "; 
 		
 		try {
-			stmt = con.createStatement(); // Äõ¸® »ı¼º
-			rs = stmt.executeQuery(query); // ½ÇÇà, ¸ğµç Á¶È¸°á°ú°¡ rs¿¡ ´ã±ä´Ù.
+			stmt = con.createStatement(); // ì¿¼ë¦¬ ìƒì„±
+			rs = stmt.executeQuery(query); // ì‹¤í–‰, ëª¨ë“  ì¡°íšŒê²°ê³¼ê°€ rsì— ë‹´ê¸´ë‹¤.
 			
-			while (rs.next()) {// Á¶È¸ °á°ú°¡ ¾øÀ»¶§±îÁö ¹İº¹ÇÑ´Ù.
+			while (rs.next()) {// ì¡°íšŒ ê²°ê³¼ê°€ ì—†ì„ë•Œê¹Œì§€ ë°˜ë³µí•œë‹¤.
 				
 				BoardDTO dto = new BoardDTO();
 				
-				// Äõ¸®¿¡¼­ °á°ú°ªÀ» ¼ıÀÚ·Î ³Ñ°å´ÂÁö ¹®ÀÚ·Î ³Ñ°å´ÂÁö ³¯Â¥·Î ³Ñ°å´ÂÁö¿¡ µû¶ó¼­ getÇüÅÂ °áÁ¤
+				// ì¿¼ë¦¬ì—ì„œ ê²°ê³¼ê°’ì„ ìˆ«ìë¡œ ë„˜ê²¼ëŠ”ì§€ ë¬¸ìë¡œ ë„˜ê²¼ëŠ”ì§€ ë‚ ì§œë¡œ ë„˜ê²¼ëŠ”ì§€ì— ë”°ë¼ì„œ getí˜•íƒœ ê²°ì •
 				dto.setNum(rs.getString("num"));
 				dto.setTitle(rs.getString("title"));
 				dto.setContent(rs.getString("content"));
@@ -68,36 +68,88 @@ public class BoardDAO extends JDBConnect{
 				dto.setId(rs.getString("id"));
 				dto.setVisitcount(rs.getString("visitcount"));
 				
-				bbs.add(dto); // °á°ú¸ñ·Ï¿¡ ÀúÀå
+				bbs.add(dto); // ê²°ê³¼ëª©ë¡ì— ì €ì¥
 			}
 		}
 		catch (Exception e){
-			System.out.println("°Ô½Ã¹° Á¶È¸ Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ì¡°íšŒ ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 		
 		return bbs;
 	}
 	
+	// ê²€ìƒ‰ ì¡°ê±´ì— ë§ëŠ” ê²Œì‹œë¬¼ ëª©ë¡ì„ ë°˜í™˜í•©ë‹ˆë‹¤.(í˜ì´ì§• ê¸°ëŠ¥ ì§€ì›)
+	public List<BoardDTO> selectListPage(Map<String, Object> map) {
+	        List<BoardDTO> bbs = new Vector<BoardDTO>();  // ê²°ê³¼(ê²Œì‹œë¬¼ ëª©ë¡)ë¥¼ ë‹´ì„ ë³€ìˆ˜
+	        
+	        // ì¿¼ë¦¬ë¬¸ í…œí”Œë¦¿
+	        String query = " SELECT * FROM ( "
+	                     + "    SELECT Tb.*, ROWNUM rNum FROM ( "
+	                     + "        SELECT * FROM board ";
+
+	        // ê²€ìƒ‰ ì¡°ê±´ ì¶”ê°€
+	        if (map.get("searchWord") != null) {// ê²€ìƒ‰ì´ ìˆëŠ”ê°€?
+	            query += " WHERE " + map.get("searchField") // ì œëª©, ë‚´ìš©
+	                   + " LIKE '%" + map.get("searchWord") + "%' ";
+	        }
+	        
+	        query += "      ORDER BY num DESC "
+	               + "     ) Tb "
+	               + " ) "
+	               + " WHERE rNum BETWEEN ? AND ?"; 
+
+	        try {
+	            // ì¿¼ë¦¬ë¬¸ ì™„ì„±
+	            psmt = con.prepareStatement(query);
+	            psmt.setString(1, map.get("start").toString()); // í˜ì´ì§€ ë²ˆí˜¸ì‹œì‘
+	            psmt.setString(2, map.get("end").toString());	// í˜ì´ì§€ ë²ˆí˜¸ë
+	            
+	            // ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
+	            rs = psmt.executeQuery();
+	            
+	            while (rs.next()) { // ìœ„ ì¿¼ë¦¬ì—ì„œ ê°€ì ¸ì˜¨ 10í–‰ì˜ ë°ì´í„°
+	                // í•œ í–‰(ê²Œì‹œë¬¼ í•˜ë‚˜)ì˜ ë°ì´í„°ë¥¼ DTOì— ì €ì¥
+	                BoardDTO dto = new BoardDTO();
+	                dto.setNum(rs.getString("num"));
+	                dto.setTitle(rs.getString("title"));
+	                dto.setContent(rs.getString("content"));
+	                dto.setPostdate(rs.getDate("postdate"));
+	                dto.setId(rs.getString("id"));
+	                dto.setVisitcount(rs.getString("visitcount"));
+
+	                // ë°˜í™˜í•  ê²°ê³¼ ëª©ë¡ì— ê²Œì‹œë¬¼ ì¶”ê°€ (rsê°€ ëë‚ ë•Œ ê¹Œì§€ ì¶”ê°€)
+	                bbs.add(dto);
+	            }
+	        } 
+	        catch (Exception e) {
+	            System.out.println("ê²Œì‹œë¬¼ ì¡°íšŒ ì¤‘ ì˜ˆì™¸ ë°œìƒ");
+	            e.printStackTrace();
+	        }
+	        
+	        // ëª©ë¡ ë°˜í™˜
+	        return bbs;
+	}
+	
 	public int insertWrite(BoardDTO dto) {
 		int result = 0;
 		
 		try {
-			// INSERT Äõ¸®¹® ÀÛ¼º
+			// INSERT ì¿¼ë¦¬ë¬¸ ì‘ì„±
 			String query = "INSERT INTO board ("
 						 + "num,title,content,id,visitcount)"
 						 + "VALUES ("
-						 + "seq_board_num.NEXTVAL, ?, ?, ?, 0)"; // NEXTVAL ÇØ´ç ½ÃÄö½ºÀÇ °ªÀ» Áõ°¡ ½ÃÅ´
+						 + "seq_board_num.NEXTVAL, ?, ?, ?, 0)"; // NEXTVAL í•´ë‹¹ ì‹œí€€ìŠ¤ì˜ ê°’ì„ ì¦ê°€ ì‹œí‚´
 			
-			psmt = con.prepareStatement(query); // extends JDBConnect °¡ µÇ¾îÀÖ¾î¼­ con »ç¿ë°¡´É »ı¼ºÀÚ·Î ¿¬°áÇØ³õÀ½
-			psmt.setString(1, dto.getTitle());	// psmtÀÇ setStringÀ¸·Î insertÇÒ dto °ªÀÎ TitleÀÌ Ã¹¹øÂ° ?(ÀÎÆÄ¶ó¹ÌÅÍ)¿¡ ÀÔ·ÂµÈ´Ù.
-			psmt.setString(2, dto.getContent());// psmtÀÇ setStringÀ¸·Î insertÇÒ dto °ªÀÎ Content°¡ µÎ¹øÂ° ?¿¡ ÀÔ·ÂµÈ´Ù.
-			psmt.setString(3, dto.getId());		// psmtÀÇ setStringÀ¸·Î insertÇÒ dto °ªÀÎ Id°¡ ¼¼¹øÂ° ?¿¡ ÀÔ·ÂµÈ´Ù.
+			psmt = con.prepareStatement(query); // extends JDBConnect ê°€ ë˜ì–´ìˆì–´ì„œ con ì‚¬ìš©ê°€ëŠ¥ ìƒì„±ìë¡œ ì—°ê²°í•´ë†“ìŒ
+			psmt.setString(1, dto.getTitle());	// psmtì˜ setStringìœ¼ë¡œ insertí•  dto ê°’ì¸ Titleì´ ì²«ë²ˆì§¸ ?(ì¸íŒŒë¼ë¯¸í„°)ì— ì…ë ¥ëœë‹¤.
+			psmt.setString(2, dto.getContent());// psmtì˜ setStringìœ¼ë¡œ insertí•  dto ê°’ì¸ Contentê°€ ë‘ë²ˆì§¸ ?ì— ì…ë ¥ëœë‹¤.
+			psmt.setString(3, dto.getId());		// psmtì˜ setStringìœ¼ë¡œ insertí•  dto ê°’ì¸ Idê°€ ì„¸ë²ˆì§¸ ?ì— ì…ë ¥ëœë‹¤.
 			
-			result = psmt.executeUpdate(); // ¡Ú¡ÚINSERT Äõ¸®¸¦ ¼º°øÇÑ ÇàÀÇ °³¼ö¸¦ ¸®ÅÏÇÑ´Ù.
+			result = psmt.executeUpdate(); // â˜…â˜…INSERT ì¿¼ë¦¬ë¥¼ ì„±ê³µí•œ í–‰ì˜ ê°œìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤.
 		} 
 		catch (Exception e){
-			System.out.println("°Ô½Ã¹° ÀÔ·Â Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ì…ë ¥ ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 		
@@ -107,18 +159,18 @@ public class BoardDAO extends JDBConnect{
 	public BoardDTO selectView(String num) {
 		BoardDTO dto = new BoardDTO();
 
-		// Äõ¸®¹® ÁØºñ
+		// ì¿¼ë¦¬ë¬¸ ì¤€ë¹„
 		String query = "SELECT B.*, M.name "
 					 + " FROM member M INNER JOIN board B "
 					 + " ON M.id = B.id "
 					 + " WHERE num=?";
 		
 		try {
-			psmt = con.prepareStatement(query); // extends JDBConnect DB¿¬°á
-			psmt.setString(1, num); // ÀÎÆÄ¶ó¹ÌÅÍ¸¦ ÀÏ·Ã¹øÈ£·Î ¼³Á¤
-			rs = psmt.executeQuery(); // Äõ¸®½ÇÇà
+			psmt = con.prepareStatement(query); // extends JDBConnect DBì—°ê²°
+			psmt.setString(1, num); // ì¸íŒŒë¼ë¯¸í„°ë¥¼ ì¼ë ¨ë²ˆí˜¸ë¡œ ì„¤ì •
+			rs = psmt.executeQuery(); // ì¿¼ë¦¬ì‹¤í–‰
 			
-			// °á°úÃ³¸®
+			// ê²°ê³¼ì²˜ë¦¬
 			if (rs.next()) {
 				dto.setNum(rs.getString(1));
 				dto.setTitle(rs.getString(2));
@@ -130,75 +182,75 @@ public class BoardDAO extends JDBConnect{
 			}
 		} 
 		catch (Exception e) {
-			System.out.println("°Ô½Ã¹° »ó¼¼º¸±â Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ìƒì„¸ë³´ê¸° ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 		
 		return dto;
 	}
 	
-	// ÁöÁ¤ÇÑ °Ô¼ö¹°ÀÇ Á¶È¸¼ö¸¦ 1 Áõ°¡½ÃÅµ´Ï´Ù.
+	// ì§€ì •í•œ ê²Œìˆ˜ë¬¼ì˜ ì¡°íšŒìˆ˜ë¥¼ 1 ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
 	public void updateVisitCount(String num) {
-		// Äõ¸®¹® ÁØºñ
+		// ì¿¼ë¦¬ë¬¸ ì¤€ë¹„
 		String query = "UPDATE board "
 					 + "SET visitcount=visitcount + 1"
 					 + "WHERE num = ?";
 		
 		try {
-			psmt = con.prepareStatement(query); // DB¿¬°á query ÀÔ·Â psmt »ı¼º
-			psmt.setString(1, num);	// ÀÎÆÄ¶ó¹ÌÅÍ¸¦ ÀÏ·Ã¹øÈ£·Î ¼³
-			psmt.executeQuery(); // Äõ¸® ½ÇÇà
+			psmt = con.prepareStatement(query); // DBì—°ê²° query ì…ë ¥ psmt ìƒì„±
+			psmt.setString(1, num);	// ì¸íŒŒë¼ë¯¸í„°ë¥¼ ì¼ë ¨ë²ˆí˜¸ë¡œ ì„¤
+			psmt.executeQuery(); // ì¿¼ë¦¬ ì‹¤í–‰
 		} 
 		catch (Exception e) {
-			System.out.println("°Ô½Ã¹° Á¶È¸¼ö Áõ°¡ Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ì¡°íšŒìˆ˜ ì¦ê°€ ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 	}
 	
-	// ÁöÁ¤ÇÑ °Ô½Ã¹°À» ¼öÁ¤ÇÕ´Ï´Ù.
+	// ì§€ì •í•œ ê²Œì‹œë¬¼ì„ ìˆ˜ì •í•©ë‹ˆë‹¤.
 	public int updateEdit(BoardDTO dto) {
 		int result = 0;
 
 		try {
-			// Äõ¸®¹® ÅÛÇÃ¸´ (¶ç¾î¾²±â Á¦´ë·Î ¾ÈÇÏ¸é SQL ¿À·ù¹ß»ıÇÔ)
+			// ì¿¼ë¦¬ë¬¸ í…œí”Œë¦¿ (ë„ì–´ì“°ê¸° ì œëŒ€ë¡œ ì•ˆí•˜ë©´ SQL ì˜¤ë¥˜ë°œìƒí•¨)
 			String query = "UPDATE board "
 						 + "SET title=?, content=?"
 						 + "WHERE num=?";
-			// Äõ¸®¹® ¿Ï¼º
+			// ì¿¼ë¦¬ë¬¸ ì™„ì„±
 			psmt = con.prepareStatement(query);
 			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getNum());
 			
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			result = psmt.executeUpdate();
 		} 
 		catch (Exception e) {
-			System.out.println("°Ô½Ã¹° ¼öÁ¤ Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ìˆ˜ì • ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 		
 		return result;
 	}
 	
-	// ÁöÁ¤ÇÑ °Ô½Ã¹°À» »èÁ¦ÇÕ´Ï´Ù.
+	// ì§€ì •í•œ ê²Œì‹œë¬¼ì„ ì‚­ì œí•©ë‹ˆë‹¤.
 	public int deletePost(BoardDTO dto) {
 		int result = 0;
 		
 		try {
-			// Äõ¸®¹® ÅÛÇÃ¸´
+			// ì¿¼ë¦¬ë¬¸ í…œí”Œë¦¿
 			String query = "DELETE FROM board WHERE num = ?";
 			
-			// Äõ¸®¹® ¿Ï¼º
+			// ì¿¼ë¦¬ë¬¸ ì™„ì„±
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, dto.getNum()); //ÀÎÆÄ¶ó¹ÌÅÍ ¼³Á¤ (?)
+			psmt.setString(1, dto.getNum()); //ì¸íŒŒë¼ë¯¸í„° ì„¤ì • (?)
 			
-			// Äõ¸®¹® ½ÇÇà
+			// ì¿¼ë¦¬ë¬¸ ì‹¤í–‰
 			result = psmt.executeUpdate();
 			
 		} 
 		catch (Exception e) {
-			System.out.println("°Ô½Ã¹° »èÁ¦ Áß ¿¹¿Ü ¹ß»ı");
+			System.out.println("ê²Œì‹œë¬¼ ì‚­ì œ ì¤‘ ì˜ˆì™¸ ë°œìƒ");
 			e.printStackTrace();
 		}
 		

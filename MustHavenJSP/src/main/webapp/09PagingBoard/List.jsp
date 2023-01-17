@@ -20,7 +20,29 @@ if (searchWord != null) { // 사용자가 입력을 했을 경우에만 request 
 }
 
 int totalCount = dao.selectCount(param);  // 게시물 수 확인
-List<BoardDTO> boardLists = dao.selectList(param);  // 게시물 목록 받기
+
+
+/*** 페이지 처리 start ***/
+//전체 페이지 수 계산
+int pageSize = Integer.parseInt(application.getInitParameter("POSTS_PER_PAGE")); // 한페이지에 출력할 게시물 web.xml 
+int blockPage = Integer.parseInt(application.getInitParameter("PAGES_PER_BLOCK")); // 한페이지에 출력할 번호 (아래) web.xml 
+int totalPage = (int)Math.ceil((double)totalCount / pageSize); // 전체 페이지 수
+
+//현재 페이지 확인
+int pageNum = 1;  // 기본값
+String pageTemp = request.getParameter("pageNum");
+if (pageTemp != null && !pageTemp.equals(""))
+ pageNum = Integer.parseInt(pageTemp); // 요청받은 페이지로 수정
+
+//목록에 출력할 게시물 범위 계산 (현재 페이지를 기준으로)
+int start = (pageNum - 1) * pageSize + 1;  // 첫 게시물 번호
+int end = pageNum * pageSize; // 마지막 게시물 번호
+param.put("start", start);
+param.put("end", end);
+/*** 페이지 처리 end ***/
+
+
+List<BoardDTO> boardLists = dao.selectListPage(param);  // 게시물 목록 받기
 dao.close();  // DB 연결 닫기
 %>
 <!DOCTYPE html>

@@ -59,6 +59,17 @@
   	<session-timeout>20</session-timeout>
   </session-config>
   
+  <!-- 한페이지에 출력할 게시물 POSTS_PER_PAGE
+  	   한화면에 출렬할 페이지 번호의 개수 PAGES_PER_BLOCK -->
+  <context-param>
+  	<param-name>POSTS_PER_PAGE</param-name>
+  	<param-value>10</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>PAGES_PER_BLOCK</param-name>
+  	<param-value>5</param-value>
+  </context-param>
+  
   
   <!-- 오류 발생 시 코드가 고객에게 그대로 노출되느 문제를 피하기 위해
   <error-page>
