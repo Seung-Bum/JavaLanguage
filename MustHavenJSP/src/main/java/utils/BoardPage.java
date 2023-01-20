@@ -11,11 +11,13 @@ public class BoardPage {
         // totalCount : 전체 게시물 수
         int totalPages = (int) (Math.ceil(((double) totalCount / pageSize)));
 
-        // 단계4 : '이전 페이지 블록 바로가기' 출력
+        // 단계4 : '이전 페이지 블록 바로가기' 출력, pageTemp가 1이면 출력안함
         // pageNum : 현재 페이지
         // blockPage : 블록에 들어갈 페이지 수
+        // pageNum = 1 : 첫페이지
+        // pageTemp - 1 : 이전 페이지
         int pageTemp = (((pageNum - 1) / blockPage) * blockPage) + 1;
-        // 첫 페
+        // pageTemp가 1
         if (pageTemp != 1) {
             pagingStr += "<a href='" + reqUrl + "?pageNum=1'>[첫 페이지]</a>";
             pagingStr += "&nbsp;";
@@ -24,6 +26,9 @@ public class BoardPage {
         }
 
         // 단계5 : 각 페이지 번호 출력
+        // pageTemp가 1일 때 : "1 2 3 4 5"
+        // pageTemp가 6일 때 : "6 7 8 9 10"
+        // pageNum : 현재 페이지
         int blockCount = 1;
         while (blockCount <= blockPage && pageTemp <= totalPages) {
             if (pageTemp == pageNum) {
@@ -37,13 +42,13 @@ public class BoardPage {
             blockCount++;
         }
 
-        // �떒怨� 6 : '�떎�쓬 �럹�씠吏� 釉붾줉 諛붾줈媛�湲�' 異쒕젰
+        // 단계6 : '다음 페이지 블록 바로가기' 출력
         if (pageTemp <= totalPages) {
             pagingStr += "<a href='" + reqUrl + "?pageNum=" + pageTemp
-                         + "'>[�떎�쓬 釉붾줉]</a>";
+                         + "'>[다음 블록]</a>";
             pagingStr += "&nbsp;";
             pagingStr += "<a href='" + reqUrl + "?pageNum=" + totalPages
-                         + "'>[留덉�留� �럹�씠吏�]</a>";
+                         + "'>[마지막 페이지]</a>";
         }
 
         return pagingStr;

@@ -3,6 +3,7 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="model1.board.BoardDAO"%>
 <%@ page import="model1.board.BoardDTO"%>
+<%@ page import="utils.BoardPage" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -54,7 +55,7 @@ dao.close();  // DB 연결 닫기
 <body>
     <jsp:include page="../Common/Link.jsp" />  <!-- 공통 링크 -->
 
-    <h2>목록 보기(List)</h2>
+    <h2>목록 보기(List) - 현재 페이지 : <%= pageNum %> (전체 : <%= totalPage %>)</h2>
     <!-- 검색폼 --> 
     <form method="get">  
     <table border="1" width="90%">
@@ -95,9 +96,12 @@ if (boardLists.isEmpty()) {
 else {
     // 게시물이 있을 때 
     int virtualNum = 0;  // 화면상에서의 게시물 번호
+    int countNum = 0;
     for (BoardDTO dto : boardLists)
-    {	
-        virtualNum = totalCount--;  // 전체 게시물 수에서 시작해 1씩 감소
+    {	  
+    	// 기존 코드
+        //virtualNum = totalCount--;  // 전체 게시물 수에서 시작해 1씩 감소
+        virtualNum = totalCount - (((pageNum - 1) * pageSize) + countNum++);
 %>
         <tr align="center">
             <td><%= virtualNum %></td>  <!--게시물 번호-->
@@ -114,8 +118,19 @@ else {
 %>
     </table>
     <!--목록 하단의 [글쓰기] 버튼-->
+    <!-- 
+    	totalCount : 전체 게시물 수
+    	pageSize : 페이지 범위
+    	blockPage : 블록 페이지 범위
+    	pageNum : 현재 페이지 번호
+    	request.getRequestURI() : 실행된 목록 파일명
+     -->
     <table border="1" width="90%">
-        <tr align="right">
+        <tr align="center">
+        	<!-- 페이징 처리 -->
+        	<td>
+        		<%= BoardPage.pagingStr(totalCount, pageSize, blockPage, pageNum, request.getRequestURI()) %>
+        	</td>
             <td><button type="button" onclick="location.href='Write.jsp';">글쓰기
                 </button></td>
         </tr>
