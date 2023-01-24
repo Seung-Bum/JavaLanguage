@@ -17,9 +17,9 @@ public class BoardPage {
         // pageNum = 1 : 첫페이지
         // pageTemp - 1 : 이전 페이지
         int pageTemp = (((pageNum - 1) / blockPage) * blockPage) + 1;
-        // pageTemp가 1
+        // pageTemp가 1이 아닐 경우 첫페이지가 아니다.
         if (pageTemp != 1) {
-            pagingStr += "<a href='" + reqUrl + "?pageNum=1'>[첫 페이지]</a>";
+            pagingStr += "<a href='" + reqUrl + "?pageNum=1'>[첫 페이지]";
             pagingStr += "&nbsp;";
             pagingStr += "<a href='" + reqUrl + "?pageNum=" + (pageTemp - 1)
                          + "'>[이전 블록]</a>";
