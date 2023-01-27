@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 변수 선언 --> 
-<c:set var="scopeVar" value="Page Value" />
+<c:set var="scopeVar" value="Page Value" /> <!-- 페이지 영역으로 저장이된다. -->
 <c:set var="scopeVar" value="Request Value" scope="request" />
 <c:set var="scopeVar" value="Session Value" scope="session" />
 <c:set var="scopeVar" value="Application Value" scope="application" />
@@ -11,7 +11,7 @@
 <body>
     <h4>출력하기</h4>
     <ul>
-        <li>scopeVar : ${ scopeVar }</li>
+        <li>scopeVar : ${ scopeVar }</li> <!-- 페이지 영역으로 출력 -->
         <li>requestScope.scopeVar : ${ requestScope.scopeVar }</li>
         <li>sessionScope.scopeVar : ${ sessionScope.scopeVar }</li>
         <li>applicationScope.scopeVar : ${ applicationScope.scopeVar }</li>
@@ -26,7 +26,7 @@
     <h4>scope 지정 없이 삭제하기</h4>
     <c:remove var="scopeVar" />
     <ul>
-        <li>scopeVar : ${ scopeVar }</li>
+        <li>scopeVar : ${ scopeVar }</li> <!-- 같은 이름의 모든 영역의 변수가 삭제된다. -->
         <li>requestScope.scopeVar : ${ requestScope.scopeVar }</li>
         <li>applicationScope.scopeVar : ${ applicationScope.scopeVar }</li>
     </ul>
