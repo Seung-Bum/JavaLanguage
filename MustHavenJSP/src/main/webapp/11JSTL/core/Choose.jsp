@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head><title>JSTL - choose/when/otherwise</title></head>
+<!-- if/else if/else 와 같은 구조이다. -->
 <body>
     <!-- 변수 선언 -->
     <c:set var="number" value="100" />
