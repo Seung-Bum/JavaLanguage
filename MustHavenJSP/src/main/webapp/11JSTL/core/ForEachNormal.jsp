@@ -24,7 +24,7 @@
 
     <h4>1에서 100까지 정수 중 홀수의 합</h4>
     <c:forEach begin="1" end="100" var="j">
-        <c:if test="${ j mod 2 ne 0}">
+        <c:if test="${ j mod 2 ne 0}"> <!-- mod 나머지 연산, ne == =! -->
             <c:set var="sum" value="${ sum + j }" />
         </c:if>
     </c:forEach>
