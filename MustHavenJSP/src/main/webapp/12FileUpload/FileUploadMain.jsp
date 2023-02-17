@@ -21,6 +21,7 @@
     }
 </script>
 <body>
+<!-- post인 경우에만 enctype를 사용할 수 있다고함 폼데이터가 서버로 제출 될 때 해당데이터가 인코딩되는 방식을 명시한다. -->
     <h3>파일 업로드</h3>
     <span style="color: red;">${errorMessage }</span>
     <form name="fileForm" method="post" enctype="multipart/form-data"
