@@ -34,20 +34,21 @@ public class MyfileDAO extends DBConnPool {
         return applyResult;
     }
 
-    // �뙆�씪 紐⑸줉�쓣 諛섑솚�빀�땲�떎.
+    // 파일목록을 반환합니다.
     public List<MyfileDTO> myFileList() {
         List<MyfileDTO> fileList = new Vector<MyfileDTO>();
 
-        // 荑쇰━臾� �옉�꽦
+        // 쿼리문작성
         String query = "SELECT * FROM myfile ORDER BY idx DESC";
         try {
-            psmt = con.prepareStatement(query);  // 荑쇰━ 以�鍮�
-            rs = psmt.executeQuery();  // 荑쇰━ �떎�뻾
+            psmt = con.prepareStatement(query);  // 쿼리준비
+            rs = psmt.executeQuery();  // 쿼리실행
 
-            while (rs.next()) {  // 紐⑸줉 �븞�쓽 �뙆�씪 �닔留뚰겮 諛섎났
-                // DTO�뿉 ���옣
+            while (rs.next()) {  // 목록 안의 파일 수만큼 반복
+                // DTO에 저장
+
                 MyfileDTO dto = new MyfileDTO();
-                dto.setIdx(rs.getString(1));
+                dto.setIdx(rs.getString(1)); // 쿼리의 결과값에 제일 첫번째 컬럼 ..
                 dto.setName(rs.getString(2));
                 dto.setTitle(rs.getString(3));
                 dto.setCate(rs.getString(4));
@@ -55,14 +56,14 @@ public class MyfileDAO extends DBConnPool {
                 dto.setSfile(rs.getString(6));
                 dto.setPostdate(rs.getString(7));
                 
-                fileList.add(dto);  // 紐⑸줉�뿉 異붽�
+                fileList.add(dto);  // 목록에 추가
             }
-        }
+        }        
         catch (Exception e) {
-            System.out.println("SELECT �떆 �삁�쇅 諛쒖깮");
+            System.out.println("SELECT 시 예외 발생");
             e.printStackTrace();
         }        
         
-        return fileList;  // 紐⑸줉 諛섑솚
+        return fileList;  // 목록 반환
     }
 }

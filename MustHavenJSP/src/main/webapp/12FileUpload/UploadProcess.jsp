@@ -7,7 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-String saveDirectory = application.getRealPath("/Uploads");  // 저장할 디렉터리
+String saveDirectory = application.getRealPath("/Uploads");  // 저장할 디렉터리, webapp/Uploads
 int maxPostSize = 1024 * 1000;  // 파일 최대 크기(1MB)
 String encoding = "UTF-8";  // 인코딩 방식
 
@@ -18,12 +18,12 @@ try {
 
     // 2. 새로운 파일명 생성
     String fileName = mr.getFilesystemName("attachedFile");  // 현재 파일 이름
-    String ext = fileName.substring(fileName.lastIndexOf("."));  // 파일 확장자 . 이두개 일수도있어서 lastIndexOf 사용
+    String ext = fileName.substring(fileName.lastIndexOf("."));  // 파일 확장자 . 이두개 일수도있어서 lastIndexOf 사용(파일이름에 .이 들어갈 수 있음)
     String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
     String newFileName = now + ext;  // 새로운 파일 이름("업로드일시.확장자")
 
     // 3. 파일명 변경
-    File oldFile = new File(saveDirectory + File.separator + fileName);
+    File oldFile = new File(saveDirectory + File.separator + fileName); // File.separator 경로를 구분하는 특수문자를 뜻함
     File newFile = new File(saveDirectory + File.separator + newFileName);
     oldFile.renameTo(newFile);
 
@@ -46,8 +46,8 @@ try {
     dto.setName(name);
     dto.setTitle(title);
     dto.setCate(cateBuf.toString());
-    dto.setOfile(fileName);
-    dto.setSfile(newFileName);
+    dto.setOfile(fileName); // type이 file임
+    dto.setSfile(newFileName); // type이 file임
 
     // 6. DAO를 통해 데이터베이스에 반영
     MyfileDAO dao = new MyfileDAO();
