@@ -85,4 +85,16 @@
   	<location>/02ImplicitObject/Exception.jsp</location>
   </error-page>
   -->
+  
+  <!-- 서블릿 매핑 1(예제 13-2) -->
+  <servlet>  <!-- 서블릿 등록 -->
+    <servlet-name>HelloServlet</servlet-name>
+    <servlet-class>servlet.HelloServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>  <!-- 서블릿과 요청명 매핑 -->
+    <servlet-name>HelloServlet</servlet-name>
+    <url-pattern>/13Servlet/HelloServlet.do</url-pattern>
+  </servlet-mapping>
+  
+  
 </web-app>
