@@ -96,5 +96,15 @@
     <url-pattern>/13Servlet/HelloServlet.do</url-pattern>
   </servlet-mapping>
   
+    <!-- 서블릿 매핑 2(예제 13-7) -->
+  <servlet>
+    <servlet-name>DirectServletPrint</servlet-name>
+    <servlet-class>servlet.DirectServletPrint</servlet-class> <!-- 담당할 서블릿 패키지의 클래스 -->
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DirectServletPrint</servlet-name>
+    <url-pattern>/13Servlet/DirectServletPrint.do</url-pattern> <!-- 요청명 -->
+  </servlet-mapping>
+  
   
 </web-app>
