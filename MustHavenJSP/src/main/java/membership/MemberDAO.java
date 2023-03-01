@@ -15,7 +15,7 @@ public class MemberDAO extends JDBConnect {
 
         try {
             // 쿼리실행
-            psmt = con.prepareStatement(query); // 동적쿼리문 준비
+            psmt = con.prepareStatement(query); // 동적쿼리문 준비 psmt JDBConnect 상속
             psmt.setString(1, uid);    // 첫번째 인파리미터 값 설정
             psmt.setString(2, upass);  // 두번째 인파리미터 값 설정
             rs = psmt.executeQuery();  // 쿼리문 실행
