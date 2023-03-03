@@ -25,14 +25,14 @@ public class MVCBoardDAO extends DBConnPool {
             totalCount = rs.getInt(1);
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� 移댁슫�듃 以� �삁�쇅 諛쒖깮");
+            System.out.println("게시물 카운트 중 예외 발생");
             e.printStackTrace();
         }
 
         return totalCount;
     }
 
-    // 寃��깋 議곌굔�뿉 留욌뒗 寃뚯떆臾� 紐⑸줉�쓣 諛섑솚�빀�땲�떎(�럹�씠吏� 湲곕뒫 吏��썝).
+    // 검색 조건에 맞는 게시물 목록을 반환합니다.(페이징 기능 지원).
     public List<MVCBoardDTO> selectListPage(Map<String,Object> map) {
         List<MVCBoardDTO> board = new Vector<MVCBoardDTO>();
         String query = " "
@@ -49,17 +49,19 @@ public class MVCBoardDAO extends DBConnPool {
         query += "        ORDER BY idx DESC "
                + "    ) Tb "
                + " ) "
-               + " WHERE rNum BETWEEN ? AND ?";
+               + " WHERE rNum BETWEEN ? AND ?"; // 게시물 구간은 인파라미터로 조정
 
         try {
-            psmt = con.prepareStatement(query);
-            psmt.setString(1, map.get("start").toString());
+            psmt = con.prepareStatement(query); // 동적 쿼리문 생성
+            psmt.setString(1, map.get("start").toString()); // 인파라미터 설정
             psmt.setString(2, map.get("end").toString());
             rs = psmt.executeQuery();
-
+            
+            // 반환된 게시물 목록을 List 컬렉션에 추가
+            // 게시물들이 rs이 담겨 있고 rs의 모든 내용들이 dto에 담길때 까지 반복한다.
             while (rs.next()) {
                 MVCBoardDTO dto = new MVCBoardDTO();
-
+                
                 dto.setIdx(rs.getString(1));
                 dto.setName(rs.getString(2));
                 dto.setTitle(rs.getString(3));
@@ -75,10 +77,10 @@ public class MVCBoardDAO extends DBConnPool {
             }
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� 議고쉶 以� �삁�쇅 諛쒖깮");
+            System.out.println("게시물 조회 중 예외 발생");
             e.printStackTrace();
         }
-        return board;
+        return board; // 목록반환
     }
 
     // 寃뚯떆湲� �뜲�씠�꽣瑜� 諛쏆븘 DB�뿉 異붽��빀�땲�떎(�뙆�씪 �뾽濡쒕뱶 吏��썝).
