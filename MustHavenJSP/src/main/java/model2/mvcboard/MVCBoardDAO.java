@@ -5,15 +5,18 @@ import java.util.Map;
 import java.util.Vector;
 import common.DBConnPool;
 
-public class MVCBoardDAO extends DBConnPool {
-    public MVCBoardDAO() {
+public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
+    public MVCBoardDAO() { 	
         super();
     }
 
-    // 검색조건에 맞는 게시물의 갯수를 반환.
+    // 검색 조건에 맞는 게시물의 개수를 반환합니다.
     public int selectCount(Map<String, Object> map) {
+
         int totalCount = 0;
         String query = "SELECT COUNT(*) FROM mvcboard";
+        
+        // 검색 조건이 있다면 where 절로 추가
         if (map.get("searchWord") != null) {
             query += " WHERE " + map.get("searchField") + " "
                    + " LIKE '%" + map.get("searchWord") + "%'";
@@ -34,7 +37,7 @@ public class MVCBoardDAO extends DBConnPool {
 
     // 검색 조건에 맞는 게시물 목록을 반환합니다.(페이징 기능 지원).
     public List<MVCBoardDTO> selectListPage(Map<String,Object> map) {
-        List<MVCBoardDTO> board = new Vector<MVCBoardDTO>();
+        List<MVCBoardDTO> board = new Vector<MVCBoardDTO>();           
         String query = " "
                      + "SELECT * FROM ( "
                      + "    SELECT Tb.*, ROWNUM rNum FROM ( "
@@ -42,14 +45,14 @@ public class MVCBoardDAO extends DBConnPool {
 
         if (map.get("searchWord") != null)
         {
-            query += " WHERE " + map.get("searchField")
+            query += " WHERE " + map.get("searchField") // 제목, 내용 옵션
                    + " LIKE '%" + map.get("searchWord") + "%' ";
         }
 
-        query += "        ORDER BY idx DESC "
-               + "    ) Tb "
-               + " ) "
-               + " WHERE rNum BETWEEN ? AND ?"; // 게시물 구간은 인파라미터로 조정
+	        query += "        ORDER BY idx DESC "
+	               + "    ) Tb "
+	               + " ) "
+	               + " WHERE rNum BETWEEN ? AND ?"; // 게시물 구간은 인파라미터로
 
         try {
             psmt = con.prepareStatement(query); // 동적 쿼리문 생성
@@ -57,8 +60,7 @@ public class MVCBoardDAO extends DBConnPool {
             psmt.setString(2, map.get("end").toString());
             rs = psmt.executeQuery();
             
-            // 반환된 게시물 목록을 List 컬렉션에 추가
-            // 게시물들이 rs이 담겨 있고 rs의 모든 내용들이 dto에 담길때 까지 반복한다.
+            // 게시물 목록 내용하나씩 꺼내서 dto에 담는다.
             while (rs.next()) {
                 MVCBoardDTO dto = new MVCBoardDTO();
                 
@@ -73,26 +75,26 @@ public class MVCBoardDAO extends DBConnPool {
                 dto.setPass(rs.getString(9));
                 dto.setVisitcount(rs.getInt(10));
 
-                board.add(dto);
+                board.add(dto); // 반환된 게시물 목록을 List 컬렉션에 추가
             }
         }
         catch (Exception e) {
-            System.out.println("게시물 조회 중 예외 발생");
+            System.out.println("게시물 목록 반환중 예외발생");
             e.printStackTrace();
         }
         return board; // 목록반환
     }
 
-    // 寃뚯떆湲� �뜲�씠�꽣瑜� 諛쏆븘 DB�뿉 異붽��빀�땲�떎(�뙆�씪 �뾽濡쒕뱶 吏��썝).
+    // 게시글 데이터를 받아 DB에 추가합니다.(파일 업로드 지원).
     public int insertWrite(MVCBoardDTO dto) {
         int result = 0;
         try {
             String query = "INSERT INTO mvcboard ( "
                          + " idx, name, title, content, ofile, sfile, pass) "
                          + " VALUES ( "
-                         + " seq_board_num.NEXTVAL,?,?,?,?,?,?)";
+                         + " seq_board_num.NEXTVAL,?,?,?,?,?,?)"; // 인파라미터 설정
             psmt = con.prepareStatement(query);
-            psmt.setString(1, dto.getName());
+            psmt.setString(1, dto.getName());  // 첫번째 인파라미터
             psmt.setString(2, dto.getTitle());
             psmt.setString(3, dto.getContent());
             psmt.setString(4, dto.getOfile());
@@ -101,22 +103,22 @@ public class MVCBoardDAO extends DBConnPool {
             result = psmt.executeUpdate();
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� �엯�젰 以� �삁�쇅 諛쒖깮");
+            System.out.println("게시물 입력중 예외 발생");
             e.printStackTrace();
         }
         return result;
     }
 
-    // 二쇱뼱吏� �씪�젴踰덊샇�뿉 �빐�떦�븯�뒗 寃뚯떆臾쇱쓣 DTO�뿉 �떞�븘 諛섑솚�빀�땲�떎.
+    // 雅뚯눘堉깍쭪占� 占쎌뵬占쎌졃甕곕뜇�깈占쎈퓠 占쎈퉸占쎈뼣占쎈릭占쎈뮉 野껊슣�뻻�눧�눘�뱽 DTO占쎈퓠 占쎈뼖占쎈툡 獄쏆꼹�넎占쎈�占쎈빍占쎈뼄.
     public MVCBoardDTO selectView(String idx) {
-        MVCBoardDTO dto = new MVCBoardDTO();  // DTO 媛앹껜 �깮�꽦
-        String query = "SELECT * FROM mvcboard WHERE idx=?";  // 荑쇰━臾� �뀥�뵆由� 以�鍮�
+        MVCBoardDTO dto = new MVCBoardDTO();  // DTO 揶쏆빘猿� 占쎄문占쎄쉐
+        String query = "SELECT * FROM mvcboard WHERE idx=?";  // �뜎�눖�봺�눧占� 占쎈�ο옙逾녺뵳占� 餓ο옙�뜮占�
         try {
-            psmt = con.prepareStatement(query);  // 荑쇰━臾� 以�鍮�
-            psmt.setString(1, idx);  // �씤�뙆�씪誘명꽣 �꽕�젙
-            rs = psmt.executeQuery();  // 荑쇰━臾� �떎�뻾
+            psmt = con.prepareStatement(query);  // �뜎�눖�봺�눧占� 餓ο옙�뜮占�
+            psmt.setString(1, idx);  // 占쎌뵥占쎈솁占쎌뵬沃섎챸苑� 占쎄퐬占쎌젟
+            rs = psmt.executeQuery();  // �뜎�눖�봺�눧占� 占쎈뼄占쎈뻬
 
-            if (rs.next()) {  // 寃곌낵瑜� DTO 媛앹껜�뿉 ���옣
+            if (rs.next()) {  // 野껉퀗�궢�몴占� DTO 揶쏆빘猿쒙옙肉� 占쏙옙占쎌삢
                 dto.setIdx(rs.getString(1));
                 dto.setName(rs.getString(2));
                 dto.setTitle(rs.getString(3));
@@ -130,13 +132,13 @@ public class MVCBoardDAO extends DBConnPool {
             }
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� �긽�꽭蹂닿린 以� �삁�쇅 諛쒖깮");
+            System.out.println("野껊슣�뻻�눧占� 占쎄맒占쎄쉭癰귣떯由� 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
             e.printStackTrace();
         }
-        return dto;  // 寃곌낵 諛섑솚
+        return dto;  // 野껉퀗�궢 獄쏆꼹�넎
     }
 
-    // 二쇱뼱吏� �씪�젴踰덊샇�뿉 �빐�떦�븯�뒗 寃뚯떆臾쇱쓽 議고쉶�닔瑜� 1 利앷��떆�궢�땲�떎.
+    // 雅뚯눘堉깍쭪占� 占쎌뵬占쎌졃甕곕뜇�깈占쎈퓠 占쎈퉸占쎈뼣占쎈릭占쎈뮉 野껊슣�뻻�눧�눘�벥 鈺곌퀬�돳占쎈땾�몴占� 1 筌앹빓占쏙옙�뻻占쎄땁占쎈빍占쎈뼄.
     public void updateVisitCount(String idx) {
         String query = "UPDATE mvcboard SET "
                      + " visitcount=visitcount+1 "
@@ -147,12 +149,12 @@ public class MVCBoardDAO extends DBConnPool {
             psmt.executeQuery();
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� 議고쉶�닔 利앷� 以� �삁�쇅 諛쒖깮");
+            System.out.println("野껊슣�뻻�눧占� 鈺곌퀬�돳占쎈땾 筌앹빓占� 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
             e.printStackTrace();
         }
     }
 
-    // �떎�슫濡쒕뱶 �슏�닔瑜� 1 利앷��떆�궢�땲�떎.
+    // 占쎈뼄占쎌뒲嚥≪뮆諭� 占쎌뒒占쎈땾�몴占� 1 筌앹빓占쏙옙�뻻占쎄땁占쎈빍占쎈뼄.
     public void downCountPlus(String idx) {
         String sql = "UPDATE mvcboard SET "
                 + " downcount=downcount+1 "
@@ -164,7 +166,7 @@ public class MVCBoardDAO extends DBConnPool {
         }
         catch (Exception e) {}
     }
-    // �엯�젰�븳 鍮꾨�踰덊샇媛� 吏��젙�븳 �씪�젴踰덊샇�쓽 寃뚯떆臾쇱쓽 鍮꾨�踰덊샇�� �씪移섑븯�뒗吏� �솗�씤�빀�땲�떎.
+    // 占쎌뿯占쎌젾占쎈립 �뜮袁⑨옙甕곕뜇�깈揶쏉옙 筌욑옙占쎌젟占쎈립 占쎌뵬占쎌졃甕곕뜇�깈占쎌벥 野껊슣�뻻�눧�눘�벥 �뜮袁⑨옙甕곕뜇�깈占쏙옙 占쎌뵬燁살꼹釉�占쎈뮉筌욑옙 占쎌넇占쎌뵥占쎈�占쎈빍占쎈뼄.
     public boolean confirmPassword(String pass, String idx) {
         boolean isCorr = true;
         try {
@@ -185,7 +187,7 @@ public class MVCBoardDAO extends DBConnPool {
         return isCorr;
     }
 
-    // 吏��젙�븳 �씪�젴踰덊샇�쓽 寃뚯떆臾쇱쓣 �궘�젣�빀�땲�떎.
+    // 筌욑옙占쎌젟占쎈립 占쎌뵬占쎌졃甕곕뜇�깈占쎌벥 野껊슣�뻻�눧�눘�뱽 占쎄텣占쎌젫占쎈�占쎈빍占쎈뼄.
     public int deletePost(String idx) {
         int result = 0;
         try {
@@ -195,22 +197,22 @@ public class MVCBoardDAO extends DBConnPool {
             result = psmt.executeUpdate();
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� �궘�젣 以� �삁�쇅 諛쒖깮");
+            System.out.println("野껊슣�뻻�눧占� 占쎄텣占쎌젫 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
             e.printStackTrace();
         }
         return result;
     }
 
-    // 寃뚯떆湲� �뜲�씠�꽣瑜� 諛쏆븘 DB�뿉 ���옣�릺�뼱 �엳�뜕 �궡�슜�쓣 媛깆떊�빀�땲�떎(�뙆�씪 �뾽濡쒕뱶 吏��썝).
+    // 野껊슣�뻻疫뀐옙 占쎈쑓占쎌뵠占쎄숲�몴占� 獄쏆룇釉� DB占쎈퓠 占쏙옙占쎌삢占쎈┷占쎈선 占쎌뿳占쎈쐲 占쎄땀占쎌뒠占쎌뱽 揶쏄퉮�뻿占쎈�占쎈빍占쎈뼄(占쎈솁占쎌뵬 占쎈씜嚥≪뮆諭� 筌욑옙占쎌뜚).
     public int updatePost(MVCBoardDTO dto) {
         int result = 0;
         try {
-            // 荑쇰━臾� �뀥�뵆由� 以�鍮�
+            // �뜎�눖�봺�눧占� 占쎈�ο옙逾녺뵳占� 餓ο옙�뜮占�
             String query = "UPDATE mvcboard"
                          + " SET title=?, name=?, content=?, ofile=?, sfile=? "
                          + " WHERE idx=? and pass=?";
 
-            // 荑쇰━臾� 以�鍮�
+            // �뜎�눖�봺�눧占� 餓ο옙�뜮占�
             psmt = con.prepareStatement(query);
             psmt.setString(1, dto.getTitle());
             psmt.setString(2, dto.getName());
@@ -220,11 +222,11 @@ public class MVCBoardDAO extends DBConnPool {
             psmt.setString(6, dto.getIdx());
             psmt.setString(7, dto.getPass());
 
-            // 荑쇰━臾� �떎�뻾
+            // �뜎�눖�봺�눧占� 占쎈뼄占쎈뻬
             result = psmt.executeUpdate();
         }
         catch (Exception e) {
-            System.out.println("寃뚯떆臾� �닔�젙 以� �삁�쇅 諛쒖깮");
+            System.out.println("野껊슣�뻻�눧占� 占쎈땾占쎌젟 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
             e.printStackTrace();
         }
         return result;
