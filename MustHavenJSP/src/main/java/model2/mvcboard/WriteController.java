@@ -18,10 +18,11 @@ import utils.JSFunction;
 
 public class WriteController extends HttpServlet {
 	// 처음에 페이지 열때 요청 페이지
+	// /mvcboard/write.do로 요청 들어오면 처리해서 포워드
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/14MVCBoard/Write.jsp").forward(req, resp); // /mvcboard/write.do로 요청 들어오면 처리해서 포워드
+        req.getRequestDispatcher("/14MVCBoard/Write.jsp").forward(req, resp); 
     }
     
     // 요청한 페이지 /14MVCBoard/Write.jsp 를 열고 여기서 폼요청하면 post로 처리 

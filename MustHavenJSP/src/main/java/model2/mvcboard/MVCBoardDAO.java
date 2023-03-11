@@ -22,7 +22,7 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
                    + " LIKE '%" + map.get("searchWord") + "%'";
         }
         try {
-            stmt = con.createStatement();
+            stmt = con.createStatement(); // preparedStatement는 인파리미터 설정하고 dto를 리턴 시킬때. (?에 값 넣을때)
             rs = stmt.executeQuery(query);
             rs.next();
             totalCount = rs.getInt(1);
@@ -109,17 +109,17 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
         return result;
     }
 
-    // 雅뚯눘堉깍쭪占� 占쎌뵬占쎌졃甕곕뜇�깈占쎈퓠 占쎈퉸占쎈뼣占쎈릭占쎈뮉 野껊슣�뻻�눧�눘�뱽 DTO占쎈퓠 占쎈뼖占쎈툡 獄쏆꼹�넎占쎈�占쎈빍占쎈뼄.
+    // 주어진 일련번호에 해당하는 게시물을 DTO에 담아 반환합니다.
     public MVCBoardDTO selectView(String idx) {
-        MVCBoardDTO dto = new MVCBoardDTO();  // DTO 揶쏆빘猿� 占쎄문占쎄쉐
-        String query = "SELECT * FROM mvcboard WHERE idx=?";  // �뜎�눖�봺�눧占� 占쎈�ο옙逾녺뵳占� 餓ο옙�뜮占�
+        MVCBoardDTO dto = new MVCBoardDTO();  // DTO 객체 생성
+        String query = "SELECT * FROM mvcboard WHERE idx=?";  // 쿼리문 템플릿 준비, 인파라미터 필요
         try {
-            psmt = con.prepareStatement(query);  // �뜎�눖�봺�눧占� 餓ο옙�뜮占�
-            psmt.setString(1, idx);  // 占쎌뵥占쎈솁占쎌뵬沃섎챸苑� 占쎄퐬占쎌젟
-            rs = psmt.executeQuery();  // �뜎�눖�봺�눧占� 占쎈뼄占쎈뻬
+            psmt = con.prepareStatement(query);  // 쿼리문 준비
+            psmt.setString(1, idx);  // 인파라미터 설정
+            rs = psmt.executeQuery();  // 쿼리문 실행
 
-            if (rs.next()) {  // 野껉퀗�궢�몴占� DTO 揶쏆빘猿쒙옙肉� 占쏙옙占쎌삢
-                dto.setIdx(rs.getString(1));
+            if (rs.next()) {  // 결과를 DTO 객체에 저장
+                dto.setIdx(rs.getString(1));// 결과의 첫번째 컬럼이 Idx 저장
                 dto.setName(rs.getString(2));
                 dto.setTitle(rs.getString(3));
                 dto.setContent(rs.getString(4));
@@ -132,13 +132,13 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
             }
         }
         catch (Exception e) {
-            System.out.println("野껊슣�뻻�눧占� 占쎄맒占쎄쉭癰귣떯由� 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
+            System.out.println("게시물 상세보기 중 예외 발생");
             e.printStackTrace();
         }
-        return dto;  // 野껉퀗�궢 獄쏆꼹�넎
+        return dto;  // 결과 반환
     }
 
-    // 雅뚯눘堉깍쭪占� 占쎌뵬占쎌졃甕곕뜇�깈占쎈퓠 占쎈퉸占쎈뼣占쎈릭占쎈뮉 野껊슣�뻻�눧�눘�벥 鈺곌퀬�돳占쎈땾�몴占� 1 筌앹빓占쏙옙�뻻占쎄땁占쎈빍占쎈뼄.
+    // 주어진 일련번호에 해당하는 게시물의 조회수를 1 증가시킵니다.
     public void updateVisitCount(String idx) {
         String query = "UPDATE mvcboard SET "
                      + " visitcount=visitcount+1 "
@@ -149,7 +149,7 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
             psmt.executeQuery();
         }
         catch (Exception e) {
-            System.out.println("野껊슣�뻻�눧占� 鈺곌퀬�돳占쎈땾 筌앹빓占� 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
+            System.out.println("게시물 조회수 증가 중 예외 발생");
             e.printStackTrace();
         }
     }

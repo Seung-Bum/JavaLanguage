@@ -130,12 +130,12 @@
   </servlet-mapping>  
   
   <servlet>
-  	<servlet-name>MVCBoardWrite</servlet-name> <!-- 서블릿 이름 -->
-  	<servlet-class>mode12.mvcboard.WriteController</servlet-class>  <!--서블릿 클래스-->
+  	<servlet-name>MVCBoardWrite</servlet-name>
+  	<servlet-class>model2.mvcboard.WriteController</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>MVCBoardWrite</servlet-name> <!-- 서블릿 이름 -->
-  	<url-pattern>/mvcboard/write.do</url-pattern> <!-- 서블릿 요청명 -->
+  	<servlet-name>MVCBoardWrite</servlet-name>
+  	<url-pattern>/mvcboard/write.do</url-pattern>
   </servlet-mapping>
   
   <!-- 업로드할 파일의 제한 용량을 컨텍스트 초기화 매개변수로 추가, 1024 x 1000 즉 1MB로 설정 -->
