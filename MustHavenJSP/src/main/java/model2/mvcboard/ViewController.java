@@ -14,7 +14,7 @@ public class ViewController extends HttpServlet { // 게시물 제목에 걸린 링크를 �
         throws ServletException, IOException {
         // 게시물 불러오기
         MVCBoardDAO dao = new MVCBoardDAO();
-        String idx = req.getParameter("idx"); // 요청시 가져오는 값
+        String idx = req.getParameter("idx"); // 요청시 가져오는 값, get, 요청을 idx를 넣어서 했음
         dao.updateVisitCount(idx);  // 해당 게시물 조회수 1 증가
         MVCBoardDTO dto = dao.selectView(idx);
         dao.close();
