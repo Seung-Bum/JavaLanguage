@@ -28,16 +28,16 @@ public class FileUtil {
         }
     }
 
-    // 紐낆떆�븳 �뙆�씪�쓣 李얠븘 �떎�슫濡쒕뱶�빀�땲�떎.
+    // 명시한 파일을 찾아 다운로드합니다.
     public static void download(HttpServletRequest req, HttpServletResponse resp,
             String directory, String sfileName, String ofileName) {
-        String sDirectory = req.getServletContext().getRealPath(directory);
+        String sDirectory = req.getServletContext().getRealPath(directory); // 저장경로
         try {
-            // �뙆�씪�쓣 李얠븘 �엯�젰 �뒪�듃由� �깮�꽦
+            // 파일을 찾아 입력 스트림 생성
             File file = new File(sDirectory, sfileName);
             InputStream iStream = new FileInputStream(file);
 
-            // �븳湲� �뙆�씪紐� 源⑥쭚 諛⑹�
+            // 한글 파일명 깨짐 방지
             String client = req.getHeader("User-Agent");
             if (client.indexOf("WOW64") == -1) {
                 ofileName = new String(ofileName.getBytes("UTF-8"), "ISO-8859-1");
@@ -46,35 +46,35 @@ public class FileUtil {
                 ofileName = new String(ofileName.getBytes("KSC5601"), "ISO-8859-1");
             }
 
-            // �뙆�씪 �떎�슫濡쒕뱶�슜 �쓳�떟 �뿤�뜑 �꽕�젙
+            // 파일 다운로드용 응답 헤더 설정
             resp.reset();
             resp.setContentType("application/octet-stream");
             resp.setHeader("Content-Disposition",
                            "attachment; filename=\"" + ofileName + "\"");
             resp.setHeader("Content-Length", "" + file.length() );
 
-            //out.clear();  // 異쒕젰 �뒪�듃由� 珥덇린�솕
+            //out.clear();  // 출력 스트림 초기화
 
-            // response �궡�옣 媛앹껜濡쒕��꽣 �깉濡쒖슫 異쒕젰 �뒪�듃由� �깮�꽦
+            // response 내장 객체로부터 새로운 출력 스트림 생성
             OutputStream oStream = resp.getOutputStream();
 
-            // 異쒕젰 �뒪�듃由쇱뿉 �뙆�씪 �궡�슜 異쒕젰
-            byte b[] = new byte[(int)file.length()];
+            // 출력 스트림에 파일 내용 출력
+            byte b[] = new byte[(int)file.length()]; // 파일의 크기만큼 byte설정
             int readBuffer = 0;
             while ( (readBuffer = iStream.read(b)) > 0 ) {
                 oStream.write(b, 0, readBuffer);
             }
 
-            // �엯/異쒕젰 �뒪�듃由� �떕�쓬
+            // 입출력 스트림 닫음
             iStream.close();
             oStream.close();
         }
         catch (FileNotFoundException e) {
-            System.out.println("�뙆�씪�쓣 李얠쓣 �닔 �뾾�뒿�땲�떎.");
+            System.out.println("파일을 찾을 수 없습니다.");
             e.printStackTrace();
         }
         catch (Exception e) {
-            System.out.println("�삁�쇅媛� 諛쒖깮�븯���뒿�땲�떎.");
+            System.out.println("예외가 발생하였습니다.");
             e.printStackTrace();
         }
     }

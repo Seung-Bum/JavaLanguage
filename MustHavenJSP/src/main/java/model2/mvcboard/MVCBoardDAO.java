@@ -154,14 +154,14 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
         }
     }
 
-    // 占쎈뼄占쎌뒲嚥≪뮆諭� 占쎌뒒占쎈땾�몴占� 1 筌앹빓占쏙옙�뻻占쎄땁占쎈빍占쎈뼄.
+    // 다운로드 횟수를 1증가 시킵니다.
     public void downCountPlus(String idx) {
         String sql = "UPDATE mvcboard SET "
                 + " downcount=downcount+1 "
                 + " WHERE idx=? "; 
         try {
             psmt = con.prepareStatement(sql);
-            psmt.setString(1, idx);
+            psmt.setString(1, idx); // 인파라미터 설정
             psmt.executeUpdate();
         }
         catch (Exception e) {}
