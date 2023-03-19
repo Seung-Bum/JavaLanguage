@@ -166,7 +166,7 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
         }
         catch (Exception e) {}
     }
-    // 占쎌뿯占쎌젾占쎈립 �뜮袁⑨옙甕곕뜇�깈揶쏉옙 筌욑옙占쎌젟占쎈립 占쎌뵬占쎌졃甕곕뜇�깈占쎌벥 野껊슣�뻻�눧�눘�벥 �뜮袁⑨옙甕곕뜇�깈占쏙옙 占쎌뵬燁살꼹釉�占쎈뮉筌욑옙 占쎌넇占쎌뵥占쎈�占쎈빍占쎈뼄.
+    // 입력한 비밀번호가 지정한 일련번호의 게시물의 비밀번호와 일치하는지 확인합니다
     public boolean confirmPassword(String pass, String idx) {
         boolean isCorr = true;
         try {

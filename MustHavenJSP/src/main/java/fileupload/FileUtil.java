@@ -31,15 +31,15 @@ public class FileUtil {
     // 명시한 파일을 찾아 다운로드합니다.
     public static void download(HttpServletRequest req, HttpServletResponse resp,
             String directory, String sfileName, String ofileName) {
-        String sDirectory = req.getServletContext().getRealPath(directory); // 저장경로
+        String sDirectory = req.getServletContext().getRealPath(directory); // 디렉터리의 물리적 경로를 얻어오는 방법
         try {
             // 파일을 찾아 입력 스트림 생성
             File file = new File(sDirectory, sfileName);
             InputStream iStream = new FileInputStream(file);
 
             // 한글 파일명 깨짐 방지
-            String client = req.getHeader("User-Agent");
-            if (client.indexOf("WOW64") == -1) {
+            String client = req.getHeader("User-Agent"); // 클라이언트와 웹브라우저의 종류를 알아온다.
+            if (client.indexOf("WOW64") == -1) { // 인터넷 익스플로러 일때와 아닐때를 구분한다.
                 ofileName = new String(ofileName.getBytes("UTF-8"), "ISO-8859-1");
             }
             else {
