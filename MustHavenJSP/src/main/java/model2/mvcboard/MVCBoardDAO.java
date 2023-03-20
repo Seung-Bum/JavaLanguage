@@ -187,7 +187,7 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
         return isCorr;
     }
 
-    // 筌욑옙占쎌젟占쎈립 占쎌뵬占쎌졃甕곕뜇�깈占쎌벥 野껊슣�뻻�눧�눘�뱽 占쎄텣占쎌젫占쎈�占쎈빍占쎈뼄.
+    // 지정한 일련번호의 게시물을 삭제합니다.
     public int deletePost(String idx) {
         int result = 0;
         try {
@@ -197,7 +197,7 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
             result = psmt.executeUpdate();
         }
         catch (Exception e) {
-            System.out.println("野껊슣�뻻�눧占� 占쎄텣占쎌젫 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
+            System.out.println("게시물 삭제 중 예외 발생");
             e.printStackTrace();
         }
         return result;

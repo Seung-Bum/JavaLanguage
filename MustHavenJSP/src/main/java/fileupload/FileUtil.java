@@ -79,7 +79,7 @@ public class FileUtil {
         }
     }
 
-    // 吏��젙�븳 �쐞移섏쓽 �뙆�씪�쓣 �궘�젣�빀�땲�떎.
+    // 지정한 위치의 파일을 삭제합니다.
     public static void deleteFile(HttpServletRequest req,
             String directory, String filename) {
         String sDirectory = req.getServletContext().getRealPath(directory);
