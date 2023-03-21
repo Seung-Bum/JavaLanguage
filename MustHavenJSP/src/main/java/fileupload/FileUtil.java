@@ -82,9 +82,9 @@ public class FileUtil {
     // 지정한 위치의 파일을 삭제합니다.
     public static void deleteFile(HttpServletRequest req,
             String directory, String filename) {
-        String sDirectory = req.getServletContext().getRealPath(directory);
-        File file = new File(sDirectory + File.separator + filename);
-        if (file.exists()) {
+        String sDirectory = req.getServletContext().getRealPath(directory); // 파일이 정리된 물리적 경로
+        File file = new File(sDirectory + File.separator + filename); // 파일 객체 생성
+        if (file.exists()) { // 파일이 존재하는지 확인
             file.delete();
         }
     }

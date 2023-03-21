@@ -42,7 +42,7 @@ public class JSFunction {
                           + "    alert('" + msg + "');"
                           + "    location.href='" + url + "';" // 지정한 페이지로 이동
                           + "</script>";
-            writer.print(script);
+            writer.print(script);// HTML 페이지에 바로 쓰여짐
         }
         catch (Exception e) {}
     }

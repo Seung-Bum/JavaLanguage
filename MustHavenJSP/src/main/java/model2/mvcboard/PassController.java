@@ -24,36 +24,36 @@ public class PassController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // 留ㅺ컻蹂��닔 ���옣
+        // 매개변수 저장
         String idx = req.getParameter("idx");
         String mode = req.getParameter("mode");
         String pass = req.getParameter("pass");
 
-        // 鍮꾨�踰덊샇 �솗�씤
+        // 비밀번호 확인
         MVCBoardDAO dao = new MVCBoardDAO();
         boolean confirmed = dao.confirmPassword(pass, idx);
         dao.close();
 
-        if (confirmed) {  // 鍮꾨�踰덊샇 �씪移�
-            if (mode.equals("edit")) {  // �닔�젙 紐⑤뱶
+        if (confirmed) {  // 비밀번호 일치
+            if (mode.equals("edit")) {  // 수정모드일 경우
                 HttpSession session = req.getSession();
                 session.setAttribute("pass", pass);
-                resp.sendRedirect("../mvcboard/edit.do?idx=" + idx);
+                resp.sendRedirect("../mvcboard/edit.do?idx=" + idx); // 수정하기 페이지 이동
             }
-            else if (mode.equals("delete")) {  // �궘�젣 紐⑤뱶
+            else if (mode.equals("delete")) {  // 삭제모드일 경우
                 dao = new MVCBoardDAO();
                 MVCBoardDTO dto = dao.selectView(idx);
-                int result = dao.deletePost(idx);  // 寃뚯떆臾� �궘�젣
+                int result = dao.deletePost(idx);  // 게시물 삭제
                 dao.close();
-                if (result == 1) {  // 寃뚯떆臾� �궘�젣 �꽦怨� �떆 泥⑤��뙆�씪�룄 �궘�젣
+                if (result == 1) {  // 게시물 삭제 성공시 첨부파일도 삭제
                     String saveFileName = dto.getSfile();
-                    FileUtil.deleteFile(req, "/Uploads", saveFileName);
+                    FileUtil.deleteFile(req, "/Uploads", saveFileName); // 파일이 저장된 실제 경로 찾아서 삭제
                 }
-                JSFunction.alertLocation(resp, "�궘�젣�릺�뿀�뒿�땲�떎.", "../mvcboard/list.do");
+                JSFunction.alertLocation(resp, "삭제되었습니다.", "../mvcboard/list.do");
             }
         }
-        else {  // 鍮꾨�踰덊샇 遺덉씪移�
-            JSFunction.alertBack(resp, "鍮꾨�踰덊샇 寃�利앹뿉 �떎�뙣�뻽�뒿�땲�떎.");
+        else {  // 비밀번호 불일치
+            JSFunction.alertBack(resp, "비밀번호 검증에 실패했습니다.");
         }
     }
 }
