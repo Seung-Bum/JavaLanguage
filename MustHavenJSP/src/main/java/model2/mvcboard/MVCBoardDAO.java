@@ -203,30 +203,30 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
         return result;
     }
 
-    // 野껊슣�뻻疫뀐옙 占쎈쑓占쎌뵠占쎄숲�몴占� 獄쏆룇釉� DB占쎈퓠 占쏙옙占쎌삢占쎈┷占쎈선 占쎌뿳占쎈쐲 占쎄땀占쎌뒠占쎌뱽 揶쏄퉮�뻿占쎈�占쎈빍占쎈뼄(占쎈솁占쎌뵬 占쎈씜嚥≪뮆諭� 筌욑옙占쎌뜚).
+    // 게시글 데이터를 받아 DB에 저장되어 있던 내용을 갱신합니다.(파일 업로드 지원)
     public int updatePost(MVCBoardDTO dto) {
         int result = 0;
         try {
-            // �뜎�눖�봺�눧占� 占쎈�ο옙逾녺뵳占� 餓ο옙�뜮占�
+            // 쿼리문 템플릿 준비 (일련번호와 패스워드가 모두 일치해야 수정)
             String query = "UPDATE mvcboard"
                          + " SET title=?, name=?, content=?, ofile=?, sfile=? "
                          + " WHERE idx=? and pass=?";
 
-            // �뜎�눖�봺�눧占� 餓ο옙�뜮占�
+            // 쿼리문 준비
             psmt = con.prepareStatement(query);
             psmt.setString(1, dto.getTitle());
             psmt.setString(2, dto.getName());
             psmt.setString(3, dto.getContent());
             psmt.setString(4, dto.getOfile());
             psmt.setString(5, dto.getSfile());
-            psmt.setString(6, dto.getIdx());
-            psmt.setString(7, dto.getPass());
+            psmt.setString(6, dto.getIdx()); // 일련번호
+            psmt.setString(7, dto.getPass()); // 패스워드
 
-            // �뜎�눖�봺�눧占� 占쎈뼄占쎈뻬
+            // 쿼리문실행
             result = psmt.executeUpdate();
         }
         catch (Exception e) {
-            System.out.println("野껊슣�뻻�눧占� 占쎈땾占쎌젟 餓ο옙 占쎌굙占쎌뇚 獄쏆뮇源�");
+            System.out.println("게시물 수정중 예외 발생");
             e.printStackTrace();
         }
         return result;

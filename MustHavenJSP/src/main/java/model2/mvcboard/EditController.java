@@ -33,20 +33,20 @@ public class EditController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-        // 1. 파일 업로드 처리 =============================
+        // 1. 파일업로드처리 =============================
         // 업로드 디렉터리의 물리적 경로 확인
         String saveDirectory = req.getServletContext().getRealPath("/Uploads");
 
         // 초기화 매개변수로 설정한 첨부 파일 최대 용량 확인
         ServletContext application = this.getServletContext();
-        int maxPostSize = Integer.parseInt(application.getInitParameter("maxPostSize"));
+        int maxPostSize = Integer.parseInt(application.getInitParameter("maxPostSize")); // web.xml에 적어 놓은것
 
         // 파일 업로드
         MultipartRequest mr = FileUtil.uploadFile(req, saveDirectory, maxPostSize);
 
         if (mr == null) {
             // 파일 업로드 실패
-            JSFunction.alertBack(resp, "첨부 파일이 제한 용량을 초과합니다.");
+            JSFunction.alertBack(resp, "첨부 파일이 제한 용량을 초과 합니다.");
             return;
         }
 
@@ -76,7 +76,7 @@ public class EditController extends HttpServlet {
         String fileName = mr.getFilesystemName("ofile");
         if (fileName != null) {
             // 첨부 파일이 있을 경우 파일명 변경
-            // 새로운 파일명 생성
+            // 새로운 파일명 변경
             String now = new SimpleDateFormat("yyyyMMdd_HmsS").format(new Date());
             String ext = fileName.substring(fileName.lastIndexOf("."));
             String newFileName = now + ext;
@@ -90,7 +90,7 @@ public class EditController extends HttpServlet {
             dto.setOfile(fileName);  // 원래 파일 이름
             dto.setSfile(newFileName);  // 서버에 저장된 파일 이름
 
-            // 기존 파일 삭제
+            // 기존파일 삭제
             FileUtil.deleteFile(req, "/Uploads", prevSfile);
         }
         else {
@@ -110,7 +110,7 @@ public class EditController extends HttpServlet {
             resp.sendRedirect("../mvcboard/view.do?idx=" + idx);
         }
         else {  // 수정 실패
-            JSFunction.alertLocation(resp, "비밀번호 검증을 다시 진행해주세요.",
+            JSFunction.alertLocation(resp, "비밀번호 검증을 다시 진행해주세요",
                 "../mvcboard/view.do?idx=" + idx);
         }
     }

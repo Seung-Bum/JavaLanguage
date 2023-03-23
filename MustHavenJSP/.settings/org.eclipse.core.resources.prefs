@@ -7,6 +7,7 @@ encoding//src/main/java/fileupload/MyfileDAO.java=UTF-8
 encoding//src/main/java/fileupload/MyfileDTO.java=UTF-8
 encoding//src/main/java/model1/board/BoardDAO.java=UTF-8
 encoding//src/main/java/model2/mvcboard/DownloadController.java=UTF-8
+encoding//src/main/java/model2/mvcboard/EditController.java=UTF-8
 encoding//src/main/java/model2/mvcboard/ListController.java=UTF-8
 encoding//src/main/java/model2/mvcboard/MVCBoardDAO.java=UTF-8
 encoding//src/main/java/model2/mvcboard/PassController.java=UTF-8
