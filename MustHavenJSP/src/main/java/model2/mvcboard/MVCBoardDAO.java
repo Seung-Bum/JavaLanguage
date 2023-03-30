@@ -4,17 +4,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import common.DBConnPool;
+import org.apache.log4j.Logger;
 
 public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
     public MVCBoardDAO() { 	
         super();
     }
-
+    
+	static Logger logger = Logger.getLogger("model2.mvcboard.MVCBoardDAO");
+	
     // 검색 조건에 맞는 게시물의 개수를 반환합니다.
     public int selectCount(Map<String, Object> map) {
 
         int totalCount = 0;
         String query = "SELECT COUNT(*) FROM mvcboard";
+        
+        logger.debug("searchWord : " + (Throwable) map.get("searchWord"));
         
         // 검색 조건이 있다면 where 절로 추가
         if (map.get("searchWord") != null) {
@@ -76,12 +81,14 @@ public class MVCBoardDAO extends DBConnPool {// 커넥션풀 상속
                 dto.setVisitcount(rs.getInt(10));
 
                 board.add(dto); // 반환된 게시물 목록을 List 컬렉션에 추가
+               
             }
         }
         catch (Exception e) {
             System.out.println("게시물 목록 반환중 예외발생");
             e.printStackTrace();
         }
+        
         return board; // 목록반환
     }
 
