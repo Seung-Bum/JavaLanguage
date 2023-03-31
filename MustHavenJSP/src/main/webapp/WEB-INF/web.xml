@@ -143,4 +143,10 @@
   	<param-name>maxPostSize</param-name>
   	<param-value>1024000</param-value>
   </context-param>
+  
+  <!-- 채팅 서버에 접속하기 위한 요청명을 web.xml에 컨텍스트 초기화 매개변수로 지정 -->
+  <context-param>
+  	<param-name>CHAT_ADDR</param-name>
+  	<param-value>ws://localhost:8081/MustHavenJSP</param-value>
+  </context-param>
 </web-app>
