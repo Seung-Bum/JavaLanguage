@@ -27,9 +27,9 @@ public class ChatServer {
         System.out.println("웹소켓 연결" + session.getId());
     }
 
-    @OnMessage  // 메시지를 받으면 실행
+    @OnMessage  // 클라이언트가 보낸 메시지를 서버가 받으면 실행
     public void onMessage(String message, Session session) throws IOException {
-        System.out.println("메시지 전송 : " + session.getId() + ":" + message);
+        System.out.println("메시지 전송 : SessionID " + session.getId() + "/ Msg :" + message);
         synchronized (clients) {
             for (Session client : clients) {  // 모든 클라이언트에 메시지 전달
                 if (!client.equals(session)) {  // 단, 메시지를 보낸 클라이언트는 제외하고 전달 (session이 보낸 클라이언트)
