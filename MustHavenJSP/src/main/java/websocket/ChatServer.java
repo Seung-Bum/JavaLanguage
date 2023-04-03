@@ -24,7 +24,7 @@ public class ChatServer {
     @OnOpen  // 클라이언트 접속시 실행
     public void onOpen(Session session) {
         clients.add(session);  // 세션추가
-        System.out.println("웹소켓 연결" + session.getId());
+        System.out.println("웹소켓 연결" + "sessionID : " + session.getId());
     }
 
     @OnMessage  // 클라이언트가 보낸 메시지를 서버가 받으면 실행
@@ -42,7 +42,7 @@ public class ChatServer {
     @OnClose  // 클라이언트와의 연결이 끊기면 실행
     public void onClose(Session session) {
         clients.remove(session); 
-        System.out.println("웹소켓 종료 : " + session.getId());
+        System.out.println("웹소켓 종료 : " +  "sessionID : " + session.getId());
     }
 
     @OnError  // 에러 발생 시 실행

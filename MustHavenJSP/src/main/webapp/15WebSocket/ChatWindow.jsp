@@ -6,6 +6,8 @@
 <script>
 var webSocket
     = new WebSocket("<%= application.getInitParameter("CHAT_ADDR") %>/ChatingServer");
+    <!-- ws://localhost:8081/MustHavenJSP/ChatingServer -->
+    
 var chatWindow, chatMessage, chatId;
 
 // 채팅창이 열리면 대화창, 메시지 입력창, 대화명 표시란으로 사용할 DOM 객체 저장
@@ -59,9 +61,10 @@ webSocket.onmessage = function(event) {
     var content = message[1];  // 메시지 내용
     if (content != "") {
         if (content.match("/")) {  // 귓속말
-            if (content.match(("/" + chatId))) {  // 나에게 보낸 메시지만 출력
-                var temp = content.replace(("/" + chatId), "[귓속말] : ");
-                chatWindow.innerHTML += "<div>" + sender + "" + temp + "</div>";
+            if (content.match(("/" + chatId))) {  // 나에게 보낸 메시지인지 확인
+            	// 귓속말 명령어 부분을 [귓속말] : 문자열로 대체 후 채팅방에 출력
+                var temp = content.replace(("/" + chatId), "[귓속말] : "); 
+                chatWindow.innerHTML += "<div>" + sender + "님의 " + temp + "</div>";
             }
         }
         else {  // 일반 대화
