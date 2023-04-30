@@ -6,7 +6,7 @@ public class Board {
 	private String content;
 	private int viewCount;
 	private java.sql.Date createdDate;
-	//Member writer;
+	private Member writer;
 	
 	public int getNo() {
 		return no;

@@ -23,8 +23,7 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 
 	@Override
 	public List<Board> list() {
-		// TODO Auto-generated method stub
-		return null;
+		return boardDao.findAll();
 	}
 
 	@Override
