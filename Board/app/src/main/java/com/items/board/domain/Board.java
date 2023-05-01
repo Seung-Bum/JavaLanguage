@@ -1,11 +1,13 @@
 package com.items.board.domain;
 
+import java.util.Date;
+
 public class Board {
 	private int no;
 	private String title;
 	private String content;
 	private int viewCount;
-	private java.sql.Date createdDate;
+	private Date createdDate;
 	private Member writer;
 	
 	public int getNo() {
@@ -32,10 +34,16 @@ public class Board {
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
 	}
-	public java.sql.Date getCreatedDate() {
+	public Date getCreatedDate() {
 		return createdDate;
 	}
-	public void setCreatedDate(java.sql.Date createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+	public Member getWriter() {
+		return writer;
+	}
+	public void setWriter(Member writer) {
+		this.writer = writer;
 	}
 }

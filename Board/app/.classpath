@@ -48,6 +48,11 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-starter/2.1.4/1ad97a0fb96ec3630e598e5aaae2dbd2fd29fdb0/mybatis-spring-boot-starter-2.1.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-jdbc/2.6.0/3690d6c8316301048dee69903b5f29bb5dabc2c7/spring-boot-starter-jdbc-2.6.0-sources.jar" kind="lib" path="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-jdbc/2.6.0/4281c2237b3fafef40c94cef29623e920b633ab9/spring-boot-starter-jdbc-2.6.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
@@ -139,6 +144,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/5.3.13/ff66c6fb114706da818842aeedee9924ad0c7640/spring-jdbc-5.3.13-sources.jar" kind="lib" path="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/5.3.13/70d775617131bfd87370f590c94c55319f7964ff/spring-jdbc-5.3.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-autoconfigure/2.1.4/568483dc56567f27ee5ec9cd29de07df4c3e74d/mybatis-spring-boot-autoconfigure-2.1.4-sources.jar" kind="lib" path="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.mybatis.spring.boot/mybatis-spring-boot-autoconfigure/2.1.4/190f1630d0f7dee0dfecbacf7216b2b60391c046/mybatis-spring-boot-autoconfigure-2.1.4.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
