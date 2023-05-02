@@ -1,4 +1,4 @@
-package com.items.board.controller;
+package com.items.controller;
 
 public class ResultMap {
 	  public static final String SUCCESS = "success";

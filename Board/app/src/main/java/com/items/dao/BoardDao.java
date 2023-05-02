@@ -1,10 +1,10 @@
-package com.items.board.dao;
+package com.items.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.items.board.domain.Board;
+import com.items.domain.Board;
 
 
 // => Mybatis에서 DAO 구현체를 자동으로 생성한다.

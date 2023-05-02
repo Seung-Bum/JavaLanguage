@@ -1,8 +1,8 @@
-package com.items.board.service;
+package com.items.service;
 
 import java.util.List;
 
-import com.items.board.domain.Board;
+import com.items.domain.Board;
 
 public interface BoardService {
 	

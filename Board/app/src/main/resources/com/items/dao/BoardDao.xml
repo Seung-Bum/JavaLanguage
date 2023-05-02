@@ -6,23 +6,21 @@
 <!-- 
   namespace => 인터페이스의 패키지 및 이름과 일치해야 한다.
  -->
-<mapper namespace="com.items.board.dao.BoardDao">
+<mapper namespace="com.items.dao.BoardDao">
 
   <!-- 테이블의 컬럼과 객체 필드를 연결한다. -->
-  <resultMap type="board" id="boardMap">
-  
+  <!-- application.properties에서 경로설정이 되어있기 때문에 Board라고만 적어도된다. -->
+  <resultMap type="Board" id="boardMap">
     <id column="no" property="no"/>
     <result column="title" property="title"/>
     <result column="content" property="content"/>
     <result column="created_date" property="createdDate"/>
     <result column="viewcount" property="viewCount"/>
-    
     <association property="writer" javaType="member">
       <id column="no" property="no"/>
       <result column="name" property="name"/>
       <result column="email" property="email"/>
     </association>
-    
   </resultMap>
 
   <!-- 
@@ -32,15 +30,15 @@
 	SELECT  
 	  b.no,
 	  b.title,
-	  b.create_date,
+	  b.create_Date,
 	  b.viewCount,
 	  m.no,
 	  m.name,
 	  m.email
 	FROM
-	  board b JOIN member m ON b.writer = m.email
-	ORDER BY  
-	  b.no DESC;
+	  user2.board b JOIN user2.member m ON b.writer = m.email
+	ORDER BY
+	  b.no DESC
   </select>
  
  </mapper>

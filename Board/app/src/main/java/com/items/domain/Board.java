@@ -1,4 +1,4 @@
-package com.items.board.domain;
+package com.items.domain;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ public class Board {
 	private String title;
 	private String content;
 	private int viewCount;
-	private Date createdDate;
+	private java.sql.Date createdDate;
 	private Member writer;
 	
 	public int getNo() {
@@ -37,7 +37,7 @@ public class Board {
 	public Date getCreatedDate() {
 		return createdDate;
 	}
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(java.sql.Date createdDate) {
 		this.createdDate = createdDate;
 	}
 	public Member getWriter() {

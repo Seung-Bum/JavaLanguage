@@ -1,4 +1,4 @@
-package com.items.board.controller;
+package com.items.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.items.board.service.BoardService;
+import com.items.service.BoardService;
 
 @RestController
 public class BoardController {

@@ -1,4 +1,4 @@
-package com.items.board.domain;
+package com.items.domain;
 
 import java.sql.Date;
 
@@ -7,7 +7,7 @@ public class Member {
 	private String name;
 	private String email;
 	private String password;
-	private Date registDate;
+	private java.sql.Date registDate;
 	  
 	public int getNo() {
 		return no;
@@ -33,10 +33,10 @@ public class Member {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Date getRegistDate() {
+	public java.sql.Date getRegistDate() {
 		return registDate;
 	}
-	public void setRegistDate(Date registDate) {
+	public void setRegistDate(java.sql.Date registDate) {
 		this.registDate = registDate;
 	}
 	  
