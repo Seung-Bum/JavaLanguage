@@ -1,6 +1,7 @@
 package com.items.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,7 +19,7 @@ public interface BoardDao {
 
   //int countAll();
 
-  List<Board> findAll();
+  List<Map<String, Object>> findAll();
 
   //int insert(Board board);
 

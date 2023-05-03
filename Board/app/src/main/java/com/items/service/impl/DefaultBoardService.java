@@ -1,9 +1,11 @@
 package com.items.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 //import org.springframework.transaction.annotation.Transactional;
 import com.items.dao.BoardDao;
 import com.items.domain.Board;
@@ -16,7 +18,8 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 	BoardDao boardDao;
 	
 	@Override
-	public List<Board> list() {
-		return boardDao.findAll();
+	public List<Map<String, Object>> list() {
+		List<Map<String, Object>> result = boardDao.findAll();
+		return result;
 	}
 }
