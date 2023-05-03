@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h2>th map</h2>
+<div>
+    <p>
+        <span>userA</span>
+        <span th:text="${score['userA']}"></span>
+    </p>
+    <hr>
+    <p th:each="entry : ${score}">
+        <span th:text="${entry.key}"></span>
+        <span th:text="${entry.value}"></span>
+    </p>
+    
+    <tr th:each="product : ${productList}">
+		<td th:text="${product.seq}"></td>
+		<td th:text="${product.name}"></td>
+		<td th:text="${product.price}"></td>
+		<td th:text="${product.quantity}"></td>
+	</tr>
+</div>
+</body>
+</html>
