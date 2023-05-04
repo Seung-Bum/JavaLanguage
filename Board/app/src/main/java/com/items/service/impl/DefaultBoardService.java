@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 //import org.springframework.transaction.annotation.Transactional;
 import com.items.dao.BoardDao;
-import com.items.domain.Board;
 import com.items.service.BoardService;
 
 @Service
@@ -18,8 +17,8 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 	BoardDao boardDao;
 	
 	@Override
-	public List<Map<String, Object>> list() {
-		List<Map<String, Object>> result = boardDao.findAll();
-		return result;
+	public List<Map<String,Object>> list() {
+		List<Map<String, Object>> boardList = boardDao.findAll();		
+		return boardList;
 	}
 }

@@ -1,5 +1,8 @@
 package com.items.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,13 @@ public class BoardController {
 	
 	@Autowired
 	BoardService boardService;
-	
+		
 	@GetMapping("/list")
-	public String list(Model model) {		
+	public String list(Model model) {
+		
+		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List template에 넘김		
 		log.info("게시물 목록 조회");
-		//MailUtil mailUtil = new MailUtil();
-		//mailUtil.getTemplateToHtml("mainboard", boardService.list());
-		//boardService.list();
-		model.addAttribute("boardList", boardService.list());
+		
 		return "mainboard";
 	}
 }
