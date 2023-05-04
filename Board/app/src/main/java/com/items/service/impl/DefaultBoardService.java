@@ -18,7 +18,7 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 	
 	@Override
 	public List<Map<String,Object>> list() {
-		List<Map<String, Object>> boardList = boardDao.findAll();		
+		List<Map<String, Object>> boardList = boardDao.findAll();
 		return boardList;
 	}
 }

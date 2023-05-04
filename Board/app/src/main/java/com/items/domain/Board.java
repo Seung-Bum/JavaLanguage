@@ -37,7 +37,6 @@ public class Board {
 		this.viewCount = viewCount;
 	}
 	public java.sql.Timestamp getCreatedDate() {
-		System.out.println(createdDate);
 		return createdDate;
 	}
 	public void setCreatedDate(java.sql.Timestamp createdDate) {
