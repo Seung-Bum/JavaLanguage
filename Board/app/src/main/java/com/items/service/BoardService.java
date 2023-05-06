@@ -13,7 +13,7 @@ public interface BoardService {
 	
 	List<Map<String,Object>> list(); // Board를 담는 List
 	
-	//Board get(int no); // index에 해당하는 Board를 가져옴
+	Object findByNo(int no); // index에 해당하는 Board를 가져옴	
 	
 	//int update(Board board); // board를 받아서 board를 업데이트한다.
 	

@@ -14,7 +14,7 @@
     <id column="no" property="no"/>
     <result column="title" property="title"/>
     <result column="content" property="content"/>
-    <result column="created_date" property="createdDate"/>
+    <result column="create_date" property="createDate"/>
     <result column="viewcount" property="viewCount"/>
     <association property="writer" javaType="member">
       <id column="no" property="no"/>
@@ -38,6 +38,25 @@
 	FROM
 	  user2.board b JOIN user2.member m ON b.writer = m.email
 	ORDER BY
+	  b.no DESC
+  </select>
+  
+  <select id="findByNo" resultMap="boardMap" parameterType="int">
+	 SELECT  
+	  b.no,
+	  b.title,
+	  b.create_Date,
+	  b.viewCount,
+	  b.CONTENT,
+	  b.VIEWCOUNT,
+	  b.PHOTO_IMAGE,
+	  m.no,
+	  m.name,
+	  m.email
+	FROM  
+	  user2.board b JOIN user2.member m ON b.writer = m.email
+	WHERE b.NO = #{no}
+	ORDER BY  
 	  b.no DESC
   </select>
  

@@ -1,15 +1,12 @@
 package com.items.domain;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 public class Board {
 	private int no;
 	private String title;
 	private String content;
 	private int viewCount;
-	private java.sql.Timestamp createdDate;
+	private String photoImage;
+	private String createDate;
 	private Member writer;
 	
 	public int getNo() {
@@ -36,16 +33,22 @@ public class Board {
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
 	}
-	public java.sql.Timestamp getCreatedDate() {
-		return createdDate;
+	public String getCreateDate() {
+		return createDate;
 	}
-	public void setCreatedDate(java.sql.Timestamp createdDate) {
-		this.createdDate = createdDate;
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
 	public Member getWriter() {
 		return writer;
 	}
 	public void setWriter(Member writer) {
 		this.writer = writer;
+	}
+	public String getPhotoImage() {
+		return photoImage;
+	}
+	public void setPhotoImage(String photoImage) {
+		this.photoImage = photoImage;
 	}
 }

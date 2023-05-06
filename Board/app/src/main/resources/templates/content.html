@@ -253,10 +253,10 @@
 
 <header class="top-menu con row">
     <div class="cell-right">
-        <a href="#">로그인</a>
-        <a href="#">회원가입</a>
-        <a href="#">글 목록</a>
-        <a href="#">글 작성</a>
+        <a href="#">Login</a>
+        <a href="#">SignUp</a>
+        <a href="#">List</a>
+        <a href="#">Writing</a>
     </div>
 </header>
 
@@ -325,11 +325,11 @@
         </table>
     </section>
 -->
-    <h1 class="con">게시글 상세</h1>
+    <h1 class="con">Content</h1> 
     <section class="article-detail table-common con row">
         <div class="article-writer cell">
-                <div class="writer-icon">이미지</div>
-                <span>작성자</span>
+                <div class="writer-icon"><img id="imgId" th:src="@{C:/app/} + ${boardContent.photoImge}" th:if="${boardContent.photoImage != null}" /></div>                
+                <span th:text="${boardContent.writer.name}"></span>
         </div>
         <table class="cell" border="1">
             <colgroup>
@@ -338,16 +338,16 @@
             <tbody>
                 <tr class="article-title">
                     <th>[번호]제목</th>
-                    <td colspan="3">내용2_2</td>
+                    <td colspan="3" th:text="${boardContent.title}"></td>
                 </tr>
                 <tr class="article-info">
                     <th>날짜</th>
-                    <td>내용3_2</td>
+                    <td th:text="${boardContent.createDate}"></td>
                     <th>조회수</th>
-                    <td>내용4_2</td>
+                    <td th:text="${boardContent.viewCount}"></td>
                 </tr>
                 <tr class="article-body">
-                    <td colspan="4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt deleniti repellat aliquam quis labore est error iste obcaecati laborum illo? Distinctio dolorem quis at assumenda! Perferendis, libero earum! Ducimus, ratione!</td>
+                    <td colspan="4" th:text="${boardContent.content}"></td>
                 </tr>
             </tbody>
         </table>
