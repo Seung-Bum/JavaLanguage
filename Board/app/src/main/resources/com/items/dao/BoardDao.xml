@@ -16,6 +16,7 @@
     <result column="content" property="content"/>
     <result column="create_date" property="createDate"/>
     <result column="viewcount" property="viewCount"/>
+    <result column="PHOTO_IMAGE" property="photoImage"/>
     <association property="writer" javaType="member">
       <id column="no" property="no"/>
       <result column="name" property="name"/>
@@ -59,5 +60,9 @@
 	ORDER BY  
 	  b.no DESC
   </select>
- 
+  
+  <update id="increaseViewCount" parameterType="int">
+ 	UPDATE user2.board SET VIEWCOUNT = VIEWCOUNT + 1 WHERE NO=#{no}
+  </update>
+  
  </mapper>

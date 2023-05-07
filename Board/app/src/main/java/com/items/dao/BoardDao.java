@@ -31,5 +31,5 @@ public interface BoardDao {
 
   //int delete(Board board);
 
-  //int increaseViewCount(int no);
+  int increaseViewCount(int no);
 }

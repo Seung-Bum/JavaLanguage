@@ -24,7 +24,9 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 	
 	@Override
 	public Object findByNo(int no) {
-		Object board = boardDao.findByNo(no);
+		boardDao.increaseViewCount(no);
+		Object board = boardDao.findByNo(no);	    
 		return board;
 	}
+	
 }
