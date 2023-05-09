@@ -1,11 +1,14 @@
 package com.items.controller;
 
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.items.config.WebMvcConfig;
@@ -41,5 +44,10 @@ public class BoardController {
 		return "content";
 	}
 	
-
+	@PostMapping("/board/search")
+	public String boardSearch(Model model, Map<String, Object> form) {
+		model.addAttribute("search", form);
+		System.out.println(form.values().toString());
+	    return "test";
+	}
 }
