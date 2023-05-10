@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.items.domain.Board;
+import com.items.domain.SearchWord;
 
 
 // => Mybatis에서 DAO 구현체를 자동으로 생성한다.
@@ -22,6 +23,8 @@ public interface BoardDao {
   //int countAll();
 
   List<Map<String, Object>> findAll();
+  
+  List<Map<String, Object>> searchFindAll(String searchWord);
 
   //int insert(Board board);
 

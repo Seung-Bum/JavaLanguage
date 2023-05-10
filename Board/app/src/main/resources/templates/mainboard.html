@@ -221,7 +221,7 @@ section.notice {
                     <th scope="col" class="th-date">등록일</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody><!-- formData.searchWord가 존재한다면 boardList를 정리해서 넘김 -->
 	                <tr th:each="board : ${boardList}">
 						<td th:text="${board.no}"></td>
 						<td><a href="content.html" th:href="@{|/board/findByNo?no=${board.no}|}" th:text="${board.title}"></a></td>

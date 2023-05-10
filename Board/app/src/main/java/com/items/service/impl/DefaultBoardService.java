@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 //import org.springframework.transaction.annotation.Transactional;
 import com.items.dao.BoardDao;
+import com.items.domain.SearchWord;
 import com.items.service.BoardService;
 
 @Service
@@ -27,6 +28,12 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 		boardDao.increaseViewCount(no);
 		Object board = boardDao.findByNo(no);	    
 		return board;
+	}
+
+	@Override
+	public List<Map<String, Object>> SearchList(String searchWord) {
+		List<Map<String, Object>> boardList = boardDao.searchFindAll(searchWord);
+		return boardList;
 	}
 	
 }

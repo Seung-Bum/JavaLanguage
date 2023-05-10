@@ -27,6 +27,7 @@
   <!-- 
     id => 인터페이스의 메서드 이름과 일치해야 한다.
   -->
+  <!-- 게시판 리스트 -->
   <select id="findAll" resultMap="boardMap">
 	SELECT  
 	  b.no,
@@ -42,6 +43,7 @@
 	  b.no DESC
   </select>
   
+  <!-- 게시물에 링크 개별링크 부여 -->
   <select id="findByNo" resultMap="boardMap" parameterType="int">
 	 SELECT  
 	  b.no,
@@ -61,6 +63,28 @@
 	  b.no DESC
   </select>
   
+  <!-- 게시글 검색, String을 파라미터로 넘길 경우 -->
+  <select id="searchFindAll" resultMap="boardMap" parameterType="String">
+	 SELECT  
+	  b.no,
+	  b.title,
+	  b.create_Date,
+	  b.viewCount,
+	  b.CONTENT,
+	  b.VIEWCOUNT,
+	  b.PHOTO_IMAGE,
+	  m.no,
+	  m.name,
+	  m.email
+	FROM  
+	  user2.board b JOIN user2.member m ON b.writer = m.email
+	WHERE b.title LIKE '%${searchWord}%' 
+	OR  b.CONTENT LIKE '%${searchWord}%'
+	ORDER BY  
+	  b.no DESC
+  </select>
+  
+  <!-- 조회수 증가 -->
   <update id="increaseViewCount" parameterType="int">
  	UPDATE user2.board SET VIEWCOUNT = VIEWCOUNT + 1 WHERE NO=#{no}
   </update>

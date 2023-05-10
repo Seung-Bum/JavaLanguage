@@ -43,9 +43,9 @@ public class BoardController {
 	}
 	
 	@GetMapping("/search")
-	public String boardSearch(Model model, SearchWord form) {
-		model.addAttribute("formData", form);
-		System.out.println(form.toString());
-	    return "test";
+	public String boardSearch(Model model, SearchWord form) {		
+		model.addAttribute("boardList", boardService.SearchList(form.getSearchWord()));
+		log.info("게시물 검색");
+	    return "mainboard";
 	}
 }
