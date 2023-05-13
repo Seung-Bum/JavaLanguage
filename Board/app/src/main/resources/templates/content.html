@@ -251,6 +251,11 @@
 		    font-weight:bold;
 		}
     	
+   	    textarea {
+	      width: 100%;
+	      height: 6.25em;
+	      resize: none;
+	    }
     </style>
 </head>
 <body>
@@ -356,16 +361,14 @@
             </tbody>
         </table>
     </section>
-
+    
+<!-- 리뷰테이블에 저장하고 board/content를 다시 열어버림 (join해서 review 정보도 같이 가져옴) -->
 <div class="con reply">
     <h3 class="">Enter Comment</h3>
     <section class="reply-form">
-        <form action="return false;">
-            <!-- <div>
-                Title : <input type="text">
-            </div> -->
+        <form action="/board/review" method="post" enctype="multipart/form-data"> 
             <div>
-                <textarea></textarea>
+                <textarea name="reviewText"></textarea>
                 <input type="submit">
             </div>
         </form>
