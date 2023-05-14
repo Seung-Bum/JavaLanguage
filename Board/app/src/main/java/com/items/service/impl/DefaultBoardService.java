@@ -35,5 +35,14 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 		List<Map<String, Object>> boardList = boardDao.searchFindAll(searchWord);
 		return boardList;
 	}
+
+	@Override
+	public int insertReview(Map<String, String> map) {
+		for (String key : map.values()) {
+			  System.out.println("Service : "+ key);
+			}
+		boardDao.insertReviewDao(map);
+		return 0;
+	}
 	
 }

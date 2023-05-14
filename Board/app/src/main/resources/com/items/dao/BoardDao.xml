@@ -10,6 +10,8 @@
 
   <!-- 테이블의 컬럼과 객체 필드를 연결한다. -->
   <!-- application.properties에서 경로설정이 되어있기 때문에 Board라고만 적어도된다. -->
+  <!-- property가 VO로 받을것 javaType은 Type이 무엇인지 -->
+  <!-- column이 DB이름, property가 VO이름 -->
   <resultMap type="Board" id="boardMap">
     <id column="no" property="no"/>
     <result column="title" property="title"/>
@@ -19,14 +21,20 @@
     <result column="PHOTO_IMAGE" property="photoImage"/>
     <association property="writer" javaType="member">
       <id column="no" property="no"/>
-      <result column="name" property="name"/>
+      <result column="USER_ID" property="userID"/>
       <result column="email" property="email"/>
     </association>
+    <association property="review" javaType="Review">
+      <id column="no" property="no"/>
+      <result column="BOARD_NO" property="boardNo"/>
+      <result column="MEMBER_NO" property="memberNo"/>
+      <result column="REVIEW_CONTENT" property="reviewText"/>
+    </association>
+    
   </resultMap>
 
-  <!-- 
-    id => 인터페이스의 메서드 이름과 일치해야 한다.
-  -->
+  <!-- id => 인터페이스의 메서드 이름과 일치해야 한다. -->
+  
   <!-- 게시판 리스트 -->
   <select id="findAll" resultMap="boardMap">
 	SELECT  
@@ -35,7 +43,7 @@
 	  b.create_Date,
 	  b.viewCount,
 	  m.no,
-	  m.name,
+	  m.user_id,
 	  m.email
 	FROM
 	  user2.board b JOIN user2.member m ON b.writer = m.email
@@ -54,7 +62,7 @@
 	  b.VIEWCOUNT,
 	  b.PHOTO_IMAGE,
 	  m.no,
-	  m.name,
+	  m.user_id,
 	  m.email
 	FROM  
 	  user2.board b JOIN user2.member m ON b.writer = m.email
@@ -74,7 +82,7 @@
 	  b.VIEWCOUNT,
 	  b.PHOTO_IMAGE,
 	  m.no,
-	  m.name,
+	  m.user_id,
 	  m.email
 	FROM  
 	  user2.board b JOIN user2.member m ON b.writer = m.email
@@ -86,7 +94,36 @@
   
   <!-- 조회수 증가 -->
   <update id="increaseViewCount" parameterType="int">
- 	UPDATE user2.board SET VIEWCOUNT = VIEWCOUNT + 1 WHERE NO=#{no}
+ 	UPDATE user2.board 
+ 	SET VIEWCOUNT = VIEWCOUNT + 1 
+ 	WHERE NO=#{no}
   </update>
+  
+  <!-- 댓글등록 - 회원가입, 로그인 기능을 구현한 후에 세션을 통해서 현재 user가 누군지 알아내야함 아직 기능 구현이 안되 
+  		있어서 user 정보를 하드코딩 해놓고 테스트 -->
+  <!--parameterType="java.util.map" 이라고 쓰면 에러 발생함-->
+  <insert id="insertReviewDao" parameterType="java.util.Map">
+    INSERT INTO user2.review (NO, BOARD_NO, MEMBER_NO, REVIEW_CONTENT)
+	SELECT  
+		DISTINCT (SELECT NVL(MAX(no), 0) + 1 FROM user2.review),
+		(SELECT
+			  b.no
+			FROM  
+			  user2.board b,
+			  user2.member m
+			WHERE
+			  m.user_id = #{userID} and
+			  b.TITLE = #{boardTitle}),
+		(SELECT
+			  DISTINCT m.no
+			FROM  
+			  user2.review r,
+			  user2.member m
+			WHERE
+			  r.MEMBER_NO = m.no and
+			  m.user_id = #{loginUser}),
+		#{reviewText}
+	FROM user2.REVIEW r JOIN user2.MEMBER m ON r.MEMBER_NO = m.NO
+  </insert>
   
  </mapper>

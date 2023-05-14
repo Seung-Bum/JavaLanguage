@@ -1,5 +1,8 @@
 package com.items.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.items.config.WebMvcConfig;
+import com.items.domain.Board;
+import com.items.domain.Member;
 import com.items.domain.Review;
 import com.items.domain.SearchWord;
 import com.items.service.BoardService;
@@ -52,10 +56,25 @@ public class BoardController {
 	    return "mainboard";
 	}
 	
-	@PostMapping("/review")
-	public String review(Model model, Review reviewText) { // textarea 이름으로 param을 받아야함
+	@PostMapping("/reviewUpload")
+	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser) { // textarea name 이름으로 param을 받아야함
+		
 		System.out.println(reviewText);
-		model.addAttribute("formData", reviewText);
+		System.out.println(userID);
+		System.out.println(boardTitle);
+		System.out.println(loginUser);
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("reviewText", reviewText);
+		map.put("userID", userID);
+		map.put("boardTitle", boardTitle);
+		map.put("loginUser", loginUser);
+		boardService.insertReview(map);	
+		
+		model.addAttribute("formData", map);
+		//model.addAttribute("boardContent", boardService.findByNo(no)); // findByNo를 오버로드 하려고함
+		
+		log.info("리뷰 등록");
 		return "test";
 	}
 }

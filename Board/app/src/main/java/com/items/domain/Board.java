@@ -8,7 +8,14 @@ public class Board {
 	private String photoImage;
 	private String createDate;
 	private Member writer;
+	private Review review;
 	
+	public Review getReview() {
+		return review;
+	}
+	public void setReview(Review review) {
+		this.review = review;
+	}
 	public int getNo() {
 		return no;
 	}

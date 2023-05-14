@@ -338,7 +338,7 @@
     <section class="article-detail table-common con row">
         <div class="article-writer cell">
                 <div class="writer-icon"><img class="writer-icon" th:src="|/connect/${boardContent.photoImage}|"></div>                
-                <span th:text="${boardContent.writer.name}"></span>
+                <span th:text="${boardContent.writer.userID}"></span>
         </div>
         <table class="cell" border="1">
             <colgroup>
@@ -366,9 +366,12 @@
 <div class="con reply">
     <h3 class="">Enter Comment</h3>
     <section class="reply-form">
-        <form action="/board/review" method="post" enctype="multipart/form-data"> 
+        <form action="/board/reviewUpload" method="post" enctype="multipart/form-data"> 
             <div>
                 <textarea name="reviewText"></textarea>
+                <input type="hidden" id="userID" name="userID" th:value="${boardContent.writer.userID}">
+                <input type="hidden" name="boardTitle" th:value="${boardContent.title}">
+                <input type="hidden" name="loginUser" th:value="user2">
                 <input type="submit">
             </div>
         </form>
