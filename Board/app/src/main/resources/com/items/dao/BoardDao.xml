@@ -24,13 +24,18 @@
       <result column="USER_ID" property="userID"/>
       <result column="email" property="email"/>
     </association>
-    <association property="review" javaType="Review">
+  </resultMap>
+  
+  <resultMap type="Review" id="ReviewMap">
+    <id column="no" property="no"/>
+    <result column="BOARD_NO" property="boardNo"/>
+    <result column="MEMBER_NO" property="memberNo"/>
+    <result column="REVIEW_CONTENT" property="reviewText"/>
+    <association property="writer" javaType="member">
       <id column="no" property="no"/>
-      <result column="BOARD_NO" property="boardNo"/>
-      <result column="MEMBER_NO" property="memberNo"/>
-      <result column="REVIEW_CONTENT" property="reviewText"/>
+      <result column="USER_ID" property="userID"/>
+      <result column="email" property="email"/>
     </association>
-    
   </resultMap>
 
   <!-- id => 인터페이스의 메서드 이름과 일치해야 한다. -->
@@ -51,7 +56,7 @@
 	  b.no DESC
   </select>
   
-  <!-- 게시물에 링크 개별링크 부여 -->
+  <!-- 게시물에 링크 개별링크 부여, no에 맞는 게시글 데이터 가져오기 -->
   <select id="findByNo" resultMap="boardMap" parameterType="int">
 	 SELECT  
 	  b.no,
@@ -69,6 +74,27 @@
 	WHERE b.NO = #{no}
 	ORDER BY  
 	  b.no DESC
+  </select>
+  
+  <!-- no에 맞는 게시글에 댓글 리스트 가져오기 -->
+  <select id="findByReview" resultMap="ReviewMap" parameterType="int">
+	SELECT DISTINCT A.NO, A.BOARD_NO, A.MEMBER_NO, B.USER_ID, A.REVIEW_CONTENT 
+	FROM
+	  ( SELECT
+		  r.NO,
+		  r.BOARD_NO,
+		  r.MEMBER_NO,
+		  r.REVIEW_CONTENT 
+		FROM  
+		  user2.board b,  
+		  user2.member m,
+		  user2.review r
+		WHERE b.NO = #{no} AND
+			  b.NO = r.BOARD_NO AND
+			  b.writer = m.email ) A,
+		user2.MEMBER B
+	WHERE A.MEMBER_NO = B.NO
+	ORDER BY A.no DESC
   </select>
   
   <!-- 게시글 검색, String을 파라미터로 넘길 경우 -->
@@ -125,5 +151,10 @@
 		#{reviewText}
 	FROM user2.REVIEW r JOIN user2.MEMBER m ON r.MEMBER_NO = m.NO
   </insert>
+  
+  
+  
+  
+  
   
  </mapper>

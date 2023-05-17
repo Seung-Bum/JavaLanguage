@@ -31,6 +31,8 @@ public interface BoardDao {
   //int insert(Board board);
 
   Object findByNo(int no);
+  
+  List<Object> findByReview(int no);
 
   //int update(Board board);
 

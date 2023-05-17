@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.items.config.WebMvcConfig;
-import com.items.domain.Board;
-import com.items.domain.Member;
 import com.items.domain.Review;
 import com.items.domain.SearchWord;
 import com.items.service.BoardService;
@@ -32,20 +30,24 @@ public class BoardController {
 	WebMvcConfig webMvcConfig;
 	
 	@GetMapping("/list")
-	public String list(Model model) {
-			
+	public String list(Model model) {			
 		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 template에 넘김		
-		log.info("게시물 목록 조회");
-		
+		log.info("게시물 목록 조회");		
 		return "mainboard";
 	}
 	
-	@GetMapping("/findByNo")
-	public String findByNo(Model model, int no) {
-			
+	@GetMapping("/findByNo") // 리뷰도 같이 출력중
+	public String findByNo(Model model, int no) {			
 		model.addAttribute("boardContent", boardService.findByNo(no)); // boardList라는 이름으로 List를 template에 넘김
-		log.info("get board content");
 		
+		for(Object data : boardService.findByReview(no)) {
+
+			System.out.println(data);
+		}
+		
+		
+		model.addAttribute("reviewList", boardService.findByReview(no)); // reviewList
+		log.info("get board content");		
 		return "content";
 	}
 	
