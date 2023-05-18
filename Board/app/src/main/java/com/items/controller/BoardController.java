@@ -11,9 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.items.config.WebMvcConfig;
-import com.items.domain.Review;
 import com.items.domain.SearchWord;
 import com.items.service.BoardService;
 
@@ -39,6 +39,7 @@ public class BoardController {
 	@GetMapping("/findByNo") // 리뷰도 같이 출력중
 	public String findByNo(Model model, int no) {			
 		model.addAttribute("boardContent", boardService.findByNo(no)); // boardList라는 이름으로 List를 template에 넘김
+		model.addAttribute("reviewList", boardService.ReviewfindByNo(no));
 		log.info("get board content");		
 		return "content";
 	}
@@ -51,7 +52,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/reviewUpload")
-	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser) { // textarea name 이름으로 param을 받아야함
+	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo) { // textarea name 이름으로 param을 받아야함
 		
 		System.out.println(reviewText);
 		System.out.println(userID);
@@ -64,11 +65,10 @@ public class BoardController {
 		map.put("boardTitle", boardTitle);
 		map.put("loginUser", loginUser);
 		boardService.insertReview(map);	
-		
-		model.addAttribute("formData", map);
-		//model.addAttribute("boardContent", boardService.findByNo(no)); // findByNo를 오버로드 하려고함
+
+		model.addAttribute("boardContent", boardService.findByNo(boardNo));
 		
 		log.info("리뷰 등록");
-		return "content";
+		return "redirect:/board/findByNo?no=" + boardNo;
 	}
 }

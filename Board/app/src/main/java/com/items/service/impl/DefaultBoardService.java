@@ -43,5 +43,10 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 			}
 		boardDao.insertReviewDao(map);
 	}
+
+	@Override
+	public List<Object> ReviewfindByNo(int no) {
+		return boardDao.findByReview(no);
+	}
 	
 }
