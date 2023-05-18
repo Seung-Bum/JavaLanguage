@@ -39,14 +39,6 @@ public class BoardController {
 	@GetMapping("/findByNo") // 리뷰도 같이 출력중
 	public String findByNo(Model model, int no) {			
 		model.addAttribute("boardContent", boardService.findByNo(no)); // boardList라는 이름으로 List를 template에 넘김
-		
-		for(Object data : boardService.findByReview(no)) {
-
-			System.out.println(data);
-		}
-		
-		
-		model.addAttribute("reviewList", boardService.findByReview(no)); // reviewList
 		log.info("get board content");		
 		return "content";
 	}
@@ -77,6 +69,6 @@ public class BoardController {
 		//model.addAttribute("boardContent", boardService.findByNo(no)); // findByNo를 오버로드 하려고함
 		
 		log.info("리뷰 등록");
-		return "test";
+		return "content";
 	}
 }

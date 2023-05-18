@@ -15,9 +15,7 @@ public interface BoardService {
 	
 	Object findByNo(int no); // index에 해당하는 Board를 가져옴
 	
-	List<Object> findByReview(int no); // index에 해당하는 Board Review를 가져온다.
-	
-	int insertReview(Map<String, String> map);
+	void insertReview(Map<String, String> map);
 	
 	//int update(Board board); // board를 받아서 board를 업데이트한다.
 	

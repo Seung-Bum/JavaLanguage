@@ -26,7 +26,7 @@ public interface BoardDao {
   
   List<Map<String, Object>> searchFindAll(String searchWord);
   
-  int insertReviewDao(Map<String, String> map);
+  void insertReviewDao(Map<String, String> map);
 
   //int insert(Board board);
 

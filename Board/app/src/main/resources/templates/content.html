@@ -362,6 +362,7 @@
         </table>
     </section>
     
+<!-- 댓글쓰기 -->
 <!-- 리뷰테이블에 저장하고 board/content를 다시 열어버림 (join해서 review 정보도 같이 가져옴) -->
 <div class="con reply">
     <h3 class="">Enter Comment</h3>
@@ -392,8 +393,8 @@
                 </thead>
                 <tbody>
 	                <tr th:each="review : ${reviewList}">
-						<td th:text="${reviewList.writer.userID}"></td>
-						<td th:text="${reviewList.reviewText}"></td>
+						<td th:text="${review.writer.userID}"></td>
+						<td th:text="${review.reviewText}"></td>
 					</tr>
                 </tbody>
         </table>

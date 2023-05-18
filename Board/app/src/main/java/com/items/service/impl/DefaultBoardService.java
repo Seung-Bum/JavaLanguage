@@ -37,18 +37,11 @@ public class DefaultBoardService implements BoardService { // BoardService æ»¿« 
 	}
 
 	@Override
-	public int insertReview(Map<String, String> map) {
+	public void insertReview(Map<String, String> map) {
 		for (String key : map.values()) {
 			  System.out.println("Service : "+ key);
 			}
 		boardDao.insertReviewDao(map);
-		return 0;
-	}
-
-	@Override
-	public List<Object> findByReview(int no) {
-		List<Object> ReviewList = boardDao.findByReview(no);	    
-		return ReviewList;
 	}
 	
 }
