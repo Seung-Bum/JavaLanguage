@@ -51,13 +51,8 @@ public class BoardController {
 	    return "mainboard";
 	}
 	
-	@PostMapping("/reviewUpload")
-	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo) { // textarea name 이름으로 param을 받아야함
-		
-		System.out.println(reviewText);
-		System.out.println(userID);
-		System.out.println(boardTitle);
-		System.out.println(loginUser);
+	@PostMapping("/reviewUpload") // textarea name(reviewText) 이름으로 param을 받아야함
+	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo) { 
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("reviewText", reviewText);
