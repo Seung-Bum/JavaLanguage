@@ -36,7 +36,7 @@ public class BoardController {
 		return "mainboard";
 	}
 	
-	@GetMapping("/findByNo") // 리뷰도 같이 출력중
+	@GetMapping("/findByNo") // 리뷰도 같이 출력
 	public String findByNo(Model model, int no) {			
 		model.addAttribute("boardContent", boardService.findByNo(no)); // boardList라는 이름으로 List를 template에 넘김
 		model.addAttribute("reviewList", boardService.ReviewfindByNo(no));
