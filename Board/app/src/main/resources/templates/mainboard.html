@@ -8,6 +8,36 @@
 
 <style>
 
+.top-menu a {
+	text-decoration: none;
+	color: gray;
+	font-weight: bold;
+	font-size: 1rem;
+}
+
+.con {
+	margin: 0 auto;
+}
+
+.con {
+	max-width: 950px;
+}
+
+.row::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.cell-right {
+	float: right;
+	box-sizing: border-box;
+}
+
+.cell-right a{
+	padding: 0px 10px;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -185,9 +215,17 @@ section.notice {
   width: 1px;
   height: 1px;
 }
-
 </style>
- 
+
+<header class="top-menu con row">
+    <div class="cell-right">
+        <a href="#">Login</a>
+        <a href="#">SignUp</a>
+        <a th:href="@{/board/list}">List</a>
+        <a href="#">Writing</a>
+    </div>
+</header>
+
 <section class="notice">
   <div class="page-title">
         <div class="container">
