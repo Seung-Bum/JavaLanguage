@@ -128,28 +128,33 @@
 </head>
 
 <body>
-
+<!-- 로그인 페이지, 로그인 데이터를 form으로 전송 -->
 <div class="container">
       <h2>Login to Board</h2>
-
-      <div class="inputContainer">
-        <!-- <input class="submit" type="submit" value="next" /> -->
-        <button class="submit">next</button>
-        <input
-          class="fInput email"
-          type="text"
-          name=""
-          id=""
-          placeholder="phone or email or username"
-        />
-        <input
-          class="fInput pass"
-          type="text"
-          name=""
-          id=""
-          placeholder="Enter your password"
-        />
-      </div>
+	  	<form class="inputContainer" action="/login/auth" method="post" enctype="multipart/form-data">
+	      <div class="inputContainer"> 
+	        <input class="submit" type="submit" value="next" />
+	        <button class="submit">next</button>
+	        <input
+	          class="fInput email"
+	          type="text"
+	          name="email"
+	          id="email"
+	          placeholder="phone or email or username"
+	        />
+	      </div>
+	      <div class="inputContainer"> 
+	        <input class="submit" type="submit" value="next" />
+	        <button class="submit">next</button>
+	        <input
+	          class="fInput pass"
+	          type="password"
+	          name="passWord"
+	          id="passWord"
+	          placeholder="Enter your password"
+	        />
+	      </div>
+	    </form>
 
       <button class="forget">forget password?</button>
 
