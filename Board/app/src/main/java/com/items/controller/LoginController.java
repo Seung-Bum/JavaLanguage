@@ -3,19 +3,18 @@ package com.items.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.items.config.WebMvcConfig;
-import com.items.domain.SearchWord;
-import com.items.service.BoardService;
 import com.items.service.LoginService;
 
 @Controller
@@ -33,25 +32,25 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/login/auth")
-	public String login(Model model, String email, String passWord) {
+	public String login(Model model, String email, String passWord, HttpSession session,
+							HttpServletRequest request, HttpServletResponse response) {
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
 		map.put("passWord", passWord);
 		loginService.loginDataAuth(map);
 		
-		log.info("로그인 처리 수행");
-		return "login";
+		log.info("로그인 처리 수행");				
+		return "redirect:/board/findByNo?no="; // 로그인 성공시 게시판으로 리다이렉트 되고 해당 유저 세션유지
 	}
 	
 	
-	/* 세션설정 소스
+	/* 세션설정 소스 
 	@RequestMapping(value = "/session.do", method = RequestMethod.POST)
 	public void sessionRequest(Model model, HttpSession session,
 	HttpServletRequest request, HttpServletResponse response) {
 
-    String user_id = "test123" ;
-    String user_name = "튜나" ;
+
 
     // 세션값 설정
     session.setAttribute("user_id", user_id);
@@ -73,6 +72,6 @@ public class LoginController {
 
     // 세션 전체 제거, 무효화
     session.invalidate();
-	*/
-}
+	}*/
+
 }

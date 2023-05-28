@@ -2,10 +2,7 @@ package com.items.service;
 
 import java.util.Map;
 
-public class LoginService {
+public interface LoginService {
 
-	public void loginDataAuth(Map<String, String> map) {
-		// TODO Auto-generated method stub		
-	}
-
+	public void loginUserAuth(Map<String, String> map);
 }
