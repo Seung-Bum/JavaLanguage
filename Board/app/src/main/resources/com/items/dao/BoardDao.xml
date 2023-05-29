@@ -153,9 +153,4 @@
 	FROM user2.REVIEW r JOIN user2.MEMBER m ON r.MEMBER_NO = m.NO
   </insert>
   
-  
-  
-  
-  
-  
  </mapper>
