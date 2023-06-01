@@ -129,13 +129,8 @@
 
 <body>
 
-<script th:inline="javascript">
-/*<![CDATA[*/
-	if(true == true) {
-			
-	}
-	
-/*]]>*/
+<script th:if="${LoginYn == 'N'}" th:inline="javascript">
+    alert('email과 password를 확인해주세요.');
 </script>
 
 <!-- 로그인 페이지, 로그인 데이터를 form으로 전송 -->

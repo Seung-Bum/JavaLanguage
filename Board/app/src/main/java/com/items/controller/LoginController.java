@@ -1,8 +1,9 @@
 package com.items.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +42,10 @@ public class LoginController {
 		map.put("passWord", passWord);
 		Member loginUser = loginService.loginUserAuth(map);
 		
-		if (loginUser == null) {
+		if (loginUser == null) {	
 			model.addAttribute("LoginYn", "N"); // login 실패를 LoginYn "N"으로 해서 표시
-			return "redirect:/login";
+			log.info("로그인 실패");	
+			return "login";
 		}
 		
 	    // 세션값 설정
