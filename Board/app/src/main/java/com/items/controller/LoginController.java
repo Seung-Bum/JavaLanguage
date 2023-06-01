@@ -42,6 +42,7 @@ public class LoginController {
 		Member loginUser = loginService.loginUserAuth(map);
 		
 		if (loginUser == null) {
+			model.addAttribute("LoginYn", "N"); // login 실패를 LoginYn "N"으로 해서 표시
 			return "redirect:/login";
 		}
 		
