@@ -3,6 +3,10 @@ package com.items.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.items.config.WebMvcConfig;
 import com.items.domain.SearchWord;
@@ -29,14 +32,32 @@ public class BoardController {
 	@Autowired
 	WebMvcConfig webMvcConfig;
 	
+	// 게시판 목록
 	@GetMapping("/list")
-	public String list(Model model) {			
-		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 template에 넘김		
-		log.info("게시물 목록 조회");		
+	public String list(Model model, HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) {
+	    
+		String user_id = (String) session.getAttribute("user_id");	    
+		String user_name = (String) session.getAttribute("user_name");
+	    
+		if (user_id != null) {
+			model.addAttribute("userID", "Email : " + user_id);
+			log.info(user_id + " : 서버 이용중");
+		} else {
+			log.info("비정상 접속, 로그인페이지로 이동");
+			return "login";
+		}
+		if (user_name != null) {
+			model.addAttribute("userName", "UserName : " + user_name);
+		}
+		
+		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 template에 넘김	
+		log.info("게시물 목록 조회");
 		return "mainboard";
 	}
 	
-	@GetMapping("/findByNo") // 리뷰도 같이 출력
+	// 게시글 상세 (리뷰도 같이 출력)
+	@GetMapping("/findByNo") 
 	public String findByNo(Model model, int no) {			
 		model.addAttribute("boardContent", boardService.findByNo(no)); // boardList라는 이름으로 List를 template에 넘김
 		model.addAttribute("reviewList", boardService.ReviewfindByNo(no));
@@ -44,21 +65,56 @@ public class BoardController {
 		return "content";
 	}
 	
+	// 게시글 검색
 	@GetMapping("/search")
-	public String boardSearch(Model model, SearchWord form) {		
+	public String boardSearch(Model model, SearchWord form, HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String user_id = (String) session.getAttribute("user_id");	    
+		String user_name = (String) session.getAttribute("user_name");
+	    
+		if (user_id != null) {
+			model.addAttribute("userID", "Email : " + user_id);
+			log.info(user_id + " : 서버 이용중");
+		} else {
+			log.info("비정상 접속, 로그인페이지로 이동");
+			return "login";
+		}
+		if (user_name != null) {
+			model.addAttribute("userName", "UserName : " + user_name);
+		}
+		
 		model.addAttribute("boardList", boardService.SearchList(form.getSearchWord()));
 		log.info("게시물 검색");
 	    return "mainboard";
 	}
 	
+	// 리뷰 등록
 	@PostMapping("/reviewUpload") // textarea name(reviewText) 이름으로 param을 받아야함
-	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo) { 
+	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo, HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) { 
+		
+		String user_id = (String) session.getAttribute("user_id");	    
+		String user_name = (String) session.getAttribute("user_name");
+	    
+		if (user_id != null) {
+			model.addAttribute("userID", "Email : " + user_id);
+			log.info(user_id + " : 서버 이용중");
+		} else {
+			log.info("비정상 접속, 로그인페이지로 이동");
+			return "login";
+		}
+		if (user_name != null) {
+			model.addAttribute("userName", "UserName : " + user_name);
+		}
+		
+		String[] tampID = user_id.split("@"); // 회원가입시 아이디에 특수문자 오지 못하게 해야함
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("reviewText", reviewText);
 		map.put("userID", userID);
 		map.put("boardTitle", boardTitle);
-		map.put("loginUser", loginUser);
+		map.put("loginUser", tampID[0]);
 		boardService.insertReview(map);	
 
 		model.addAttribute("boardContent", boardService.findByNo(boardNo));

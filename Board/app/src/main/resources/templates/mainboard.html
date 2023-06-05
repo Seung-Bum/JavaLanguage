@@ -218,7 +218,9 @@ section.notice {
 </style>
 
 <header class="top-menu con row">
-    <div class="cell-right">
+    <span style="text-align:left" th:if="${userID != null}" th:text="${userID}" ></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span style="text-align:left" th:if="${userName != null}" th:text="${userName}" ></span>
+    <div class="cell-right">    	
         <a th:href="@{/login}">Login</a>
         <a href="#">SignUp</a>
         <a th:href="@{/board/list}">List</a>
@@ -229,7 +231,7 @@ section.notice {
 <section class="notice">
   <div class="page-title">
         <div class="container">
-            <h3>Board</h3>
+            <h3></h3>
         </div>
     </div>
 

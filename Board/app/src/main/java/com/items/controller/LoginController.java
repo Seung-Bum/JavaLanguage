@@ -57,39 +57,12 @@ public class LoginController {
 	    session.setMaxInactiveInterval(30*60);
 		
 		// 세션에 저장된 값 가져오기
-	    session.getAttribute("user_id");
-	    session.getAttribute("user_name");    		
-		
+	    String user_id = (String) session.getAttribute("user_id");
+	    String user_name = (String) session.getAttribute("user_name");	
+	    
+	    //model.addAttribute("user_id", session.getAttribute("user_id"));
+	    //model.addAttribute("user_name", session.getAttribute("user_name"));
 		log.info("로그인 처리 수행");			
 		return "redirect:/board/list"; // 로그인 성공시 게시판으로 리다이렉트 되고 해당 유저 세션유지
 	}
-	
-	
-	/* 세션설정 소스 
-	@RequestMapping(value = "/session.do", method = RequestMethod.POST)
-	public void sessionRequest(Model model, HttpSession session,
-	HttpServletRequest request, HttpServletResponse response) {
-
-    // 세션값 설정
-    session.setAttribute("user_id", user_id);
-    session.setAttribute("user_name", user_name);
-
-    // 세션 유지시간 설정(초단위)
-    // 60 * 30 = 30분
-    session.setMaxInactiveInterval(30*60);
-
-    // 세션 시간을 무한대로 설정
-    session.setMaxInactiveInterval(-1);
-
-    // 세션에 저장된 값 가져오기
-    session.getAttribute("user_id");
-    session.getAttribute("user_name");
-
-    // 세션값 삭제
-    session.removeAttribute("user_id");
-
-    // 세션 전체 제거, 무효화
-    session.invalidate();
-	}*/
-
 }
