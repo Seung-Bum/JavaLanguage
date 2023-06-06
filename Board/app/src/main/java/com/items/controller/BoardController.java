@@ -26,6 +26,8 @@ public class BoardController {
 	
 	private static final Logger log = LogManager.getLogger(BoardController.class);
 	
+	LoginController loginController = new LoginController();
+	
 	@Autowired
 	BoardService boardService;
 	
@@ -35,21 +37,9 @@ public class BoardController {
 	// 게시판 목록
 	@GetMapping("/list")
 	public String list(Model model, HttpSession session,
-			HttpServletRequest request, HttpServletResponse response) {
-	    
-		String user_id = (String) session.getAttribute("user_id");	    
-		String user_name = (String) session.getAttribute("user_name");
-	    
-		if (user_id != null) {
-			model.addAttribute("userID", "Email : " + user_id);
-			log.info(user_id + " : 서버 이용중");
-		} else {
-			log.info("비정상 접속, 로그인페이지로 이동");
-			return "login";
-		}
-		if (user_name != null) {
-			model.addAttribute("userName", "UserName : " + user_name);
-		}
+			HttpServletRequest request, HttpServletResponse response) {	
+		
+		loginController.loginValidation(model, session, request, response);		
 		
 		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 template에 넘김	
 		log.info("게시물 목록 조회");
@@ -70,19 +60,7 @@ public class BoardController {
 	public String boardSearch(Model model, SearchWord form, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {
 		
-		String user_id = (String) session.getAttribute("user_id");	    
-		String user_name = (String) session.getAttribute("user_name");
-	    
-		if (user_id != null) {
-			model.addAttribute("userID", "Email : " + user_id);
-			log.info(user_id + " : 서버 이용중");
-		} else {
-			log.info("비정상 접속, 로그인페이지로 이동");
-			return "login";
-		}
-		if (user_name != null) {
-			model.addAttribute("userName", "UserName : " + user_name);
-		}
+		loginController.loginValidation(model, session, request, response);
 		
 		model.addAttribute("boardList", boardService.SearchList(form.getSearchWord()));
 		log.info("게시물 검색");
@@ -94,19 +72,7 @@ public class BoardController {
 	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) { 
 		
-		String user_id = (String) session.getAttribute("user_id");	    
-		String user_name = (String) session.getAttribute("user_name");
-	    
-		if (user_id != null) {
-			model.addAttribute("userID", "Email : " + user_id);
-			log.info(user_id + " : 서버 이용중");
-		} else {
-			log.info("비정상 접속, 로그인페이지로 이동");
-			return "login";
-		}
-		if (user_name != null) {
-			model.addAttribute("userName", "UserName : " + user_name);
-		}
+		String user_id = loginController.loginValidation(model, session, request, response);
 		
 		String[] tampID = user_id.split("@"); // 회원가입시 아이디에 특수문자 오지 못하게 해야함
 		
@@ -117,8 +83,7 @@ public class BoardController {
 		map.put("loginUser", tampID[0]);
 		boardService.insertReview(map);	
 
-		model.addAttribute("boardContent", boardService.findByNo(boardNo));
-		
+		model.addAttribute("boardContent", boardService.findByNo(boardNo));		
 		log.info("리뷰 등록");
 		return "redirect:/board/findByNo?no=" + boardNo;
 	}

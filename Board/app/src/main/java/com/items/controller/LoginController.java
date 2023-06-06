@@ -27,12 +27,14 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 	
+	// 로그인 페이지
 	@RequestMapping("/login")
 	public String login(Model model) {			
 		log.info("로그인 페이지");
 		return "login";
 	}
 	
+	// 로그인 진행
 	@RequestMapping("/login/auth")
 	public String login(Model model, String email, String passWord, HttpSession session,
 							HttpServletRequest request, HttpServletResponse response) {
@@ -59,10 +61,29 @@ public class LoginController {
 		// 세션에 저장된 값 가져오기
 	    String user_id = (String) session.getAttribute("user_id");
 	    String user_name = (String) session.getAttribute("user_name");	
-	    
-	    //model.addAttribute("user_id", session.getAttribute("user_id"));
-	    //model.addAttribute("user_name", session.getAttribute("user_name"));
+
 		log.info("로그인 처리 수행");			
 		return "redirect:/board/list"; // 로그인 성공시 게시판으로 리다이렉트 되고 해당 유저 세션유지
+	}
+	
+	// 로그인 검증
+	public String loginValidation (Model model, HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		String user_id = (String) session.getAttribute("user_id");	    
+		String user_name = (String) session.getAttribute("user_name");
+	    
+		if (user_id != null) {
+			model.addAttribute("userID", "Email : " + user_id);
+			log.info(user_id + " : 서버 이용중");
+		} else {
+			log.info("비정상 접속, 로그인페이지로 이동");
+			return "login";
+		}
+		if (user_name != null) {
+			model.addAttribute("userName", "UserName : " + user_name);
+		}
+
+		return user_id;
 	}
 }
