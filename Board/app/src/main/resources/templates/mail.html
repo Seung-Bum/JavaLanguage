@@ -2,33 +2,88 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+
+<style type="text/css">	
+
+	.contact-form-wrapper {
+	  margin:50px auto;
+	  width: 600px;
+	  }
+	  .title {
+	    margin-bottom:30px;
+	  }
+	  h1 {
+	    font-size:18px;
+	    text-transform: uppercase;
+	    font-weight:bold;
+	  }
+	  p {
+	    font-size:14px;
+	    color: #777;
+	  }
+	  
+	  .form-control {
+	  	outline: none;
+	  	margin:10px auto;
+	  	width: 600px;
+	  }
+	  
+	  input {
+	    border-radius:10px;
+	    height:50px;
+	    font-size:12px;
+	    color:#999;
+	  } 
+	  textarea {	  
+	    border-radius:10px;
+	    font-size:12px;
+	    color:#999;
+	  }
+	  .submit-button {
+	    background: #00AEEF;
+	    color:#fff;
+	    font-size:12px;
+	    text-transform:uppercase;
+	    font-weight:bold;
+	    letter-spacing:1px;
+	  }
+</style>
+
+
 <title>Mail</title>
 </head>
 <body>
-	<form action="" id="contact-form">
-	  <div class="input mb">
-	    <div class="hidden"><label for="name" class="required">Name</label></div>
-	    <div class="icon-container"><input type="text" name="name" id="name" placeholder="Name" class="icon-content" required><span class="fas fa-user icon"></span></div>
-	  </div>
-	
-	  <div class="input mb">
-	    <div class="hidden"><label for="email" class="required">Email</label></div>
-	    <div class="icon-container"><input type="email" name="email" id="email" placeholder="Email" class="icon-content" required><span class="fas fa-envelope icon"></span></div>
-	  </div>
-	
-	  <div class="input mb">
-	    <div class="hidden"><label for="subject" class="required">Subject</label></div>
-	    <div class="icon-container"><input type="text" name="subject" id="subject" placeholder="Subject" class="icon-content" required><span class="fas fa-pencil-alt icon"></span></div>
-	  </div>
-	
-	  <div class="input mb">
-	    <div class="hidden"><label for="message" class="required">Message</label></div>
-	    <div class="icon-container"><textarea name="message" id="message" cols="10" rows="5" placeholder="Message..." class="icon-content" required></textarea><span class="fas fa-quote-left icon"></span></div>
-	  </div>
-	
-	  <div class="input mb">
-	    <button type="submit" class="btn text-center">Send Message</button>
-	  </div>
-	</form>
+	<div class="contact-form-wrapper">
+	   <div class="title">
+	     <h1>Don't be shy. Say hello.</h1>
+	      <p>
+	    You can also reach us with your query like which WordPress themes are best suited for you business niches or which WordPress hosting  is best suited for your website. We feel free to assist you as long as possible.
+	    </p>
+	   </div>
+	  
+		<form id="contact-form" class="contact-form" method="post" role="form">
+			
+		    <div class="form-group">
+		        <input type="text" placeholder="Your Name" class="form-control" name="name" id="name" required>
+		    </div>
+		    
+		    <div class="form-group">
+		        <input type="email" placeholder="Your Email" class="form-control" name="email" id="email" required>
+		    </div>
+		
+		    <div class="form-group">
+		        <input type="text" placeholder="Subject" class="form-control" name="subject" id="subject" required>
+		    </div>
+		
+		    <div class="form-group">
+		        <textarea rows="6" placeholder="Message" class="form-control" name="message"id="message" required></textarea>    
+		    </div>
+		
+		    <div id="submit" class="">
+		        <input type="submit" id="contact-submit" class="btn btn-default submit-button" value="Send Message">
+		    </div>
+		</form>
+	  
+	</div>
 </body>
 </html>
