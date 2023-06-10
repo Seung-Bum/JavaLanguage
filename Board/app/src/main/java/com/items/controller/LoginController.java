@@ -81,7 +81,7 @@ public class LoginController {
 			return "login";
 		}
 		if (user_name != null) {
-			model.addAttribute("userName", "UserName : " + user_name);
+			model.addAttribute("userName", "UserName : " + user_name); // 파라미터 전달
 		}
 
 		return user_id;
