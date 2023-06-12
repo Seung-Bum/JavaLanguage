@@ -28,11 +28,11 @@ public class MailController {
 	
 	LoginController loginController = new LoginController();
 	
-	// ¸ŞÀÏ ÆäÀÌÁö
+	// ë©”ì¼ í˜ì´ì§€
 	@RequestMapping("/mail")
 	public String mailPage(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) {		
 		loginController.loginValidation(model, session, request, response);
-		log.info("¸ŞÀÏ ÆäÀÌÁö");
+		log.info("ë©”ì¼ í˜ì´ì§€");
 		return "mail";
 	}	
 	
@@ -45,9 +45,9 @@ public class MailController {
 	@RequestMapping("/sendmail")
 	public static String gmailSend(Model model) {
         String user = "sb910126@gmail.com"; 
-        String password = "sb1272037!";   // ÆĞ½º¿öµå
+        String password = "";   // íŒ¨ìŠ¤ì›Œë“œ
         
-        // SMTP ¼­¹ö Á¤º¸¸¦ ¼³Á¤ÇÑ´Ù.
+        // SMTP ì„œë²„ ì •ë³´ë¥¼ ì„¤ì •í•œë‹¤.
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com"); 
         prop.put("mail.smtp.port", 465); // SMTP Port gmail 465, naver 587
@@ -55,7 +55,7 @@ public class MailController {
         prop.put("mail.smtp.ssl.enable", "true"); 
         prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         
-        // 3. SMTP ¼­¹öÁ¤º¸¿Í »ç¿ëÀÚ Á¤º¸¸¦ ±â¹İÀ¸·Î Session Å¬·¡½ºÀÇ ÀÎ½ºÅÏ½º »ı¼º
+        // 3. SMTP ì„œë²„ì •ë³´ì™€ ì‚¬ìš©ì ì •ë³´ë¥¼ ê¸°ë°˜ìœ¼ë¡œ Session í´ë˜ìŠ¤ì˜ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
         Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(user, password);
@@ -66,17 +66,17 @@ public class MailController {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
 
-            //¼ö½ÅÀÚ¸ŞÀÏÁÖ¼Ò
+            //ìˆ˜ì‹ ìë©”ì¼ì£¼ì†Œ
             message.addRecipient(Message.RecipientType.TO, new InternetAddress("pkapka_@naver.com")); 
 
             // Subject
-            message.setSubject("¾Æ³çÇÏ¼¼¿ä"); //¸ŞÀÏ Á¦¸ñÀ» ÀÔ·Â
+            message.setSubject("ì•„ë…•í•˜ì„¸ìš”"); //ë©”ì¼ ì œëª©ì„ ì…ë ¥
 
             // Text
-            message.setText("¾È³çÇÏ¼¼¿ä");    //¸ŞÀÏ ³»¿ëÀ» ÀÔ·Â
+            message.setText("ì•ˆë…•í•˜ì„¸ìš”");    //ë©”ì¼ ë‚´ìš©ì„ ì…ë ¥
 
             // send the message
-            Transport.send(message); ////Àü¼Û
+            Transport.send(message); ////ì „ì†¡
             System.out.println("message sent successfully...");
         } catch (AddressException e) {
             // TODO Auto-generated catch block
