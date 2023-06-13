@@ -1,7 +1,8 @@
 package com.items.controller;
 
 import java.util.Properties;
-
+import javax.net.ssl.SSLSocketFactory;
+import javax.mail.internet.MimeUtility;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -20,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import java.util.Date;
+import javax.mail.Authenticator;
 
 @Controller
 public class MailController {
@@ -36,57 +39,76 @@ public class MailController {
 		return "mail";
 	}	
 	
-	// google Mail API
-	//@RequestMapping("/sendmail")
-	//public void sendMail (String Template, String mailData) {
-	//	
-	//}
-	
-	@RequestMapping("/sendmail")
-	public static String gmailSend(Model model) {
-        String user = "sb910126@gmail.com"; 
-        String password = "sb1272037!";   // 패스워드
+	// 메일 발송
+    @RequestMapping("/sendmail")
+    public void sendPlainTextEmail() {
+         
+        Properties p = System.getProperties();
+        p.put("mail.smtp.starttls.enable", "true");     // gmail은 true 고정
+        p.put("mail.smtp.host", "smtp.naver.com");      // smtp 서버 주소
+        p.put("mail.smtp.auth","true");                 // gmail은 true 고정
+        p.put("mail.smtp.port", "587");                 // 네이버 포트   
+        log.info("smtp 설정");
         
-        // SMTP 서버 정보를 설정한다.
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com"); 
-        prop.put("mail.smtp.port", 465); // SMTP Port gmail 465, naver 587
-        prop.put("mail.smtp.auth", "true"); 
-        prop.put("mail.smtp.ssl.enable", "true"); 
-        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        Authenticator auth = new MyAuthentication();
+        log.info("auth 생성");
         
-        // 3. SMTP 서버정보와 사용자 정보를 기반으로 Session 클래스의 인스턴스 생성
-        Session session = Session.getDefaultInstance(prop, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(user, password);
-            }
-        });
+        //session 생성 및  MimeMessage생성
+        Session session = Session.getDefaultInstance(p, auth);
+        MimeMessage msg = new MimeMessage(session);        
+        log.info("session 생성");
         
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(user));
-
-            //수신자메일주소
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("pkapka_@naver.com")); 
-
-            // Subject
-            message.setSubject("아녕하세요"); //메일 제목을 입력
-
-            // Text
-            message.setText("안녕하세요");    //메일 내용을 입력
-
-            // send the message
-            Transport.send(message); ////전송
-            System.out.println("message sent successfully...");
-        } catch (AddressException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        try{
+            //편지보낸시간
+            msg.setSentDate(new Date());
+            InternetAddress from = new InternetAddress() ;
+            from = new InternetAddress("pkapka_@naver.com"); //발신자 아이디            
+            log.info("발신자 설정");
+            
+            // 이메일 발신자
+            msg.setFrom(from);
+            
+            // 이메일 수신자
+            InternetAddress to = new InternetAddress("sb910126@gmail.com");
+            msg.setRecipient(Message.RecipientType.TO, to);
+            
+            // 이메일 제목
+            msg.setSubject("메일 보내보기", "UTF-8");
+            
+            // 이메일 내용
+            msg.setText("ㅎㅇㅎㅇ", "UTF-8");
+            
+            // 이메일 헤더
+            msg.setHeader("content-Type", "text/html");
+            
+            //메일보내기
+            javax.mail.Transport.send(msg, msg.getAllRecipients());
+            
+            log.info("mail 발송 완료");             
+        }catch (AddressException addr_e) {
+            addr_e.printStackTrace();
+        }catch (MessagingException msg_e) {
+            msg_e.printStackTrace();
+        }catch (Exception msg_e) {
+            msg_e.printStackTrace();
         }
+    }   
+    	
+    class MyAuthentication extends Authenticator {
         
-        
-        return "mail";
-	}
+        PasswordAuthentication pa;
+        public MyAuthentication(){
+             
+            String id = "pkapka_@naver.com";  //네이버 이메일 아이디
+            String pw = "";        //네이버 비밀번호
+     
+            // ID와 비밀번호를 입력한다.
+            pa = new PasswordAuthentication(id, pw);
+        }
+     
+        // 시스템에서 사용하는 인증정보
+        public PasswordAuthentication getPasswordAuthentication() {
+            return pa;
+        }
+    }
 }
