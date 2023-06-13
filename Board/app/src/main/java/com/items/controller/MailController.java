@@ -1,13 +1,10 @@
 package com.items.controller;
 
 import java.util.Properties;
-import javax.net.ssl.SSLSocketFactory;
-import javax.mail.internet.MimeUtility;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -35,7 +32,7 @@ public class MailController {
 	@RequestMapping("/mail")
 	public String mailPage(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) {		
 		loginController.loginValidation(model, session, request, response);
-		log.info("메일 페이지");
+		log.info("mail 페이지");
 		return "mail";
 	}	
 	
