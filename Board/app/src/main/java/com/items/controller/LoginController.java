@@ -22,7 +22,7 @@ import com.items.service.LoginService;
 @Controller
 public class LoginController {
 	
-	private static final Logger log = LogManager.getLogger(BoardController.class);
+	private static final Logger log = LogManager.getLogger(LoginController.class);
 	
 	@Autowired
 	LoginService loginService;
@@ -67,23 +67,22 @@ public class LoginController {
 	}
 	
 	// 로그인 검증
-	public String loginValidation (Model model, HttpSession session,
+	public String loginValidation (HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {
 		
 		String user_id = (String) session.getAttribute("user_id");	    
 		String user_name = (String) session.getAttribute("user_name");
+		String result = "";
 	    
 		if (user_id != null) {
-			model.addAttribute("userID", "Email : " + user_id);
 			log.info(user_id + " : 서버 이용중");
+			result = user_id;
 		} else {
 			log.info("비정상 접속, 로그인페이지로 이동");
-			return "login";
+			result = "login";
 		}
-		if (user_name != null) {
-			model.addAttribute("userName", "UserName : " + user_name); // 파라미터 전달
-		}
-
-		return user_id;
+		
+		
+		return result;
 	}
 }

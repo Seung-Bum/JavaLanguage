@@ -39,7 +39,7 @@ public class BoardController {
 	public String list(Model model, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {	
 		
-		loginController.loginValidation(model, session, request, response);		
+		loginController.loginValidation(session, request, response);		
 		
 		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 template에 넘김	
 		log.info("게시물 목록 조회");
@@ -60,7 +60,7 @@ public class BoardController {
 	public String boardSearch(Model model, SearchWord form, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {
 		
-		loginController.loginValidation(model, session, request, response);
+		loginController.loginValidation(session, request, response);
 		
 		model.addAttribute("boardList", boardService.SearchList(form.getSearchWord()));
 		log.info("게시물 검색");
@@ -72,7 +72,8 @@ public class BoardController {
 	public String review(Model model, String reviewText, String userID, String boardTitle, String loginUser, int boardNo, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) { 
 		
-		String user_id = loginController.loginValidation(model, session, request, response);
+		String user_id = (String) session.getAttribute("user_id");
+		log.info("현재 리뷰 등록 이용자 : " + user_id);
 		
 		String[] tampID = user_id.split("@"); // 회원가입시 아이디에 특수문자 오지 못하게 해야함
 		
