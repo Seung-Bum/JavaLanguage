@@ -19,29 +19,29 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.items.Util.MailUtil;
+import com.items.Util.LoginUtil;
 
 @Controller
+@RequestMapping("/mail")
 public class MailController {
 	
 	private static final Logger log = LogManager.getLogger(MailController.class);
 	
-	LoginController loginController = new LoginController();
-	MailUtil mailUtil = new MailUtil();
-
+	LoginUtil loginUtil = new LoginUtil();
+	
 	// 메일 페이지
-	@RequestMapping("/mail")
+	@GetMapping("/write")
 	public String mailPage(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		log.info("mail 페이지 진행");
-		String result = loginController.loginValidation(session, request, response);
-		if (result == "login") {return "login";}
-		else {return "mail";}		
-	}	
+		if (loginUtil.loginValidation(session, request, response) == "login") {return "login";}
+		else {return "mailPage";}
+	}
 	
 	// 메일 발송
-    @RequestMapping("/sendmail")
+    @GetMapping("/sendmail")
     public String sendPlainTextEmail(Model model, String name, String mail, String subject, String message) {
         
     	log.info(mail);
@@ -113,6 +113,5 @@ public class MailController {
         }
         return "mail";
     }   
-    	
 
 }

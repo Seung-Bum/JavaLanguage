@@ -29,7 +29,7 @@ public class LoginController {
 	
 	// 로그인 페이지
 	@RequestMapping("/login")
-	public String login(Model model) {			
+	public String login(Model model) {
 		log.info("로그인 페이지");
 		return "login";
 	}
@@ -65,24 +65,5 @@ public class LoginController {
 		log.info("로그인 처리 수행");			
 		return "redirect:/board/list"; // 로그인 성공시 게시판으로 리다이렉트 되고 해당 유저 세션유지
 	}
-	
-	// 로그인 검증
-	public String loginValidation (HttpSession session,
-			HttpServletRequest request, HttpServletResponse response) {
-		
-		String user_id = (String) session.getAttribute("user_id");	    
-		String user_name = (String) session.getAttribute("user_name");
-		String result = "";
-	    
-		if (user_id != null) {
-			log.info(user_id + " : 서버 이용중");
-			result = user_id;
-		} else {
-			log.info("비정상 접속, 로그인페이지로 이동");
-			result = "login";
-		}
-		
-		
-		return result;
-	}
+
 }

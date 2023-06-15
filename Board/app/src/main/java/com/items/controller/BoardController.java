@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.items.Util.LoginUtil;
 import com.items.config.WebMvcConfig;
 import com.items.domain.SearchWord;
 import com.items.service.BoardService;
@@ -26,7 +27,7 @@ public class BoardController {
 	
 	private static final Logger log = LogManager.getLogger(BoardController.class);
 	
-	LoginController loginController = new LoginController();
+	LoginUtil loginUtil = new LoginUtil();
 	
 	@Autowired
 	BoardService boardService;
@@ -39,32 +40,35 @@ public class BoardController {
 	public String list(Model model, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {	
 		
-		loginController.loginValidation(session, request, response);		
-		
-		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 template에 넘김	
 		log.info("게시물 목록 조회");
-		return "mainboard";
+		model.addAttribute("boardList", boardService.list()); // boardList라는 이름으로 List를 html template에 넘김	
+		
+		if (loginUtil.loginValidation(session, request, response) == "login") {return "login";} // 로그인 인증, 로그인 안되면 로그인 페이지로
+		else {return "mainboard";}
 	}
 	
 	// 게시글 상세 (리뷰도 같이 출력)
 	@GetMapping("/findByNo") 
-	public String findByNo(Model model, int no) {			
+	public String findByNo(Model model, int no, HttpSession session, HttpServletRequest request, HttpServletResponse response) {		
+		
+		log.info("get board content");
 		model.addAttribute("boardContent", boardService.findByNo(no)); // boardList라는 이름으로 List를 template에 넘김
 		model.addAttribute("reviewList", boardService.ReviewfindByNo(no));
-		log.info("get board content");		
-		return "content";
+		
+		if (loginUtil.loginValidation(session, request, response) == "login") {return "login";} // 로그인 인증, 로그인 안되면 로그인 페이지로
+		else {return "content";}
 	}
 	
 	// 게시글 검색
 	@GetMapping("/search")
 	public String boardSearch(Model model, SearchWord form, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {
-		
-		loginController.loginValidation(session, request, response);
-		
-		model.addAttribute("boardList", boardService.SearchList(form.getSearchWord()));
+
 		log.info("게시물 검색");
-	    return "mainboard";
+		model.addAttribute("boardList", boardService.SearchList(form.getSearchWord()));	
+		
+		if (loginUtil.loginValidation(session, request, response) == "login") {return "login";} // 로그인 인증, 로그인 안되면 로그인 페이지로
+		else {return "mainboard";}
 	}
 	
 	// 리뷰 등록

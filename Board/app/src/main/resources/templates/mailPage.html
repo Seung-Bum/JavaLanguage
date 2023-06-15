@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<style type="text/css">	
+
+	.contact-form-wrapper {
+	  margin:50px auto;
+	  width: 600px;
+	  }
+	  .title {
+	    margin-bottom:30px;
+	  }
+	  h1 {
+	    font-size:18px;
+	    text-transform: uppercase;
+	    font-weight:bold;
+	  }
+	  p {
+	    font-size:14px;
+	    color: #777;
+	  }
+	  
+	  .form-control {
+	  	outline: none;
+	  	margin:10px auto;
+	  	width: 600px;
+	  }
+	  
+	  input {
+	    border-radius:10px;
+	    height:50px;
+	    font-size:12px;
+	    color:#999;
+	  } 
+	  textarea {	  
+	    border-radius:10px;
+	    font-size:12px;
+	    color:#999;
+	  }
+	  .submit-button {
+	    background: #00AEEF;
+	    color:#fff;
+	    font-size:12px;
+	    text-transform:uppercase;
+	    font-weight:bold;
+	    letter-spacing:1px;
+	  }
+</style>
+
+<title>Mail</title>
+</head>
+<body>
+	<div class="contact-form-wrapper">
+	   <div class="title">
+	     <h1>Say hello.</h1>
+	      <p>
+	     	If you have any suggestions, please send us an email.
+	      </p>
+	   </div>
+	  
+			<form action="/examples/media/action_target.php">
+			    이름 : <input type="text" name="st_name"><br>
+			    학번 : <input type="text" name="st_id"><br>
+			    학과 : <input type="text" name="department"><br>
+			    <input type="submit">
+			</form>
+	  
+	</div>
+</body>
+</html>
