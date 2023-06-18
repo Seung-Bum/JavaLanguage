@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import com.items.domain.Member;
 
 @Mapper
-public interface LoginDao {
-	Member loginUserAuth(Map<String, String> map); // login 정보가 일치하면 User 데이터 리턴
+public interface MailDao {
+	Member loginMailAuth(String email); // mail 보내기전 로그인 인증필요
 }

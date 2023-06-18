@@ -52,21 +52,29 @@
 <title>Mail</title>
 </head>
 <body>
+
+<script th:if="${mailSuccessYn == 'Y'}" th:inline="javascript">
+    alert('메일 전송성공');
+</script>
+
+<script th:if="${mailSuccessYn == 'N'}" th:inline="javascript">
+    alert('가입하신 메일을 다시 한번 점검해주세요.');
+</script>
+
 	<div class="contact-form-wrapper">
 	   <div class="title">
 	     <h1>Say hello.</h1>
 	      <p>
-	     	If you have any suggestions, please send us an email.
+	     	Feel free to use email.
 	      </p>
 	   </div>
-	  
-			<form action="/examples/media/action_target.php">
-			    이름 : <input type="text" name="st_name"><br>
-			    학번 : <input type="text" name="st_id"><br>
-			    학과 : <input type="text" name="department"><br>
-			    <input type="submit">
-			</form>
-	  
+	   			<input type="text" placeholder="발신자 Email" class="form-control" name="email" id="email" th:value="${sendMailUser}" required><br>
+			<form th:action="@{/mail/sendmail}" method="post" id="contact-form" class="contact-form">				
+			    <input type="email" placeholder="수신자 Email" class="form-control" name="email" id="email" required><br>
+			    <input type="text" placeholder="Subject" class="form-control" name="subject" id="subject" required><br>
+			    <textarea rows="6" placeholder="Message" class="form-control" name="message" id="message" required></textarea>
+			    <input type="submit" id="contact-submit" class="btn btn-default submit-button" value="Send Message">
+			</form>	  	
 	</div>
 </body>
 </html>

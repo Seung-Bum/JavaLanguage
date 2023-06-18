@@ -17,5 +17,3 @@ spring.thymeleaf.suffix=.html
 #image import
 file.connectPath=/connect/**
 file.resourcePath=file:///C:/app/
-
-#mail login

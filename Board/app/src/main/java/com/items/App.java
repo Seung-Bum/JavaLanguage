@@ -17,14 +17,4 @@ public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
-    
-    @RequestMapping("/hello")
-    String Hello() {
-      return "Hello World!";
-    }
-
-	public Object getGreeting() {
-		return "Hello World!";
-	}
-
 }

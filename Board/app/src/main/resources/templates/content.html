@@ -260,11 +260,14 @@
 <body>
 
 <header class="top-menu con row">
-    <div class="cell-right">
-        <a href="#">Login</a>
+    <span style="text-align:left" th:if="${userID != null}" th:text="${userID}" ></span>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span style="text-align:left" th:if="${userName != null}" th:text="${userName}" ></span>
+    <div class="cell-right">    	
+        <a th:href="@{/login}">Login</a>
         <a href="#">SignUp</a>
         <a th:href="@{/board/list}">List</a>
         <a href="#">Writing</a>
+        <a href="mailPage.html" th:href="@{/mail/write}">Mail</a>
     </div>
 </header>
 
