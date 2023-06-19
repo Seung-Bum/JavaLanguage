@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -128,6 +129,85 @@ public class MailController {
             msg_e.printStackTrace();
         }        
         return "mailPage";
-    }   
+    }
+	
+	@PostMapping("/sendmailScheduled")
+	@Scheduled(cron = "0 58 22 * * ?") // 초 분 시 일 월 요일
+	public void sendPlainTextEmailScheduled() { 	
+		
+    	String user_id = "pkapka_@naver.com"; // 발신자 메일 
+    	String email = "hlpark0209@naver.com";
+    	String subject = "예약메일 발송";
+    	String message = "예약메일을 발송합니다.";
+    	
+    	log.info("메일 스케줄러 - 수신자 메일 : " + email + "발신자 메일 : " + user_id);
+    	
+        Properties p = System.getProperties();
+        p.put("mail.smtp.starttls.enable", "true");     // gmail은 true 고정
+        p.put("mail.smtp.host", "smtp.naver.com");      // smtp 서버 주소
+        p.put("mail.smtp.auth","true");                 // gmail은 true 고정
+        p.put("mail.smtp.port", "587");                 // 네이버 포트
+        log.info("smtp 설정");
+        
+        class MyAuthentication extends Authenticator {            
+            PasswordAuthentication pa;
+            
+            public MyAuthentication(String idPram){
+                String id = idPram;  //네이버 이메일 아이디
+                String pw = mailService.loginMailAuth(idPram).getPassword();  // DB에서 비밀번호 가져오기
+         
+                // ID와 비밀번호를 입력한다.
+                pa = new PasswordAuthentication(id, pw);
+            }
+         
+            // 시스템에서 사용하는 인증정보
+            public PasswordAuthentication getPasswordAuthentication() {
+                return pa;
+            }
+        }
+                
+        Authenticator auth = new MyAuthentication(user_id);
+        log.info("auth 생성");
+        
+        //session 생성 및 MimeMessage생성
+        Session session = Session.getDefaultInstance(p, auth);
+        MimeMessage msg = new MimeMessage(session);        
+        log.info("session 생성");
+        
+        try{
+            //편지보낸시간
+            msg.setSentDate(new Date());
+            InternetAddress from = new InternetAddress();
+            from = new InternetAddress(user_id); //발신자 아이디            
+            log.info("발신자 설정");
+            
+            // 이메일 발신자
+            msg.setFrom(from);
+            
+            // 이메일 수신자
+            InternetAddress to = new InternetAddress(email);
+            msg.setRecipient(Message.RecipientType.TO, to);
+            
+            // 이메일 제목
+            msg.setSubject(subject, "UTF-8");
+            
+            // 이메일 내용
+            msg.setText(message, "UTF-8");
+            
+            // 이메일 헤더
+            msg.setHeader("content-Type", "text/html");
+            
+            //메일보내기
+            javax.mail.Transport.send(msg, msg.getAllRecipients());
+            
+            log.info("mail 발송 완료");
+        }catch (AddressException addr_e) {
+            addr_e.printStackTrace();
+        }catch (MessagingException msg_e) {
+            msg_e.printStackTrace();
+        }catch (Exception msg_e) {
+            msg_e.printStackTrace();
+        }        
+    } 
 
 }
