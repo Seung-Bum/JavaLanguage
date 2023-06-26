@@ -16,6 +16,14 @@ repositories {
 
 dependencies {
   
+  implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+  
+  // REST Template
+  implementation 'org.apache.httpcomponents:httpclient:4.5.7'
+  
   // excel
   // https://mvnrepository.com/artifact/org.apache.poi/poi
   implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
@@ -42,11 +50,7 @@ dependencies {
   
   // log4j2
   implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-  
-  implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-  implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'junit:junit:4.13.2'
