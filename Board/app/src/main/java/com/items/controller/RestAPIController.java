@@ -1,7 +1,7 @@
 package com.items.controller;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,11 +20,22 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.nio.file.Paths;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 @Controller
 public class RestAPIController {
 	
-    @Value("${restapi.Service.Key}")
-    private String SERVICE_KEY;
+    @Value("${restapi.Service.call}")
+    private String SERVICE_CALL;
 	
 	@GetMapping("/restapicall")
 	public String callAPI(Model model) {
@@ -34,42 +45,48 @@ public class RestAPIController {
 		String jsonInString = "";
 		
 		try {
+			// ** restTemplate api 호출해서 응답 받기 **
+			// 실행 안되서 주석함 -> 키관련 에러 발생함
+            //HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            //factory.setConnectTimeout(5000); //타임아웃 설정 5초
+            //factory.setReadTimeout(5000);//타임아웃 설정 5초
+            //RestTemplate restTemplate = new RestTemplate(factory);
+            
+            //HttpHeaders headers = new HttpHeaders();
+            //headers.setContentType(MediaType.APPLICATION_JSON);
+            //headers.add("Content-Type", "application/json"); 
+            //headers.add("Accept-Charset", "UTF-8"); 
+            //HttpEntity<?> entity = new HttpEntity<>(headers);
+            
+			//이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
+            //ResponseEntity<String> resultMap = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
 			
-            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-            factory.setConnectTimeout(5000); //타임아웃 설정 5초
-            factory.setReadTimeout(5000);//타임아웃 설정 5초
-            RestTemplate restTemplate = new RestTemplate(factory);
-            
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.add("Content-Type", "application/json"); 
-            headers.add("Accept-Charset", "UTF-8"); 
-            //headers.set("Accept", "*/*;q=0.9"); // HTTP_ERROR 방지
-            HttpEntity<?> entity = new HttpEntity<>(headers);                                          
-         
-            String frontUrl = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?serviceKey=";
-            String backUrl = "&pageNo=1&numOfRows=10&fctm=202306270000&icaoCode=RKSI"; // icaoCode 국내공항 코드
-            
-            //UriComponents uri = UriComponentsBuilder.fromHttpUrl(frontUrl+SERVICE_KEY+backUrl).build();
-
-            //String encodingKey = URLEncoder.encode(SERVICE_KEY, "UTF-8");
-            //String decodingKey = URLDecoder.decode(SERVICE_KEY, "UTF-8");           
-            
-            String uri = frontUrl+SERVICE_KEY+backUrl;
-            
-            System.out.println(uri);
-            
-            //이 한줄의 코드로 API를 호출해 MAP타입으로 전달 받는다.
-            ResponseEntity<String> resultMap = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
-            
             // HTTP POST 요청에 대한 응답 확인
-            System.out.println("status : " + resultMap.getStatusCode());
-            System.out.println("body : " + resultMap.getBody());
+            //System.out.println("status : " + resultMap.getStatusCode());
+            //System.out.println("body : " + resultMap.getBody());
+                             
+    		StringBuffer output = new StringBuffer();
+    		Process p = Runtime.getRuntime().exec(SERVICE_CALL); // curl 실행결과
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line = "";
+			
+			while ((line = reader.readLine()) != null) {
+				output.append(line + "\n");
+				//System.out.println(line.toString());
+			}
+			//p.waitFor();
+			String outString = output.toString();
             
+			System.out.println(outString);
+			
             //데이터를 제대로 전달 받았는지 확인 string형태로 파싱해줌
             //ObjectMapper mapper = new ObjectMapper();
             //jsonInString = mapper.writeValueAsString(resultMap.getBody());
-            
+			
+			
+			
+			
+			
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             System.out.println(e.getRawStatusCode());
             System.out.println(e.getStatusText()); 
