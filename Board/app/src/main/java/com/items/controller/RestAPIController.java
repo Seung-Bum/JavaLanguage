@@ -7,35 +7,17 @@ import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.File;
-import java.nio.file.Paths;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 @Controller
 public class RestAPIController {
 	
     @Value("${restapi.Service.call}")
-    private String SERVICE_CALL;
+    private String SERVICE_CALL;	
 	
 	@GetMapping("/restapicall")
 	public String callAPI(Model model) {
@@ -78,6 +60,14 @@ public class RestAPIController {
 			String outString = output.toString();
             
 			System.out.println(outString);
+            
+			// 저 위에걸 받을 생각하지말고 엑셀파일 부터 만들자
+			
+			
+			
+			
+			
+			
 			
             //데이터를 제대로 전달 받았는지 확인 string형태로 파싱해줌
             //ObjectMapper mapper = new ObjectMapper();

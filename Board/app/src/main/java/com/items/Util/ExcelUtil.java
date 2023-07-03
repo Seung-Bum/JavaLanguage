@@ -6,15 +6,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Component
+@RequestMapping("/ecxel")
 public class ExcelUtil {
 	
 	@SuppressWarnings("resource") // 닫기 가능 유형의 자원 사용에 관련된 경고 억제
@@ -75,4 +81,75 @@ public class ExcelUtil {
 		return value; 
 	}
 	
+	@GetMapping("/get/excel/users")
+	public void createExcelDownload(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		// 호출 받는것 하고 엑셀 만드는것 하고 분리해야함, 그후에 응답받은 데이터랑 뭉치기
+		
+		final String fileName = "userList.xlsx";
+	    
+		/* 엑셀 그리기 */
+		final String[] colNames = {
+			"No", "성명", "나이", "거주지"
+		};
+		
+		// 헤더 사이즈
+		final int[] colWidths = {
+			3000, 5000, 5000, 3000
+		};
+		
+		final String[] rowData = {
+			"호호호", "하하하", "키키키", "허허허"
+		};
+		
+		//rows
+		int rowCnt = 0;
+		int cellCnt = 0;
+		int listCount = 10; //listData.size();
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("사용자현황");
+		XSSFRow row = sheet.createRow(rowCnt++);
+		
+		try {
+			
+			//헤더 정보 구성
+			for (int i = 0; i < colNames.length; i++) {
+				XSSFCell cell = row.createCell(i);
+				cell.setCellValue(colNames[i]);
+				sheet.setColumnWidth(i, colWidths[i]);	//column width 지정
+			}
+			
+			// row 정보 구성
+			for(String vo : rowData) {
+				cellCnt = 0;
+				row = sheet.createRow(rowCnt++);
+				
+				// 넘버링
+				XSSFCell cell = row.createCell(cellCnt++);
+				cell.setCellValue(listCount--);
+				
+				// 성명
+				cell = row.createCell(cellCnt++);
+				cell.setCellValue(vo);
+				
+				// 나이
+				cell = row.createCell(cellCnt++);
+				cell.setCellValue(vo);
+				
+				// 주소
+				cell = row.createCell(cellCnt++);
+				cell.setCellValue(vo);
+			}
+		
+	    // excel download
+		res.setContentType("application/vnd.ms-excel");
+		workbook.write(res.getOutputStream());
+		
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			workbook.close();
+		}
+	}  
+
 }
