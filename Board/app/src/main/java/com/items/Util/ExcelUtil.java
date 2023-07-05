@@ -81,7 +81,8 @@ public class ExcelUtil {
 		return value; 
 	}
 	
-	@GetMapping("/get/excel/users")
+	// 엑셀 유틸로 가져가서 사용해보기
+	@GetMapping("/get/excel")
 	public void createExcelDownload(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		// 호출 받는것 하고 엑셀 만드는것 하고 분리해야함, 그후에 응답받은 데이터랑 뭉치기
 		
