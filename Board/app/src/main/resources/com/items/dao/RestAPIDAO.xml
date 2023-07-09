@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+  namespace => 인터페이스의 패키지 및 이름과 일치해야 한다.
+ -->
+<mapper namespace="com.items.dao.RestAPIDao">
+
+  <resultMap type="AirInfo" id="AirInfoMap">
+    <result column="ICAO_CODE" property="ICAOCode"/>
+    <result column="AIRPORT_NAME" property="AirPortName"/>
+    <result column="WD" property="WD"/>
+    <result column="WS" property="WS"/>
+    <result column="TA" property="TA"/>
+    <result column="QNH" property="QNH"/>
+  </resultMap>
+
+  <!-- AIR INFO INSERT -->
+  <insert id="insertAirInfo" parameterType="java.util.Map">
+	MERGE
+ 	INTO USER2.AIR_INFO A
+	USING DUAL
+   	ON (A.TMFC = #{ICAOCode})
+   	AND (A.TMFC = #{AirPortName}) 
+   	AND (A.TMFC = #{TMFC})
+ 	WHEN MATCHED THEN
+ 	  UPDATE
+ 	  	 SET A.TMFC = #{TMFC}
+	WHEN NOT MATCHED THEN
+      INSERT (
+      	A.ICAO_CODE, 
+      	A.AIRPORT_NAME, 
+      	A.TMFC
+      	A.WD
+      	A.WS
+      	A.TA
+      	A.QNH
+      )
+      VALUES (
+      	#{ICAOCode}, 
+      	#{AirPortName},
+      	#{TMFC},
+      	#{WD},
+      	#{WS},
+      	#{TA},
+      	#{QNH}
+      )
+  </insert>
+
+ </mapper>

@@ -61,3 +61,4 @@ UPDATE BOARD SET writer = 'user2@daum.net' WHERE NO = 2;
 ALTER TABLE	BOARD ADD photo_image blob;
 
 COMMIT;
+
