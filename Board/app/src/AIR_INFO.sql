@@ -18,31 +18,30 @@ COMMENT ON COLUMN AIR_INFO.WS IS '풍속(노트, kt)';
 COMMENT ON COLUMN AIR_INFO.TA IS '지상 기온(℃)';
 COMMENT ON COLUMN AIR_INFO.QNH IS '기압(0.01inHg)';
 
-MERGE
- INTO USER2.AIR_INFO A
-USING DUAL
-   ON (A.TMFC = #{ICAOCode}) 
-   AND (A.TMFC = #{AirPortName}) 
-   AND (A.TMFC = #{TMFC})
- WHEN MATCHED THEN
+	MERGE INTO USER2.AIR_INFO A
+	USING DUAL
+    ON (A.ICAO_CODE = #{icaoCode})
+    AND (A.AIRPORT_NAME = #{airportName})
+    AND (A.TMFC = #{tmFc})
+ 	WHEN MATCHED THEN
  	  UPDATE
- 	  	 SET A.TMFC = #{TMFC}
- WHEN NOT MATCHED THEN
+ 	  	 SET A.TMFC = #{tmFc}
+	WHEN NOT MATCHED THEN
       INSERT (
       	A.ICAO_CODE, 
-      	A.AIRPORT_NAME, 
-      	A.TMFC
-      	A.WD
-      	A.WS
-      	A.TA
+      	A.AIRPORT_NAME,
+      	A.TMFC,
+      	A.WD,
+      	A.WS,
+      	A.TA,
       	A.QNH
       )
       VALUES (
-      	#{ICAOCode}, 
-      	#{AirPortName},
-      	#{TMFC},
-      	#{WD},
-      	#{WS},
-      	#{TA},
-      	#{QNH}
+      	#{icaoCode}, 
+      	#{airportName},
+      	#{tmFc},
+      	#{wd},
+      	#{ws},
+      	#{ta},
+      	#{qnh}
       )

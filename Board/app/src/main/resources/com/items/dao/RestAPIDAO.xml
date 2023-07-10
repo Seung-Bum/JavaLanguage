@@ -18,34 +18,37 @@
   </resultMap>
 
   <!-- AIR INFO INSERT -->
-  <insert id="insertAirInfo" parameterType="java.util.Map">
-	MERGE
- 	INTO USER2.AIR_INFO A
+  <!-- on절에 들어간 컬럼은 update에 들어갈 수 없다. -->
+  <insert id="insertAirInfo" parameterType="java.util.HashMap">
+	MERGE INTO USER2.AIR_INFO A
 	USING DUAL
-   	ON (A.TMFC = #{ICAOCode})
-   	AND (A.TMFC = #{AirPortName}) 
-   	AND (A.TMFC = #{TMFC})
+    ON (A.TMFC = #{tmFc})
  	WHEN MATCHED THEN
  	  UPDATE
- 	  	 SET A.TMFC = #{TMFC}
+ 	  	 SET A.ICAO_CODE = #{icaoCode},
+ 	  	 	A.AIRPORT_NAME = #{airportName},
+	      	A.WD = #{wd},
+	      	A.WS = #{ws},
+	      	A.TA = #{ta},
+	      	A.QNH = #{qnh}
 	WHEN NOT MATCHED THEN
       INSERT (
       	A.ICAO_CODE, 
-      	A.AIRPORT_NAME, 
-      	A.TMFC
-      	A.WD
-      	A.WS
-      	A.TA
+      	A.AIRPORT_NAME,
+      	A.TMFC,
+      	A.WD,
+      	A.WS,
+      	A.TA,
       	A.QNH
       )
       VALUES (
-      	#{ICAOCode}, 
-      	#{AirPortName},
-      	#{TMFC},
-      	#{WD},
-      	#{WS},
-      	#{TA},
-      	#{QNH}
+      	#{icaoCode}, 
+      	#{airportName},
+      	#{tmFc},
+      	#{wd},
+      	#{ws},
+      	#{ta},
+      	#{qnh}
       )
   </insert>
 

@@ -5,5 +5,5 @@ import java.util.HashMap;
 import com.items.domain.Member;
 
 public interface RestAPIService {
-	public void insertAirInfo(HashMap<String, String> param);
+	public void insertAirInfo(HashMap<String, Object> param);
 }

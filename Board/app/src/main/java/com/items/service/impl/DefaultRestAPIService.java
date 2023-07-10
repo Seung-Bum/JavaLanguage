@@ -15,7 +15,7 @@ public class DefaultRestAPIService implements RestAPIService {
 	RestAPIDao restAPIDao;
 
 	@Override
-	public void insertAirInfo(HashMap<String, String> param) {
+	public void insertAirInfo(HashMap<String, Object> param) {
 		restAPIDao.insertAirInfo(param);
 	}
 }
