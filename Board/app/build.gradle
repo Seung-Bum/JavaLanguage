@@ -24,6 +24,9 @@ dependencies {
   // REST Template
   implementation 'org.apache.httpcomponents:httpclient:4.5.7'
   
+  // json-simple
+  implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+  
   // excel
   // https://mvnrepository.com/artifact/org.apache.poi/poi
   implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'

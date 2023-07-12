@@ -1,21 +1,19 @@
 package com.items.controller;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,7 +35,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.items.service.RestAPIService;
 
@@ -133,7 +128,7 @@ public class RestAPIController {
 	}
 	
 	@GetMapping("/restcall")
-	public String restTemplateAPI(Model model) throws ClientProtocolException, IOException {
+	public String restTemplateAPI(Model model) throws Exception {
 		
 		String url = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?pageNo=1&numOfRows=10&fctm=202306300000&icaoCode=RKSI";
 		//String url = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?serviceKey=kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D&pageNo=1&numOfRows=10&fctm=202306290000&icaoCode=RKSI";
@@ -142,35 +137,64 @@ public class RestAPIController {
 		
 		// 해더 만들기 
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		//headers.add("Content-type", "application/x-www-form-urlencoded; charset=utf-8");		
 		//headers.add("Content-type", "text/plain; charset=utf-8");
 		
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("serviceKey", "kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D");
 		
 		// 해더와 바디를 하나의 오브젝트로 만들기
-		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+		HttpEntity<MultiValueMap<String, String>> TokenRequest = new HttpEntity<>(params, headers);
         
 		// Http 요청하고 리턴값을 response 변수로 받기
 		ResponseEntity<String> response = rt.exchange(
-				url, // Host
-				HttpMethod.POST, // Request Method
-				kakaoTokenRequest,	// RequestBody
-				String.class);	// return Object
+			url, // Host
+			HttpMethod.POST, // Request Method
+			TokenRequest,	// RequestBody
+			String.class);	// return Object
 		
         // HTTP POST 요청에 대한 응답 확인
         System.out.println("status : " + response.getStatusCode());
         System.out.println("body : " + response.getBody());
 		
-        // ** json 형태일 경우 parsing 방법 **
-         //ObjectMapper mapper = new ObjectMapper();
-         //try {
-			//jsonInString = mapper.writeValueAsString(resultMap.getBody());
-		//} catch (JsonProcessingException e) {
-		//	log.error(e.getMessage());
-		//}
+		return "login";
+	}
+	
+	@GetMapping("/apicall")
+	public String restTemplateAPIv2(Model model) throws Exception {
+		
+		String url = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?pageNo=1&numOfRows=10&fctm=202306300000&icaoCode=RKSI";
+		
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap<String, Object> map = new HashMap<String, Object>();	
+		String jsonStr = "";
+		
+		map.put("serviceKey", "kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D");
+		//jsonStr = mapper.writerWithDefaultPrettyPrinter();
+		jsonStr = mapper.writeValueAsString(map);
+		StringEntity param = new StringEntity(jsonStr);
+		
+		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+		HttpPost httpPost = new HttpPost(url);
+		//response.addHeader("Content-Type", "application/json; charset=utf-8"); // 응답헤더 설정
+		//response.addHeader("Authorization", "Bearer " + token);
+		//headers.add("Content-Type", "application/json; charset=utf-8");
+		httpPost.setHeader("content-type", "application/json; charset=utf-8");
+		httpPost.setEntity(param);
+		
+		CloseableHttpResponse response = httpClient.execute(httpPost);
+		
+		System.out.println(response.getStatusLine());
+		System.out.println(response.getEntity().getContent().toString());
+		String resJson = EntityUtils.toString(response.getEntity(), "UTF-8");
+		
+		JsonParser jsonParser = new JsonParser();
+		JsonArray jsonArray = new JsonArray();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		(JsonObject) parser.parse(resJson)
+		jsonArray.add(jsonObject);
 		
 		return "login";
 	}
-
 }
