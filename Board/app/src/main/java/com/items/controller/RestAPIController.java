@@ -9,13 +9,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -164,36 +164,67 @@ public class RestAPIController {
 	@GetMapping("/apicall")
 	public String restTemplateAPIv2(Model model) throws Exception {
 		
-		String url = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?pageNo=1&numOfRows=10&fctm=202306300000&icaoCode=RKSI";
+		//String url = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?pageNo=1&numOfRows=10&fctm=202306300000&icaoCode=RKSI";
+		String url = "https://apis.data.go.kr/1360000/AirInfoService/getAirInfo?serviceKey=kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D&pageNo=1&numOfRows=10&fctm=202306290000&icaoCode=RKSI";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		HashMap<String, Object> map = new HashMap<String, Object>();	
 		String jsonStr = "";
 		
-		map.put("serviceKey", "kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D");
-		//jsonStr = mapper.writerWithDefaultPrettyPrinter();
-		jsonStr = mapper.writeValueAsString(map);
-		StringEntity param = new StringEntity(jsonStr);
+		// 인증키 같은 파라미터 넘길때
+		//map.put("serviceKey", "kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D");
+		//jsonStr = mapper.writeValueAsString(map);
+		//StringEntity param = new StringEntity(jsonStr);
 		
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		HttpPost httpPost = new HttpPost(url);
+		HttpGet httpGet = new HttpGet(url);
+		httpGet.setHeader("content-type", "application/json; charset=utf-8");
+		
+		// post 요청시
+		//HttpPost httpPost = new HttpPost(url);
 		//response.addHeader("Content-Type", "application/json; charset=utf-8"); // 응답헤더 설정
 		//response.addHeader("Authorization", "Bearer " + token);
 		//headers.add("Content-Type", "application/json; charset=utf-8");
-		httpPost.setHeader("content-type", "application/json; charset=utf-8");
-		httpPost.setEntity(param);
+		//httpPost.setHeader("content-type", "application/json; charset=utf-8");
+		//httpPost.setEntity(param);
 		
-		CloseableHttpResponse response = httpClient.execute(httpPost);
+		CloseableHttpResponse response = httpClient.execute(httpGet);
+		String resXml = EntityUtils.toString(response.getEntity(), "UTF-8");
 		
-		System.out.println(response.getStatusLine());
-		System.out.println(response.getEntity().getContent().toString());
-		String resJson = EntityUtils.toString(response.getEntity(), "UTF-8");
+		//System.out.println(response.getStatusLine());
+		//System.out.println(resJson);
 		
-		JsonParser jsonParser = new JsonParser();
-		JsonArray jsonArray = new JsonArray();
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		(JsonObject) parser.parse(resJson)
-		jsonArray.add(jsonObject);
+		JSONObject jObject = XML.toJSONObject(resXml);
+		
+		
+		
+		/*
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(resJson);
+		NodeList nodes = doc.getElementsByTagName("items");
+		
+        for (int k = 0; k < nodes.getLength(); k++) {
+            Node node = nodes.item(k);
+            
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                
+                System.out.println(element.getTextContent().indexOf(k));           
+                System.out.println("Stock Symbol: " + getValue("symbol", element));
+                System.out.println("Stock Price: " + getValue("price", element));
+                System.out.println("Stock Quantity: " + getValue("quantity", element));
+            }
+        }*/
+		
+		// json 형태가 아니라 jsonObject로 변경이 어려울듯함
+		//JSONParser jsonParser = new JSONParser();
+		//JSONArray jsonArray = new JSONArray();
+		//HashMap<String, Object> map = new HashMap<String, Object>();
+		//JSONObject jsonObject = (JSONObject) jsonParser.parse(resJson);
+		//jsonArray.add(jsonObject);
+		
+		//System.out.println(jsonArray.get(0).toString());
 		
 		return "login";
 	}
