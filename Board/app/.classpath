@@ -63,6 +63,11 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.json/json/20230618/93e2d3dd9a0fc9e015237a716aadf96f6f46618/json-20230618-sources.jar" kind="lib" path="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.json/json/20230618/1ae16df7d556d02713e241086f878399e99260d6/json-20230618.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml/4.1.2/712cc02d5bbe729d2485a1579f3d8dfc47e25b51/poi-ooxml-4.1.2-sources.jar" kind="lib" path="C:/Users/SeungBum/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml/4.1.2/87d9a22aa9a7dd26e80c360e709f7ee02e32ab3b/poi-ooxml-4.1.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
