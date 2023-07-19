@@ -251,38 +251,45 @@ public class RestAPIController {
 		// 현재 발효중인 공항경보 전문을 출력한다.
 		String url_wrng = "http://amoapi.kma.go.kr/amoApi/wrng";
 		
+		String resXml = httpGetApiCall(url_TAF);		
+		//System.out.println(resXml);
+
+		// xml 형태를 json으로 변경
+		JSONObject jsonObject = XML.toJSONObject(resXml);
+		JSONObject responseJson = (JSONObject) jsonObject.get("response");
+		JSONObject body = (JSONObject) responseJson.get("body");
+		JSONObject items = (JSONObject) body.get("items");
+		JSONObject item = (JSONObject) items.get("item");
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+
+		System.out.println("icaoCode" + item.get("icaoCode"));
+		System.out.println("airportName" + item.get("airportName"));
+		System.out.println("tafMsg" + item.get("tafMsg"));
+		map.put("icaoCode", item.get("icaoCode"));		
+		map.put("airportName", item.get("airportName"));
+		map.put("tafMsg", item.get("tafMsg"));
+		
+		model.addAttribute("resMap", map); 
+		return "content2";
+	}
+	
+   /**
+	 * httpGetApiCall
+	 * @param String url
+	 * @return String Xml
+	 * @ author yang
+	 * @ version 1.0
+	 */
+	public String httpGetApiCall(String url) throws Exception {		
+		
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		HttpGet httpGet = new HttpGet(url_TAF);
+		HttpGet httpGet = new HttpGet(url);
 		httpGet.setHeader("content-type", "application/json; charset=utf-8");
 
 		CloseableHttpResponse response = httpClient.execute(httpGet);
 		String resXml = EntityUtils.toString(response.getEntity(), "UTF-8");
-		System.out.println(resXml);
 		
-		// httpclient 메서드로 만들어 놓기
-
-		// xml 형태를 json으로 변경해서 다루는것이 편하다고함 (json simple 아님)
-//		JSONObject jsonObject = XML.toJSONObject(resXml);
-//		JSONObject responseJson = (JSONObject) jsonObject.get("response");
-//		JSONObject body = (JSONObject) responseJson.get("body");
-//		JSONObject items = (JSONObject) body.get("items");
-//		JSONArray item = (JSONArray) items.get("item");
-//
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		for (int i = 0; i < item.length(); i++) {
-//			JSONObject jsonItem = (JSONObject) item.get(i);
-//			
-//			map.put("tmFc", jsonItem.get("tmFc"));
-//			
-//			System.out.println(jsonItem.get("airportName"));
-//			System.out.println(jsonItem.get("icaoCode"));
-//			System.out.println(jsonItem.get("qnh"));
-//			System.out.println(jsonItem.get("ws"));
-//			System.out.println(jsonItem.get("wd"));
-//			System.out.println(jsonItem.get("ta"));
-//			
-//		}
-		model.addAttribute("text", resXml); 
-		return "content2";
+		return resXml;
 	}
 }
