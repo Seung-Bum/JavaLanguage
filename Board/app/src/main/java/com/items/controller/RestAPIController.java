@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -40,6 +39,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.items.domain.Airport;
 import com.items.service.RestAPIService;
 
 @Controller
@@ -53,6 +53,8 @@ public class RestAPIController {
 
 	@Autowired
 	RestAPIService restAPIService;
+	
+	Airport airport;
 	
    /**
 	 * 국내 공항 이륙예보 API 호출, Domestic airport take-off forecast
@@ -238,8 +240,8 @@ public class RestAPIController {
 	 * @ author yang
 	 * @ version 1.0
 	 */
-	@GetMapping("/xmlToJsonParse")
-	public String xmlToJsonParse(Model model) throws Exception {
+	@GetMapping("/aviationWeatherAPI")
+	public String aviationWeatherAPI(Model model) throws Exception {
 		
 		// ICAO 공항코드를 사용해 국내 공항의 유효한 METAR/SPECI 전문을 조회
 		//String url = "http://amoapi.kma.go.kr/amoApi/metar?icao=RKSI";
@@ -251,7 +253,7 @@ public class RestAPIController {
 		// 현재 발효중인 공항경보 전문을 출력한다.
 		String url_wrng = "http://amoapi.kma.go.kr/amoApi/wrng";
 		
-		String resXml = httpGetApiCall(url_TAF);		
+		String resXml = httpGetApiCall(url_TAF);
 		//System.out.println(resXml);
 
 		// xml 형태를 json으로 변경
@@ -262,12 +264,20 @@ public class RestAPIController {
 		JSONObject item = (JSONObject) items.get("item");
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-
-		System.out.println("icaoCode" + item.get("icaoCode"));
-		System.out.println("airportName" + item.get("airportName"));
-		System.out.println("tafMsg" + item.get("tafMsg"));
-		map.put("icaoCode", item.get("icaoCode"));		
-		map.put("airportName", item.get("airportName"));
+		
+		String tafMsg = (String) item.get("tafMsg");
+		String[] tafMsg_str = tafMsg.split(" ");
+		
+		for(int i=0; i < tafMsg_str.length; i++) {
+			
+			if(tafMsg_str[i].toString().equals("RKSI")) {System.out.println("@인천공항@");}
+			System.out.println(i + " : " + tafMsg_str[i]);
+		}
+		
+		String airport = tafMsg_str[1];
+		String fist_date = tafMsg_str[2];
+		map.put("airport", airport);
+		map.put("fist_date", fist_date.split("/")[0].substring(0, 2) + "시 " + fist_date.split("/")[0].substring(2, 4) + "분");
 		map.put("tafMsg", item.get("tafMsg"));
 		
 		model.addAttribute("resMap", map); 

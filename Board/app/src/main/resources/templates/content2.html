@@ -259,11 +259,27 @@
 </head>
 <body>
 
-
-<span th:text="${resMap.icaoCode}"></span><br>
-<span th:text="${resMap.airportName}"></span><br>
 <span th:text="${resMap.tafMsg}"></span><br>
+<span th:text="${resMap.airport}"></span><br>
+<span th:text="${resMap.fist_date}"></span><br>
 
+
+<label for="date">날짜를 선택하세요:
+  <input type="datetime-local"
+  	     name="date"
+         id="date"
+         max="2077-06-20"
+         min="2077-06-05"
+         value="2077-06-15">
+</label>
+<div id="current_date"></p>
+<script>
+date = new Date();
+year = date.getFullYear();
+month = date.getMonth() + 1;
+day = date.getDate();
+document.getElementById("current_date").innerHTML = month + "/" + day + "/" + year;
+</script>
 
 </body>
 </html>
