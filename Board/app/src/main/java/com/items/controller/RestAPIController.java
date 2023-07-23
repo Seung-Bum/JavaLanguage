@@ -47,24 +47,23 @@ public class RestAPIController {
 
 	@Value("${restapi.Service.call}")
 	private String SERVICE_CALL;
-	
+
 	@Value("${restapi.token}")
 	private String TOKEN;
 
 	@Autowired
 	RestAPIService restAPIService;
-	
+
 	Airport airport;
-	
-   /**
-	 * 국내 공항 이륙예보 API 호출, Domestic airport take-off forecast
-	 * api call을 curl을 통해 실행 후 결과를 받는다.
+
+	/**
+	 * 국내 공항 이륙예보 API 호출, Domestic airport take-off forecast api call을 curl을 통해 실행 후
+	 * 결과를 받는다.
+	 * 
 	 * @param model
-	 * @return String
-	 * @ author yang
-	 * @ version 1.0
+	 * @return String @ author yang @ version 1.0
 	 */
-	@GetMapping("/takeOffForecast/runTimeCall") 
+	@GetMapping("/takeOffForecast/runTimeCall")
 	public String TakeOffForecastRunTimeCall(Model model) {
 
 		final Logger log = LogManager.getLogger(RestAPIController.class);
@@ -118,15 +117,15 @@ public class RestAPIController {
 					Node node = item.item(j);
 					nodeName = node.getNodeName();
 					nodeValue = node.getTextContent();
-					 //log.info(node.getNodeName() + " " + node.getTextContent());
-					 //log.info(nodeName + " " + nodeValue);
+					// log.info(node.getNodeName() + " " + node.getTextContent());
+					// log.info(nodeName + " " + nodeValue);
 
 					if ((nodeName != null || nodeName != "") && (nodeValue != null || nodeValue != "")) {
 						map.put(nodeName, nodeValue);
 						// log.info(nodeName + " " + nodeValue);
 					} else {
 						map.put(nodeName, "null");
-						//restAPIService.insertAirInfo(map);
+						// restAPIService.insertAirInfo(map);
 						// log.info(nodeName + " " + "null");
 					}
 				}
@@ -143,13 +142,12 @@ public class RestAPIController {
 		}
 		return "successPage";
 	}
-	
-   /**
+
+	/**
 	 * restTemplate 연습, 에러발생
+	 * 
 	 * @param model
-	 * @return String
-	 * @ author yang
-	 * @ version 1.0
+	 * @return String @ author yang @ version 1.0
 	 */
 	@GetMapping("/restTemplateAPI")
 	public String restTemplateAPI(Model model) throws Exception {
@@ -187,25 +185,24 @@ public class RestAPIController {
 		return "successPage";
 	}
 
-   /**
-	 * 국내 공항 이륙예보, Domestic airport take-off forecast
-	 * restAPI, XMLtoJson
+	/**
+	 * 국내 공항 이륙예보, Domestic airport take-off forecast restAPI, XMLtoJson
+	 * 
 	 * @param model
-	 * @return String
-	 * @ author yang
-	 * @ version 1.0
+	 * @return String @ author yang @ version 1.0
 	 */
 	@GetMapping("/TakeOffForecast")
 	public String TakeOffForecast(Model model) throws Exception {
 
-		String url = "https://apis.data.go.kr/1360000/AirInfoService/getAirInfo?serviceKey=" + TOKEN + "&pageNo=1&numOfRows=10&fctm=202306290000&icaoCode=RKSI";
+		String url = "https://apis.data.go.kr/1360000/AirInfoService/getAirInfo?serviceKey=" + TOKEN
+				+ "&pageNo=1&numOfRows=10&fctm=202306290000&icaoCode=RKSI";
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.setHeader("content-type", "application/json; charset=utf-8");
 
 		CloseableHttpResponse response = httpClient.execute(httpGet);
 		String resXml = EntityUtils.toString(response.getEntity(), "UTF-8");
-		//System.out.println(resXml);
+		// System.out.println(resXml);
 
 		// xml 형태를 json으로 변경해서 다루는것이 편하다고함 (json simple 아님)
 		JSONObject jsonObject = XML.toJSONObject(resXml);
@@ -217,44 +214,42 @@ public class RestAPIController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		for (int i = 0; i < item.length(); i++) {
 			JSONObject jsonItem = (JSONObject) item.get(i);
-			//System.out.println(jsonItem.toString());	
-			
+			// System.out.println(jsonItem.toString());
+
 			map.put("tmFc", jsonItem.get("tmFc"));
-			
+
 			System.out.println(jsonItem.get("airportName"));
 			System.out.println(jsonItem.get("icaoCode"));
 			System.out.println(jsonItem.get("qnh"));
 			System.out.println(jsonItem.get("ws"));
 			System.out.println(jsonItem.get("wd"));
 			System.out.println(jsonItem.get("ta"));
-			
+
 		}
 		return "successPage";
 	}
-	
-   /**
-	 * 항공기상정보, Aviation weather information
-	 * restAPI, XMLtoJson
+
+	/**
+	 * 항공기상정보, Aviation weather information restAPI, XMLtoJson
+	 * 
 	 * @param model
-	 * @return String
-	 * @ author yang
-	 * @ version 1.0
+	 * @return String @ author yang @ version 1.0
 	 */
 	@GetMapping("/aviationWeatherAPI")
 	public String aviationWeatherAPI(Model model) throws Exception {
-		
+
 		// ICAO 공항코드를 사용해 국내 공항의 유효한 METAR/SPECI 전문을 조회
-		//String url = "http://amoapi.kma.go.kr/amoApi/metar?icao=RKSI";
-		
-		// ICAO 공항코드를 사용해 국내 공항의 유효한 TAF 전문을 조회
+		// String url = "http://amoapi.kma.go.kr/amoApi/metar?icao=RKSI";
+
+		// ICAO 공항코드를 사용해 국내 공항의 유효한 TAF 전문을 조회 (인천공항 고정)
 		// 6~30 시간의 유효 시간을 갖고 있으며 1일 4회 보고한다.
 		String url_TAF = "http://amoapi.kma.go.kr/amoApi/taf?icao=RKSI";
-		
+
 		// 현재 발효중인 공항경보 전문을 출력한다.
-		String url_wrng = "http://amoapi.kma.go.kr/amoApi/wrng";
-		
+		//String url_wrng = "http://amoapi.kma.go.kr/amoApi/wrng";
+
 		String resXml = httpGetApiCall(url_TAF);
-		//System.out.println(resXml);
+		// System.out.println(resXml);
 
 		// xml 형태를 json으로 변경
 		JSONObject jsonObject = XML.toJSONObject(resXml);
@@ -264,42 +259,73 @@ public class RestAPIController {
 		JSONObject item = (JSONObject) items.get("item");
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		
+
 		String tafMsg = (String) item.get("tafMsg");
-		String[] tafMsg_str = tafMsg.split(" ");
+		String[] tafMsg_str = tafMsg.split("\n");
+		String[] tafMsg_str_array = {};
+		String taf = "";
 		
-		for(int i=0; i < tafMsg_str.length; i++) {
-			
-			if(tafMsg_str[i].toString().equals("RKSI")) {System.out.println("@인천공항@");}
+		for (int i = 0; i < tafMsg_str.length; i++) {			
+			tafMsg_str_array = tafMsg_str[i].trim().split(" ");
 			System.out.println(i + " : " + tafMsg_str[i]);
+			
+			for(int j=0; j < tafMsg_str_array.length; j++) { 
+				//System.out.println(j + " : " + tafMsg_str_array[j]); 
+				
+				if (i == 0) { // TAF COR RKSI 231205Z 2312/2418 19007KT 2000 BR SCT005 BKN020
+					taf = tafMsg_str_array[j].toString();
+					
+					if(taf.equals("RKSI")) { // airport
+						map.put("airport", "인천공항"); 
+					}
+					if(taf.indexOf("Z") != -1) {						
+						String createDay = taf.substring(0,2); // day
+						String createTime = taf.substring(2,4); // time
+						String createMinute = taf.substring(4,6); // minute
+						map.put("createTime", createDay + "일 " + createTime + ":" + createMinute); 
+					}
+					if(taf.indexOf("/") != -1) {
+						// 유효시간 - 30시간
+						String[] available_day = taf.split("/");
+						map.put("availableDay", available_day[0].substring(0, 2) + "/" + available_day[0].substring(2, 4) + " ~ " + 
+								available_day[1].substring(0, 2) + "/" + available_day[1].substring(2, 4));
+					}
+					if(taf.indexOf("KT") != -1) {
+						map.put("azimuth", taf.substring(0, 3)); // 방위각
+						map.put("Knots", taf.substring(3, 5)); // Knots
+					}
+				}
+
+			}			
 		}
+
 		
-		String airport = tafMsg_str[1];
-		String fist_date = tafMsg_str[2];
-		map.put("airport", airport);
-		map.put("fist_date", fist_date.split("/")[0].substring(0, 2) + "시 " + fist_date.split("/")[0].substring(2, 4) + "분");
-		map.put("tafMsg", item.get("tafMsg"));
-		
-		model.addAttribute("resMap", map); 
+
+		// String fist_date = tafMsg_str[2];
+
+		// map.put("fist_date", fist_date.split("/")[0].substring(0, 2) + "시 " +
+		// fist_date.split("/")[0].substring(2, 4) + "분");
+		// map.put("tafMsg", item.get("tafMsg"));
+
+		model.addAttribute("resMap", map);
 		return "content2";
 	}
-	
-   /**
+
+	/**
 	 * httpGetApiCall
+	 * 
 	 * @param String url
-	 * @return String Xml
-	 * @ author yang
-	 * @ version 1.0
+	 * @return String Xml @ author yang @ version 1.0
 	 */
-	public String httpGetApiCall(String url) throws Exception {		
-		
+	public String httpGetApiCall(String url) throws Exception {
+
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.setHeader("content-type", "application/json; charset=utf-8");
 
 		CloseableHttpResponse response = httpClient.execute(httpGet);
 		String resXml = EntityUtils.toString(response.getEntity(), "UTF-8");
-		
+
 		return resXml;
 	}
 }
