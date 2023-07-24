@@ -267,7 +267,7 @@ public class RestAPIController {
 		
 		for (int i = 0; i < tafMsg_str.length; i++) {			
 			tafMsg_str_array = tafMsg_str[i].trim().split(" ");
-			System.out.println(i + " : " + tafMsg_str[i]);
+			System.out.println(i + " : " + tafMsg_str[i].trim());
 			
 			for(int j=0; j < tafMsg_str_array.length; j++) { 
 				//System.out.println(j + " : " + tafMsg_str_array[j]); 
@@ -293,6 +293,16 @@ public class RestAPIController {
 					if(taf.indexOf("KT") != -1) {
 						map.put("azimuth", taf.substring(0, 3)); // 방위각
 						map.put("Knots", taf.substring(3, 5)); // Knots
+					}
+					if(taf.equals("CAVOK")) {
+						map.put("CAVOK", "시정 양호"); // 강수나 뇌우도 없고 기타 특별한 일기상황이 없을 때
+					}
+				}
+				if (i == 1) { // TN24/2419Z TX29/2505Z
+					taf = tafMsg_str_array[j].toString();
+					
+					if(taf.indexOf("KT")) {
+						
 					}
 				}
 
