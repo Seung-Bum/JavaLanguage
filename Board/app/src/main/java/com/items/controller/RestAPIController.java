@@ -296,13 +296,18 @@ public class RestAPIController {
 					}
 					if(taf.equals("CAVOK")) {
 						map.put("CAVOK", "시정 양호"); // 강수나 뇌우도 없고 기타 특별한 일기상황이 없을 때
+					} else 
+						map.put("CAVOK", " ");
 					}
 				}
 				if (i == 1) { // TN24/2419Z TX29/2505Z
 					taf = tafMsg_str_array[j].toString();
 					
-					if(taf.indexOf("KT")) {
-						
+					if(taf.indexOf("TN") != -1) {
+						map.put("minimumTemper", taf.substring(2, 4) + "°C");
+					}
+					if(taf.indexOf("TX") != -1) {
+						map.put("highestTemper", taf.substring(2, 4) + "°C");
 					}
 				}
 
