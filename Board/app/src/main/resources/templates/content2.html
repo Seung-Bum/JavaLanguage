@@ -259,16 +259,19 @@
 </head>
 <body>
 
-<span>실시간 공항 기상예보</span><br>
+<span>실시간 인천공항 기상예보</span><br>
 <span th:text="${resMap.airport}"></span><br>
 <span th:text="|최초예보 : ${resMap.createTime}|"></span><br>
 <span th:text="|예보 유효시간 : ${resMap.availableDay}|"></span><br>
+<span th:text="|가시거리 : ${sight}m|"></span><br>
 <span th:text="|방위각 : ${resMap.azimuth}|"></span><br>
-<span th:text="|풍속 : ${resMap.Knots}Knots|"></span><br>
-<span th:text="|기상상태 : ${resMap.CAVOK}|"></span><br>
+<span th:text="|풍속 : ${resMap.Knots1}Knots|"></span><br>
 <span th:text="|최저온도 : ${resMap.minimumTemper}|"></span><br>
 <span th:text="|최고온도 : ${resMap.highestTemper}|"></span><br>
-
+<span th:text="|${resMap.CAVOK}|"></span><br>
+<br>
+<span th:text="|${resMap.forecastDay}|"></span><br>
+<span th:text="|풍속 : ${resMap.Knots2}Knots|"></span><br>
 
 <!--
 <label for="date">날짜를 선택하세요:

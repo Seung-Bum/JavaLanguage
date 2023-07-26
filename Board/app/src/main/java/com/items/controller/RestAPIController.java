@@ -42,6 +42,8 @@ import org.xml.sax.InputSource;
 import com.items.domain.Airport;
 import com.items.service.RestAPIService;
 
+import java.util.regex.Pattern;
+
 @Controller
 public class RestAPIController {
 
@@ -265,6 +267,8 @@ public class RestAPIController {
 		String[] tafMsg_str_array = {};
 		String taf = "";
 		
+		Pattern p = Pattern.compile("[0-9]+");
+		
 		for (int i = 0; i < tafMsg_str.length; i++) {			
 			tafMsg_str_array = tafMsg_str[i].trim().split(" ");
 			System.out.println(i + " : " + tafMsg_str[i].trim());
@@ -278,44 +282,83 @@ public class RestAPIController {
 					if(taf.equals("RKSI")) { // airport
 						map.put("airport", "인천공항"); 
 					}
+					
 					if(taf.indexOf("Z") != -1) {						
 						String createDay = taf.substring(0,2); // day
 						String createTime = taf.substring(2,4); // time
 						String createMinute = taf.substring(4,6); // minute
 						map.put("createTime", createDay + "일 " + createTime + ":" + createMinute); 
 					}
+					
 					if(taf.indexOf("/") != -1) {
 						// 유효시간 - 30시간
 						String[] available_day = taf.split("/");
-						map.put("availableDay", available_day[0].substring(0, 2) + "/" + available_day[0].substring(2, 4) + " ~ " + 
-								available_day[1].substring(0, 2) + "/" + available_day[1].substring(2, 4));
+						map.put("availableDay", available_day[0].substring(0, 2) + "일 " + available_day[0].substring(2, 4) + "시 ~ " + 
+								available_day[1].substring(0, 2) + "일 " + available_day[1].substring(2, 4) + "시");
 					}
+					
+					// 방위각, 풍속
 					if(taf.indexOf("KT") != -1) {
 						map.put("azimuth", taf.substring(0, 3)); // 방위각
-						map.put("Knots", taf.substring(3, 5)); // Knots
+						
+						String Knots = taf.substring(3, 5); // Knots
+						if (Knots.substring(0, 1) == "0") { 
+							map.put("Knots1", Knots.substring(1, 2)); 
+						} else {
+							map.put("Knots1", Knots); 
+						}
 					}
+					
 					if(taf.equals("CAVOK")) {
 						map.put("CAVOK", "시정 양호"); // 강수나 뇌우도 없고 기타 특별한 일기상황이 없을 때
-					} else 
+					} else {
 						map.put("CAVOK", " ");
+					}
+					
+					if(taf != null && p.matcher(taf).find()){
+						map.put("sight", taf);
 					}
 				}
 				if (i == 1) { // TN24/2419Z TX29/2505Z
 					taf = tafMsg_str_array[j].toString();
-					
+
 					if(taf.indexOf("TN") != -1) {
 						map.put("minimumTemper", taf.substring(2, 4) + "°C");
 					}
 					if(taf.indexOf("TX") != -1) {
 						map.put("highestTemper", taf.substring(2, 4) + "°C");
 					}
+				}				
+				
+				if (i == 2) { // TEMPO 2512/2514 6000 -RA
+					taf = tafMsg_str_array[j].toString();
+					
+					if(taf.indexOf("/") != -1) {
+						String forecastDay = taf.substring(0, 2);
+						String forecastTime = taf.substring(2, 4);
+						String forecastUntilDay = taf.substring(5, 7);
+						String forecastUntilTime = taf.substring(7, 9);
+						map.put("forecastDay", forecastDay + "일 " + forecastTime + "시 ~ " + forecastUntilDay + "일 " + forecastUntilTime + "시");
+					}
+					
+					// 방위각, 풍속
+					if(taf.indexOf("KT") != -1) {
+						map.put("azimuth", taf.substring(0, 3)); // 방위각
+						
+						String Knots = taf.substring(3, 5); // Knots
+						if (Knots.substring(0, 1) == "0") { 
+							map.put("Knots2", Knots.substring(1, 2)); 
+						} else {
+							map.put("Knots2", Knots); 
+						}
+					}
+					
+					
 				}
+			}
 
-			}			
+
 		}
-
-		
-
 		// String fist_date = tafMsg_str[2];
 
 		// map.put("fist_date", fist_date.split("/")[0].substring(0, 2) + "시 " +
@@ -325,6 +368,11 @@ public class RestAPIController {
 		model.addAttribute("resMap", map);
 		return "content2";
 	}
+
+		
+
+
+	
 
 	/**
 	 * httpGetApiCall
