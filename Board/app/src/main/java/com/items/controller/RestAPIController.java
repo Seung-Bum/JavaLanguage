@@ -1,7 +1,5 @@
 package com.items.controller;
 
-//import org.json.simple.JSONArray;
-//import org.json.simple.parser.JSONParser;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -38,11 +36,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
 import com.items.domain.Airport;
 import com.items.service.RestAPIService;
-
-import java.util.regex.Pattern;
 
 @Controller
 public class RestAPIController {
@@ -55,7 +50,9 @@ public class RestAPIController {
 
 	@Autowired
 	RestAPIService restAPIService;
-
+	
+	static final Logger log = LogManager.getLogger(RestAPIController.class);
+	
 	Airport airport;
 
 	/**
@@ -68,9 +65,9 @@ public class RestAPIController {
 	@GetMapping("/takeOffForecast/runTimeCall")
 	public String TakeOffForecastRunTimeCall(Model model) {
 
-		final Logger log = LogManager.getLogger(RestAPIController.class);
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		String jsonInString = "";
+		
+		//HashMap<String, Object> result = new HashMap<String, Object>();
+		//String jsonInString = "";
 
 		try {
 			// Curl 프로세스 실행
@@ -157,7 +154,6 @@ public class RestAPIController {
 		String url = "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?pageNo=1&numOfRows=10&fctm=202306300000&icaoCode=RKSI";
 		// String url =
 		// "http://apis.data.go.kr/1360000/AirInfoService/getAirInfo?serviceKey=kry52Qun7PJGODw51SGulaC5UitRsf1%2Bhts8gSWXpb7zYRfruRDZIB%2F5cXiWZk0oGSClTajuFU9bOul9kuYP5g%3D%3D&pageNo=1&numOfRows=10&fctm=202306290000&icaoCode=RKSI";
-		final Logger log = LogManager.getLogger(RestAPIController.class);
 		RestTemplate rt = new RestTemplate();
 
 		// 해더 만들기
@@ -230,7 +226,7 @@ public class RestAPIController {
 		}
 		return "successPage";
 	}
-
+	
 	/**
 	 * 항공기상정보, Aviation weather information restAPI, XMLtoJson
 	 * 
@@ -261,13 +257,12 @@ public class RestAPIController {
 		JSONObject item = (JSONObject) items.get("item");
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		HashMap<String, Object> map2 = new HashMap<String, Object>();
 
 		String tafMsg = (String) item.get("tafMsg");
-		String[] tafMsg_str = tafMsg.split("\n");
 		String[] tafMsg_str_array = {};
+		String[] tafMsg_str = tafMsg.split("\n");
 		String taf = "";
-		
-		Pattern p = Pattern.compile("[0-9]+");
 		
 		for (int i = 0; i < tafMsg_str.length; i++) {			
 			tafMsg_str_array = tafMsg_str[i].trim().split(" ");
@@ -276,13 +271,16 @@ public class RestAPIController {
 			for(int j=0; j < tafMsg_str_array.length; j++) { 
 				//System.out.println(j + " : " + tafMsg_str_array[j]); 
 				
-				if (i == 0) { // TAF COR RKSI 231205Z 2312/2418 19007KT 2000 BR SCT005 BKN020
+				// line0 - airport, 최초예보, 예보 유효시간, 방위각, knots, 시정양호, 가시거리, 고도, 구름
+				if (i == 0) {
 					taf = tafMsg_str_array[j].toString();
 					
-					if(taf.equals("RKSI")) { // airport
+					// airport
+					if(taf.equals("RKSI")) { 
 						map.put("airport", "인천공항"); 
 					}
 					
+					// 최초예보
 					if(taf.indexOf("Z") != -1) {						
 						String createDay = taf.substring(0,2); // day
 						String createTime = taf.substring(2,4); // time
@@ -290,89 +288,85 @@ public class RestAPIController {
 						map.put("createTime", createDay + "일 " + createTime + ":" + createMinute); 
 					}
 					
+					// 예보 유효시간 - 30시간 유효
 					if(taf.indexOf("/") != -1) {
-						// 유효시간 - 30시간
 						String[] available_day = taf.split("/");
 						map.put("availableDay", available_day[0].substring(0, 2) + "일 " + available_day[0].substring(2, 4) + "시 ~ " + 
 								available_day[1].substring(0, 2) + "일 " + available_day[1].substring(2, 4) + "시");
 					}
 					
-					// 방위각, 풍속
+					// 방위각, knots
 					if(taf.indexOf("KT") != -1) {
-						map.put("azimuth", taf.substring(0, 3)); // 방위각
+						// 방위각
+						map.put("azimuth", taf.substring(0, 3)); 
 						
-						String Knots = taf.substring(3, 5); // Knots
+						// Knots
+						String Knots = taf.substring(3, 5); 
 						if (Knots.substring(0, 1) == "0") { 
-							map.put("Knots1", Knots.substring(1, 2)); 
+							map.put("Knots", Knots.substring(1, 2)); 
 						} else {
-							map.put("Knots1", Knots); 
+							map.put("Knots", Knots); 
 						}
 					}
 					
+					// 시정양호 : 강수나 뇌우도 없고 기타 특별한 일기상황이 없을 때
 					if(taf.equals("CAVOK")) {
-						map.put("CAVOK", "시정 양호"); // 강수나 뇌우도 없고 기타 특별한 일기상황이 없을 때
+						map.put("CAVOK", "*강수나 뇌우도 없고 기타 특별한 일기 상황이 없음"); 
 					} else {
-						map.put("CAVOK", " ");
+						map.put("CAVOK", "none");
+					}
+					// 운영상 중요한 구름 없고, 수직시정에 제한 없음
+					if(taf.equals("NSC")) {
+						map.put("NSC", "운영상 중요한 구름 없고, 수직시정에 제한 없음");
+					} else {
+						map.put("NSC", "none");
 					}
 					
-					if(taf != null && p.matcher(taf).find()){
+					// 가시거리
+					if (isNumeric(taf)) {
 						map.put("sight", taf);
 					}
+					
+					// 고도, 구름
+					if(taf.substring(0, 3).equals("FEW")) {
+						map.put("cloudFEW", taf.substring(4, 6) + "00ft" + " 구름 조금"); 
+					} else {
+						map.put("cloudFEW", "none");
+					}			
+					if(taf.substring(0, 3).equals("SCT")) {
+						map.put("cloudSCT", taf.substring(4, 6) + "00ft" + " 구름 보통");
+					} else {
+						map.put("cloudSCT", "none");
+					}					
 				}
-				if (i == 1) { // TN24/2419Z TX29/2505Z
+				
+				// line1 - 최저기온, 최고기온
+				if (i == 1) {
 					taf = tafMsg_str_array[j].toString();
-
+					
+					// 최저기온
 					if(taf.indexOf("TN") != -1) {
 						map.put("minimumTemper", taf.substring(2, 4) + "°C");
 					}
+					
+					// 최고기온
 					if(taf.indexOf("TX") != -1) {
 						map.put("highestTemper", taf.substring(2, 4) + "°C");
 					}
-				}				
+				} 				
 				
-				if (i == 2) { // TEMPO 2512/2514 6000 -RA
-					taf = tafMsg_str_array[j].toString();
-					
-					if(taf.indexOf("/") != -1) {
-						String forecastDay = taf.substring(0, 2);
-						String forecastTime = taf.substring(2, 4);
-						String forecastUntilDay = taf.substring(5, 7);
-						String forecastUntilTime = taf.substring(7, 9);
-						map.put("forecastDay", forecastDay + "일 " + forecastTime + "시 ~ " + forecastUntilDay + "일 " + forecastUntilTime + "시");
-					}
-					
-					// 방위각, 풍속
-					if(taf.indexOf("KT") != -1) {
-						map.put("azimuth", taf.substring(0, 3)); // 방위각
-						
-						String Knots = taf.substring(3, 5); // Knots
-						if (Knots.substring(0, 1) == "0") { 
-							map.put("Knots2", Knots.substring(1, 2)); 
-						} else {
-							map.put("Knots2", Knots); 
-						}
-					}
-					
-					
+				if (i == 2) {
+					model.addAttribute("resMap2", aviationWeatherInfo(j, taf, tafMsg_str_array, map2));
 				}
-			}
+				
+			
+			}// line
+		}// line bundle
 
-
-		}
-		// String fist_date = tafMsg_str[2];
-
-		// map.put("fist_date", fist_date.split("/")[0].substring(0, 2) + "시 " +
-		// fist_date.split("/")[0].substring(2, 4) + "분");
-		// map.put("tafMsg", item.get("tafMsg"));
 
 		model.addAttribute("resMap", map);
-		return "content2";
+		return "aviationWeather";
 	}
-
-		
-
-
-	
 
 	/**
 	 * httpGetApiCall
@@ -391,4 +385,95 @@ public class RestAPIController {
 
 		return resXml;
 	}
+	
+	/**
+	 * isNumeric
+	 * 숫자만 있는지 확인
+	 * @param String url
+	 * @return String Xml @ author yang @ version 1.0
+	 */
+    public static boolean isNumeric(String s)
+    {
+        try {
+        	Integer.parseInt(s);
+        } catch (NumberFormatException ex) {
+        	return false;
+        }
+    	return true;
+    }
+
+	/**
+	 * aviationWeatherInfo
+	 * ForeCastDay, 방위각, 풍속, 가시거리, 비 약간, 박무, 시정양호, NSC
+	 * @param int index, String taf, String[] tafMsg_str_array, HashMap<String, Object> map
+	 * @return HashMap<String, Object>
+	 */
+    public HashMap<String, Object> aviationWeatherInfo(int index, String taf, String[] tafMsg_str_array, HashMap<String, Object> map) {
+    	
+		taf = tafMsg_str_array[index].toString();
+		
+		// ForeCastDay
+		if(taf.indexOf("/") != -1) {
+			String forecastDay = taf.substring(0, 2);
+			String forecastTime = taf.substring(2, 4);
+			String forecastUntilDay = taf.substring(5, 7);
+			String forecastUntilTime = taf.substring(7, 9);
+			map.put("forecastDay", forecastDay + "일 " + forecastTime + "시 ~ " + forecastUntilDay + "일 " + forecastUntilTime + "시");
+		}
+		
+		// 방위각, 풍속
+		if(taf.indexOf("KT") != -1) {
+			map.put("azimuth", taf.substring(0, 3)); // 방위각
+			
+			String Knots = taf.substring(3, 5); // Knots
+			if (Knots.substring(0, 1) == "0") { 
+				map.put("Knots", Knots.substring(1, 2)); 
+			} else {
+				map.put("Knots", Knots); 
+			}
+		}
+		
+		// 가시거리
+		if (isNumeric(taf)) {
+			map.put("sight", taf);
+		}			
+		
+		// 비 약간
+		if(taf.equals("-RA")) {
+			map.put("lightRain", "비 약간");
+		}
+		
+		// 박무 : 안개보다 시정이 좋은 상태
+		if(taf.equals("BR")) {
+			map.put("lightRai", "안개보다 시정이 좋은 상태"); 
+		}
+		
+		// 시정양호 : 강수나 뇌우도 없고 기타 특별한 일기상황이 없을 때
+		if(taf.equals("CAVOK")) {
+			map.put("CAVOK", "*강수나 뇌우도 없고 기타 특별한 일기 상황이 없음"); 
+		} else {
+			map.put("CAVOK", "none");
+		}
+		// 운영상 중요한 구름 없고, 수직시정에 제한 없음
+		if(taf.equals("NSC")) {
+			map.put("NSC", "운영상 중요한 구름 없고, 수직시정에 제한 없음");
+		} else {
+			map.put("NSC", "none");
+		}
+		
+		// 고도, 구름
+		if(taf.substring(0, 3).equals("FEW")) {
+			map.put("cloudFEW", taf.substring(4, 6) + "00ft" + " 구름 조금"); 
+		} else {
+			map.put("cloudFEW", "none");
+		}			
+		if(taf.substring(0, 3).equals("SCT")) {
+			map.put("cloudSCT", taf.substring(4, 6) + "00ft" + " 구름 보통");
+		} else {
+			map.put("cloudSCT", "none");
+		}
+		
+		return map;
+    }
+
 }
