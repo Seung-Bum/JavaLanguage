@@ -44,6 +44,24 @@
 <span th:text="|SCT : ${resMap2.cloudSCT}|"></span><br>
 <span th:text="|CAVOK : ${resMap2.CAVOK}|"></span><br>
 <span th:text="|NSC : ${resMap2.NSC}|"></span><br>
+<br>
+
+<span>line3</span><br>
+<span th:text="|${resMap3.forecastDay}|"></span><br>
+<span th:text="|방위각 : ${resMap3.azimuth}|"></span><br>
+<span th:text="|풍속 : ${resMap3.Knots}Knots|"></span><br>
+<script th:inline="javascript">
+	var sight = "${resMap3.sight}";
+	document.target_name3.value = sight;
+</script>
+<span>Sight : </span>
+<span name="target_name3" value=""></span><br>
+<span th:text="|FEW : ${resMap3.cloudFEW}|"></span><br>
+<span th:text="|SCT : ${resMap3.cloudSCT}|"></span><br>
+<span th:text="|CAVOK : ${resMap3.CAVOK}|"></span><br>
+<span th:text="|NSC : ${resMap3.NSC}|"></span><br>
+
+
 
 
 </body>

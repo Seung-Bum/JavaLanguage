@@ -258,6 +258,7 @@ public class RestAPIController {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		HashMap<String, Object> map2 = new HashMap<String, Object>();
+		HashMap<String, Object> map3 = new HashMap<String, Object>();
 
 		String tafMsg = (String) item.get("tafMsg");
 		String[] tafMsg_str_array = {};
@@ -355,9 +356,16 @@ public class RestAPIController {
 					}
 				} 				
 				
+				// line2 - 예보일시, 방위각, 풍속, sight(가시거리), 고도구름(FEW, SCT), CAVOK, NSC
 				if (i == 2) {
 					model.addAttribute("resMap2", aviationWeatherInfo(j, taf, tafMsg_str_array, map2));
 				}
+				
+				// line3 - 예보일시, 방위각, 풍속, sight(가시거리), 고도구름(FEW, SCT), CAVOK, NSC
+				if (i == 3) {
+					model.addAttribute("resMap3", aviationWeatherInfo(j, taf, tafMsg_str_array, map3));
+				}
+				
 				
 			
 			}// line
@@ -410,6 +418,7 @@ public class RestAPIController {
 	 */
     public HashMap<String, Object> aviationWeatherInfo(int index, String taf, String[] tafMsg_str_array, HashMap<String, Object> map) {
     	
+    	// 전체 내용중 한줄씩 parse한 내용을 다시 한 단어씩 parse해서 loop
 		taf = tafMsg_str_array[index].toString();
 		
 		// ForeCastDay
@@ -433,7 +442,7 @@ public class RestAPIController {
 			}
 		}
 		
-		// 가시거리
+		// 가시거리 - 숫자만 있을 경우 가시거리로 판단
 		if (isNumeric(taf)) {
 			map.put("sight", taf);
 		}			
