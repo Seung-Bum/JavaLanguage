@@ -266,11 +266,16 @@ public class RestAPIController {
 		String taf = "";
 		
 		for (int i = 0; i < tafMsg_str.length; i++) {			
-			tafMsg_str_array = tafMsg_str[i].trim().split(" ");
+			tafMsg_str_array = tafMsg_str[i].trim().split(" "); // Line
 			System.out.println(i + " : " + tafMsg_str[i].trim());
 			
 			for(int j=0; j < tafMsg_str_array.length; j++) { 
 				//System.out.println(j + " : " + tafMsg_str_array[j]); 
+				
+				
+				// i 하고 j하고 수정필요함
+				
+				
 				
 				// line0 - airport, 최초예보, 예보 유효시간, 방위각, knots, 시정양호, 가시거리, 고도, 구름
 				if (i == 0) {
@@ -358,12 +363,12 @@ public class RestAPIController {
 				
 				// line2 - 예보일시, 방위각, 풍속, sight(가시거리), 고도구름(FEW, SCT), CAVOK, NSC
 				if (i == 2) {
-					model.addAttribute("resMap2", aviationWeatherInfo(j, taf, tafMsg_str_array, map2));
+					model.addAttribute("resMap2", aviationWeatherInfo(j, tafMsg_str_array, map2));
 				}
 				
 				// line3 - 예보일시, 방위각, 풍속, sight(가시거리), 고도구름(FEW, SCT), CAVOK, NSC
 				if (i == 3) {
-					model.addAttribute("resMap3", aviationWeatherInfo(j, taf, tafMsg_str_array, map3));
+					model.addAttribute("resMap3", aviationWeatherInfo(j, tafMsg_str_array, map3));
 				}
 				
 				
@@ -416,10 +421,11 @@ public class RestAPIController {
 	 * @param int index, String taf, String[] tafMsg_str_array, HashMap<String, Object> map
 	 * @return HashMap<String, Object>
 	 */
-    public HashMap<String, Object> aviationWeatherInfo(int index, String taf, String[] tafMsg_str_array, HashMap<String, Object> map) {
+    public HashMap<String, Object> aviationWeatherInfo(int index, String[] tafMsg_str_array, HashMap<String, Object> map) {
     	
     	// 전체 내용중 한줄씩 parse한 내용을 다시 한 단어씩 parse해서 loop
-		taf = tafMsg_str_array[index].toString();
+		String taf = tafMsg_str_array[index].toString();
+		System.out.println(taf);
 		
 		// ForeCastDay
 		if(taf.indexOf("/") != -1) {
@@ -444,11 +450,13 @@ public class RestAPIController {
 		
 		// 가시거리 - 숫자만 있을 경우 가시거리로 판단
 		if (isNumeric(taf)) {
+			System.out.println("sight");
 			map.put("sight", taf);
 		}			
 		
 		// 비 약간
 		if(taf.equals("-RA")) {
+			System.out.println("dd");
 			map.put("lightRain", "비 약간");
 		}
 		
@@ -475,8 +483,9 @@ public class RestAPIController {
 			map.put("cloudFEW", taf.substring(4, 6) + "00ft" + " 구름 조금"); 
 		} else {
 			map.put("cloudFEW", "none");
-		}			
+		}	
 		if(taf.substring(0, 3).equals("SCT")) {
+			System.out.println("sct");
 			map.put("cloudSCT", taf.substring(4, 6) + "00ft" + " 구름 보통");
 		} else {
 			map.put("cloudSCT", "none");

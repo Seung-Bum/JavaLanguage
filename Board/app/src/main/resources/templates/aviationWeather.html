@@ -6,7 +6,6 @@
 </head>
 <body>
 
-
 <span>line0</span><br>
 <span th:text="|${resMap.airport} 기상예보|"></span><br>
 <span th:text="|최초예보 : ${resMap.createTime}|"></span><br>
@@ -34,6 +33,7 @@
 <span th:text="|${resMap2.forecastDay}|"></span><br>
 <span th:text="|방위각 : ${resMap2.azimuth}|"></span><br>
 <span th:text="|풍속 : ${resMap2.Knots}Knots|"></span><br>
+<span th:text="|우 : ${resMap2.Knots}Knots|"></span><br>
 <script th:inline="javascript">
 	var sight = "${resMap2.sight}";
 	document.target_name2.value = sight;
@@ -60,7 +60,7 @@
 <span th:text="|SCT : ${resMap3.cloudSCT}|"></span><br>
 <span th:text="|CAVOK : ${resMap3.CAVOK}|"></span><br>
 <span th:text="|NSC : ${resMap3.NSC}|"></span><br>
-
+<br>
 
 
 
