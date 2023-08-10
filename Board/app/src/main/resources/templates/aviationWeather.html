@@ -2,31 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>AviationWeatherMailing</title>    
+    <title>AviationWeather Mailing</title>    
 </head>
 <body>
 
 <span>line0</span><br>
-<span th:text="|${resMap.airport} 기상예보|"></span><br>
-<span th:text="|최초예보 : ${resMap.createTime}|"></span><br>
-<span th:text="|예보 유효시간 : ${resMap.availableDay}|"></span><br>
-<span th:text="|방위각 : ${resMap.azimuth}|"></span><br>
-<span th:text="|풍속 : ${resMap.Knots}Knots|"></span><br>
+<span th:text="|${resMap0.airport} 기상예보|"></span><br>
+<span th:text="|최초예보 : ${resMap0.createTime}|"></span><br>
+<span th:text="|예보 유효시간 : ${resMap0.availableDay}|"></span><br>
+<span th:text="|방위각 : ${resMap0.azimuth}|"></span><br>
+<span th:text="|풍속 : ${resMap0.Knots}Knots|"></span><br>
 <script th:inline="javascript">
-	var sight = "${resMap.sight}";
+	var sight = "${resMap0.sight}";
 	document.target_name.value = sight;
 </script>
 <span>Sight : </span>
 <span name="target_name" value=""></span><br>
-<span th:text="|CAVOK : ${resMap.CAVOK}|"></span><br>
-<span th:text="|NSC : ${resMap.NSC}|"></span><br>
-<span th:text="|FEW : ${resMap.cloudFEW}|"></span><br>
-<span th:text="|SCT : ${resMap.cloudSCT}|"></span><br>
+<span th:text="|CAVOK : ${resMap0.CAVOK}|"></span><br>
+<span th:text="|NSC : ${resMap0.NSC}|"></span><br>
+<span th:text="|FEW : ${resMap0.cloudFEW}|"></span><br>
+<span th:text="|SCT : ${resMap0.cloudSCT}|"></span><br>
 <br>
 
 <span>line1</span><br>
-<span th:text="|최저온도 : ${resMap.minimumTemper}|"></span><br>
-<span th:text="|최고온도 : ${resMap.highestTemper}|"></span><br>
+<span th:text="|최저온도 : ${resMap1.minimumTemper}|"></span><br>
+<span th:text="|최고온도 : ${resMap1.highestTemper}|"></span><br>
 <br>
 
 <span>line2</span><br>
