@@ -297,7 +297,7 @@ public class RestAPIController {
 							available_day[1].substring(0, 2) + "일 " + available_day[1].substring(2, 4) + "시"); }
 				else { result0.put("availableDay", " "); }
 				
-				model.addAttribute("resMap0", result0);				
+				//model.addAttribute("resMap0", result0);				
 				//log.info("line0 : result0 - " + result0.toString());
 			}
 			
@@ -306,7 +306,7 @@ public class RestAPIController {
 				log.info("Line1 Start");
 				line1 = tafMsg_str[i].trim().split(" ");
 				HashMap<String, Object> result1 = aviationWeatherInfo(line1, map);
-				model.addAttribute("resMap1", result1);
+				//model.addAttribute("resMap1", result1);
 				//log.info("line1 : result1 - " + result1.toString());
 			} 
 			
@@ -315,7 +315,7 @@ public class RestAPIController {
 				log.info("Line2 Start");
 				line2 = tafMsg_str[i].trim().split(" ");
 				HashMap<String, Object> result2 = aviationWeatherInfo(line2, map);
-				model.addAttribute("resMap2", result2);
+				//model.addAttribute("resMap2", result2);
 				//log.info("line2 : result2 - " + result2.toString());
 			}
 			
@@ -324,7 +324,9 @@ public class RestAPIController {
 //				log.info("Line3 Start");
 //				line3 = tafMsg_str[i].trim().split(" ");
 //				model.addAttribute("resMap3", aviationWeatherInfo(line3, map3));
-//			}			
+//			}
+			
+			model.addAttribute("resMap", map);
 		}
 		log.info("TAF Line Loop End");
 		return "aviationWeather";
@@ -378,27 +380,26 @@ public class RestAPIController {
 			String taf = strArray[i].toString();
 			log.info("taf: " + taf );
 			
+			// 최저기온
+			if(taf.indexOf("TN") == -1) { map.put("minimumTemper", " "); }
+			else { map.put("minimumTemper", taf.substring(2, 4) + "°C"); } 
 			
-//			// 최저기온
-//			if(taf.indexOf("TN") == -1) { map.put("minimumTemper", " "); }
-//			else { map.put("minimumTemper", taf.substring(2, 4) + "°C"); } 
-//			
-//			// 최고기온
-//			if(taf.indexOf("TX") == -1) { map.put("highestTemper", " "); }
-//			else { map.put("highestTemper", taf.substring(2, 4) + "°C"); } 
-//			
-//			// airport
-//			if(taf.indexOf("RKSI") == -1) { map.put("RKSI", " "); }
-//			else { map.put("airport", "인천공항"); } 
-//			
-//			// 최초예보
-//			if(taf.indexOf("Z") == -1 && taf.indexOf("/") != -1) { map.put("createTime", " "); }
-//			else {
-//				String createDay = taf.substring(0,2); // day
-//				String createTime = taf.substring(2,4); // time
-//				String createMinute = taf.substring(4,6); // minute
-//				map.put("createTime", createDay + "일 " + createTime + ":" + createMinute); 
-//			}
+			// 최고기온
+			if(taf.indexOf("TX") == -1) { map.put("highestTemper", " "); }
+			else { map.put("highestTemper", taf.substring(2, 4) + "°C"); } 
+			
+			// airport
+			if(taf.indexOf("RKSI") == -1) { map.put("RKSI", " "); }
+			else { map.put("airport", "인천공항"); } 
+			
+			// 최초예보
+			if( (taf.indexOf("Z") == -1) ) { map.put("createTime", " "); }			
+			else {
+				String createDay = taf.substring(0,2); // day
+				String createTime = taf.substring(2,4); // time
+				String createMinute = taf.substring(4,6); // minute
+				map.put("createTime", createDay + "일 " + createTime + ":" + createMinute); 
+			}
 //			
 //			// ForeCastDay
 //			if(taf.indexOf("/") == -1) { map.put("forecastDay", " "); }

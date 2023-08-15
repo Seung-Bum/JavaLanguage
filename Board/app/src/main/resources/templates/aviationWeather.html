@@ -7,37 +7,38 @@
 <body>
 
 <span>line0</span><br>
-<span th:text="|${resMap0.airport} 기상예보|"></span><br>
-<span th:text="|최초예보 : ${resMap0.createTime}|"></span><br>
-<span th:text="|예보 유효시간 : ${resMap0.availableDay}|"></span><br>
-<span th:text="|방위각 : ${resMap0.azimuth}|"></span><br>
-<span th:text="|풍속 : ${resMap0.Knots} Knots|"></span><br>
-<span>Sight: </span><span th:text="${resMap0.sight}"></span><br>
-<span th:text="|CAVOK : ${resMap0.CAVOK}|"></span><br>
-<span th:text="|NSC : ${resMap0.NSC}|"></span><br>
-<span th:text="|FEW : ${resMap0.FEW}|"></span><br>
-<span th:text="|SCT : ${resMap0.SCT}|"></span><br>
-<span th:text="|비: ${resMap0.littleRA}|"></span><br>
-<span th:text="|비: ${resMap0.RA}|"></span><br>
+<span th:text="|${resMap.airport} 기상예보|"></span><br>
+<span th:text="|최초예보 : ${resMap.createTime}|"></span><br>
+<!-- 
+<span th:text="|예보 유효시간 : ${resMap.availableDay}|"></span><br>
+<span th:text="|방위각 : ${resMap.azimuth}|"></span><br>
+<span th:text="|풍속 : ${resMap.Knots} Knots|"></span><br>
+<span>Sight: </span><span th:text="${resMap.sight}"></span><br>
+<span th:text="|CAVOK : ${resMap.CAVOK}|"></span><br>
+<span th:text="|NSC : ${resMap.NSC}|"></span><br>
+<span th:text="|FEW : ${resMap.FEW}|"></span><br>
+<span th:text="|SCT : ${resMap.SCT}|"></span><br>
+<span th:text="|비: ${resMap.littleRA}|"></span><br>
+<span th:text="|비: ${resMap.RA}|"></span><br>
 
 <br>
 <span>line1</span><br>
-<span th:text="|최저온도 : ${resMap1.minimumTemper}|"></span><br>
-<span th:text="|최고온도 : ${resMap1.highestTemper}|"></span><br>
+<span th:text="|최저온도 : ${resMap.minimumTemper}|"></span><br>
+<span th:text="|최고온도 : ${resMap.highestTemper}|"></span><br>
 <br>
 
 <span>line2</span><br>
-<span th:text="|forecastDay : ${resMap2.forecastDay}|"></span><br>
-<span th:text="|방위각 : ${resMap2.azimuth}|"></span><br>
-<span th:text="|풍속 : ${resMap2.Knots}Knots|"></span><br>
+<span th:text="|forecastDay : ${resMap.forecastDay}|"></span><br>
+<span th:text="|방위각 : ${resMap.azimuth}|"></span><br>
+<span th:text="|풍속 : ${resMap.Knots}Knots|"></span><br>
 <span>Sight: </span><span th:text="${resMap2.sight}"></span><br>
-<span th:text="|FEW : ${resMap2.FEW}|"></span><br>
-<span th:text="|SCT : ${resMap2.SCT}|"></span><br>
-<span th:text="|CAVOK : ${resMap2.CAVOK}|"></span><br>
-<span th:text="|NSC : ${resMap2.NSC}|"></span><br>
+<span th:text="|FEW : ${resMap.FEW}|"></span><br>
+<span th:text="|SCT : ${resMap.SCT}|"></span><br>
+<span th:text="|CAVOK : ${resMap.CAVOK}|"></span><br>
+<span th:text="|NSC : ${resMap.NSC}|"></span><br>
 <br>
 
-<!-- 
+
 <span>line3</span><br>
 <span th:text="|${resMap3.forecastDay}|"></span><br>
 <span th:text="|방위각 : ${resMap3.azimuth}|"></span><br>
