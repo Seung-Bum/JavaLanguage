@@ -1,4 +1,3 @@
---user2¿¡ Å×ÀÌºí »ý¼º ±ÇÇÑÀº ÀÖÀ¸³ª µ¥ÀÌÅÍ insert¿¡ ´ëÇÑ ±ÇÇÑÀÌ ¾øÀ» °æ¿ì ¾Æ·¡ Äõ¸®¹® ½ÇÇà
 --ALTER USER user2 DEFAULT TABLESPACE USERS QUOTA UNLIMITED ON USERS;
 
 CREATE TABLE MEMBER
@@ -32,28 +31,27 @@ ALTER TABLE BOARD ADD PRIMARY KEY (NO);
 ALTER TABLE review ADD CONSTRAINT board_no FOREIGN key(board_no) REFERENCES board (NO);
 ALTER TABLE review ADD CONSTRAINT member_no FOREIGN key(member_no) REFERENCES member (NO);
 
--- ÀÚµ¿Áõ°¡
 --ALTER TABLE auto_test MODIFY id INT NOT NULL AUTO_INCREMENT;
 
---member ÀÔ·Â
+--member
 INSERT INTO MEMBER (NO, name, email, password, registDate)
 VALUES(1, 'user1', 'user1@naver.com', '1234', to_date('2023-05-01 00:30:30', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO MEMBER (NO, name, email, password, registDate)
 VALUES(2, 'user2', 'user2@daum.net', '1234', sysdate);
 
--- board ÀÔ·Â
+-- board
 INSERT INTO BOARD (NO, title, content, viewCount, createDate, writer)
-VALUES(1, '°Ô½Ã±Û Ã³À½¿Ã¸²', '¾È³çÇÏ¼¼¿ä ±Û Ã³À½ ¿Ã·Áº¸³×¿ä', 0, sysdate);
+VALUES(1, 'ï¿½Ô½Ã±ï¿½ Ã³ï¿½ï¿½ï¿½Ã¸ï¿½', 'ï¿½È³ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ï¿½×¿ï¿½', 0, sysdate);
 INSERT INTO BOARD (NO, title, content, viewCount, createDate)
-VALUES(2, '°Ô½Ã±Û ¿Ã¸³´Ï´Ù.', 'È£È£È£ ¹Ý°©½À´Ï´Ù.', 0, sysdate);
+VALUES(2, 'ï¿½Ô½Ã±ï¿½ ï¿½Ã¸ï¿½ï¿½Ï´ï¿½.', 'È£È£È£ ï¿½Ý°ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.', 0, sysdate);
 
--- review ÀÔ·Â
+-- review
 INSERT INTO review (NO, BOARD_NO, MEMBER_NO, REVIEW_CONTENT)
-VALUES(1, 1, 1, '´ñ±ÛÀ» ³²°Ü¿ä');
+VALUES(1, 1, 1, 'ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ü¿ï¿½');
 INSERT INTO review (NO, BOARD_NO, MEMBER_NO, REVIEW_CONTENT)
-VALUES(2, 1, 1, '´ñ±ÛÀ» ¶Ç ³²°Ü¿ä');
+VALUES(2, 1, 1, 'ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ü¿ï¿½');
 INSERT INTO review (NO, BOARD_NO, MEMBER_NO, REVIEW_CONTENT)
-VALUES(3, 1, 2, 'Àú´Â user2 ÀÔ´Ï´Ù. ¹Ý°©½À´Ï´Ù.');
+VALUES(3, 1, 2, 'ï¿½ï¿½ï¿½ï¿½ user2 ï¿½Ô´Ï´ï¿½. ï¿½Ý°ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.');
 
 UPDATE BOARD SET writer = 'user1@naver.com' WHERE NO = 1;
 UPDATE BOARD SET writer = 'user2@daum.net' WHERE NO = 2;

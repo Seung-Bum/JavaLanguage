@@ -51,5 +51,33 @@
       	#{qnh}
       )
   </insert>
-
+  
+  <insert id="insertDepartureData" parameterType="java.util.HashMap">
+	MERGE INTO USER2.USER_INFO A
+	USING DUAL
+    ON (A.EMAIL = #{email})
+ 	WHEN MATCHED THEN
+ 	  UPDATE
+ 	  	 SET A.UPDATE_DATE = SYSDATE,
+ 	  	 	A.DEPARTURE_DATE = #{departureDate}
+	WHEN NOT MATCHED THEN
+      INSERT (
+      	A.SEQ,
+      	A.EMAIL, 
+      	A.DEPARTURE_DATE,
+      	A.CREATE_DATE,
+      	A.UPDATE_DATE
+      )
+      VALUES (
+      	#{seq},
+      	#{email},
+      	#{departureDate},
+      	SYSDATE,
+      	SYSDATE
+      )
+  </insert>
+ 
+  <select id="departureDataSeq" resultType="java.util.HashMap">
+	SELECT MAX(SEQ) AS SEQ FROM USER2.USER_INFO
+  </select>
  </mapper>

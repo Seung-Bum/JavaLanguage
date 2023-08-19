@@ -18,4 +18,19 @@ public class DefaultRestAPIService implements RestAPIService {
 	public void insertAirInfo(HashMap<String, Object> param) {
 		restAPIDao.insertAirInfo(param);
 	}
+	
+	@Override
+	public void insertDepartureData(HashMap<String, Object> param) {
+		restAPIDao.insertDepartureData(param);
+	}
+
+	@Override
+	public HashMap<String, Object> departureDataSeq() {
+		return restAPIDao.departureDataSeq();		
+	}
+	
+//	@Override
+//	public HashMap<String, Object> selectDepartureData(HashMap<String, Object> param) {
+//		return restAPIDao.selectDepartureData(param);
+//	}
 }
