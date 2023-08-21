@@ -47,20 +47,21 @@ import com.items.service.RestAPIService;
 
 @Controller
 public class RestAPIController {
+	
+	static final Logger log = LogManager.getLogger(RestAPIController.class);
 
 	@Value("${restapi.Service.call}")
 	private String SERVICE_CALL;
-
+	
 	@Value("${restapi.token}")
 	private String TOKEN;
 
 	@Autowired
 	RestAPIService restAPIService;
 	
-	static final Logger log = LogManager.getLogger(RestAPIController.class);
-	
 	Airport airport;
-
+	
+	// 사용안함
 	/**
 	 * 국내 공항 이륙예보 API 호출, Domestic airport take-off forecast api call을 curl을 통해 실행 후
 	 * 결과를 받는다.
@@ -147,7 +148,8 @@ public class RestAPIController {
 		}
 		return "successPage";
 	}
-
+	
+	// 사용안함
 	/**
 	 * restTemplate 연습, 에러발생
 	 * 
@@ -188,7 +190,8 @@ public class RestAPIController {
 
 		return "successPage";
 	}
-
+	
+	// 사용안함
 	/**
 	 * 국내 공항 이륙예보, Domestic airport take-off forecast restAPI, XMLtoJson
 	 * 

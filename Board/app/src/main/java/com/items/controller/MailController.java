@@ -32,10 +32,10 @@ import com.items.service.MailService;
 @RequestMapping("/mail")
 public class MailController {
 	
+	private static final Logger log = LogManager.getLogger(MailController.class);
+	
 	@Autowired
 	MailService mailService;
-	
-	private static final Logger log = LogManager.getLogger(MailController.class);
 	
 	LoginUtil loginUtil = new LoginUtil();
 	
@@ -131,6 +131,7 @@ public class MailController {
         return "mailPage";
     }
 	
+	// 메일 스케줄 발송
 	@PostMapping("/sendmailScheduled")
 	@Scheduled(cron = "0 58 22 * * ?") // 초 분 시 일 월 요일
 	public void sendPlainTextEmailScheduled() { 	

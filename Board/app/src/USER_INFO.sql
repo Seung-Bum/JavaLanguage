@@ -15,33 +15,8 @@ COMMENT ON COLUMN USER_INFO.UPDATE_DATE IS '수정일';
 -- DROP SEQUENCE USER_INFO_SEQ;
 --CREATE SEQUENCE USER_INFO_SEQ INCREMENT BY 1 START WITH 1;
 
-
 INSERT INTO USER_INFO(SEQ, EMAIL, DEPARTURE_DATE, CREATE_DATE)
      VALUES (USER_INFO_SEQ.NEXTVAL
            , 'test@naver.com'
            , '20230819'
            , SYSDATE);
-           
-/*
-	MERGE INTO USER2.USER_INFO A
-	USING DUAL
-    ON (A.EMAIL = #{email}
-    AND A.DEPARTURE_DATE = #{departureDate})
- 	WHEN MATCHED THEN
- 	  UPDATE
- 	  	 SET A.UPDATE_DATE = SYSDATE
-	WHEN NOT MATCHED THEN
-      INSERT (
-      	A.SEQ,
-      	A.EMAIL, 
-      	A.DEPARTURE_DATE,
-      	A.CREATE_DATE,
-      	A.UPDATE_DATE
-      )
-      VALUES (
-      	USER_INFO_SEQ.NEXTVAL,
-      	#{email},
-      	#{departureDate},
-      	SYSDATE,
-      	SYSDATE
-      )
