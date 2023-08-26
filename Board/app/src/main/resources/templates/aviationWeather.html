@@ -2,10 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>AviationWeather Mailing</title>    
+    <title>AviationWeather Mailing</title> 
+    <style>
+      body { padding: 0px; margin: 0px; }
+      .jb-box { width: 100%; height: 500px; overflow: hidden;margin: 0px auto; position: relative; }
+      video { width: 100%; }
+      .jb-text { position: absolute; top: 50%; width: 100%; }
+      .jb-text p { margin-top: -24px; text-align: center; font-size: 48px; color: #ffffff; }
+    </style>
 </head>
 <body>
 
+	<video id="videoPlay" width="300" height="200" controls autoplay muted>
+		<source type="video/mp4" th:src="@{plane.mp4}" />
+	</video>
+<!--  
 <h2>인천공항 기상 알림 서비스</h2>
 
 <form class="inputContainer" action="/departureData" method="post" enctype="multipart/form-data">
@@ -50,6 +61,7 @@
 <span th:text="|최고온도 : ${resMap1.highestTemper}|"></span><br>
 <br>
 
+ 
 <span>line2</span><br>
 <span th:text="|forecastDay : ${resMap2.forecastDay}|"></span><br>
 <span th:text="|방위각 : ${resMap2.azimuth}|"></span><br>
@@ -88,6 +100,6 @@
 <span th:text="|약한비: ${resMap4.littleRA}|"></span><br>
 <span th:text="|비: ${resMap4.RA}|"></span><br>
 <br>
-<!-- -->
+-->
 </body>
 </html>
