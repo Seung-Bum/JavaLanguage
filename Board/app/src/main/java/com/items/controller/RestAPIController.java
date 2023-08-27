@@ -248,9 +248,6 @@ public class RestAPIController {
 		// * ICAO 공항코드를 사용해 국내 공항의 유효한 METAR/SPECI 전문을 조회
 		// String url = "http://amoapi.kma.go.kr/amoApi/metar?icao=RKSI";
 		
-		// * 현재 발효중인 공항경보 전문을 출력한다.
-		//String url_wrng = "http://amoapi.kma.go.kr/amoApi/wrng";
-		
 		// * ICAO 공항코드를 사용해 국내 공항의 유효한 TAF 전문을 조회 (RKSI 인천공항)
 		//   (6~30 시간의 유효 시간을 갖고 있으며 1일 4회 보고한다.)
 		String url_TAF = "http://amoapi.kma.go.kr/amoApi/taf?icao=RKSI";
@@ -353,7 +350,7 @@ public class RestAPIController {
 		log.info("TAF Line Loop End");
 		return "aviationWeather";
 	}
-
+		
 	/**
 	 * httpGetApiCall
 	 * String 형태의 url을 가지고 ApiGet 호출을 실행, 리턴 타입은 XML형태의 String
@@ -531,9 +528,17 @@ public class RestAPIController {
 		
 		HashMap<String, Object> maxSeq = restAPIService.departureDataSeq();
 		param.put("seq",  Integer.valueOf(maxSeq.get("SEQ").toString()) + 1);
-		restAPIService.insertDepartureData(param);
-
-		log.info("- 출국정보 Upload 완료");
-		return "redirect:/aviationWeatherAPI";
+		
+		// 오늘 날짜를 받아와서 과거이면 날짜를 안받음
+		
+		if (!param.get("email").equals("") && !param.get("departureDate").equals("")) {
+			restAPIService.insertDepartureData(param);
+			log.info("- 출국정보 Upload 완료");
+			return "redirect:/aviationWeather.html";
+		} else {
+			log.info("- 출국정보 미입력");
+			// 출국정보 입력 안내 메시지 보내기
+			return "redirect:/aviationWeather.html";
+		}
 	}
 }
