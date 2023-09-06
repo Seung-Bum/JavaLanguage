@@ -80,4 +80,32 @@
   <select id="departureDataSeq" resultType="java.util.HashMap">
 	SELECT MAX(SEQ) AS SEQ FROM USER2.USER_INFO
   </select>
+  
+  <insert id="insertWeatherInfo" parameterType="java.util.HashMap">
+  	  INSERT INTO USER2.TAF_INFO(
+      	LINE0,
+      	LINE1,
+      	LINE2,
+      	LINE3,
+      	LINE4,
+      	CREATION_DATE
+      )
+      VALUES (
+      	#{resMap0},
+      	#{resMap1},
+      	#{resMap2},
+      	#{resMap3},
+      	#{resMap4},
+      	SYSDATE
+      )
+  </insert>
+  
+  <select id="selectWeatherInfo" resultType="java.util.HashMap">
+	SELECT *
+	FROM (
+		SELECT * 
+		FROM USER2.TAF_INFO 
+		ORDER BY CREATION_DATE DESC
+	) WHERE ROWNUM = 1
+  </select>
  </mapper>

@@ -10,7 +10,9 @@ public interface RestAPIDao {
 	
 	void insertDepartureData(HashMap<String, Object> param);
 	
+	void insertWeatherInfo(HashMap<String, Object> param);
+	
 	HashMap<String, Object> departureDataSeq();
 
-	//HashMap<String, Object> selectDepartureData(HashMap<String, Object> param);
+	HashMap<String, Object> selectWeatherInfo();
 }

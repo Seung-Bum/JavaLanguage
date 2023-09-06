@@ -28,9 +28,14 @@ public class DefaultRestAPIService implements RestAPIService {
 	public HashMap<String, Object> departureDataSeq() {
 		return restAPIDao.departureDataSeq();		
 	}
+
+	@Override
+	public void insertWeatherInfo(HashMap<String, Object> param) {
+		restAPIDao.insertWeatherInfo(param);
+	}
 	
-//	@Override
-//	public HashMap<String, Object> selectDepartureData(HashMap<String, Object> param) {
-//		return restAPIDao.selectDepartureData(param);
-//	}
+	@Override
+	public HashMap<String, Object> selectWeatherInfo() {
+		return restAPIDao.selectWeatherInfo();
+	}
 }
