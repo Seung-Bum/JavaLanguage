@@ -38,4 +38,9 @@ public class DefaultRestAPIService implements RestAPIService {
 	public HashMap<String, Object> selectWeatherInfo() {
 		return restAPIDao.selectWeatherInfo();
 	}
+
+	@Override
+	public HashMap<String, Object> selectUserInfo() {
+		return restAPIDao.selectUserInfo();
+	}
 }

@@ -15,4 +15,6 @@ public interface RestAPIDao {
 	HashMap<String, Object> departureDataSeq();
 
 	HashMap<String, Object> selectWeatherInfo();
+	
+	HashMap<String, Object> selectUserInfo();
 }

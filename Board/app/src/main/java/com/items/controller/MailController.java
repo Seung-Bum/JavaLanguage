@@ -222,8 +222,11 @@ public class MailController {
 	public void weatherInfoMailScheduled() throws Exception {
 		
 		// user 정보 가져와서 출국일이 지났을경우 메일발송 x
+		HashMap<String, Object> userInfo = restAPIService.selectUserInfo();
 		
+		//userInfo.get(userInfo);
 		
+		// 메일 내용으로 사용할 기상정보 발췌
 		HashMap<String, Object> weatherInfo = restAPIService.selectWeatherInfo();
 		
     	String user_id = "pkapka_@naver.com"; // 발신자 메일 

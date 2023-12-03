@@ -108,4 +108,9 @@
 		ORDER BY CREATION_DATE DESC
 	) WHERE ROWNUM = 1
   </select>
+  
+  <select id="selectUserInfo" resultType="java.util.HashMap">
+	SELECT * FROM USER2.USER_INFO
+  </select>
+ 
  </mapper>

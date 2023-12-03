@@ -14,4 +14,6 @@ public interface RestAPIService {
 	public void insertWeatherInfo(HashMap<String, Object> param);
 	
 	public HashMap<String, Object> selectWeatherInfo();
+	
+	public HashMap<String, Object> selectUserInfo();
 }
