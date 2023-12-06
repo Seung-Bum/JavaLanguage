@@ -1,9 +1,9 @@
 package JDBC;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class Main {
 			// 드라이버 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
+			/*
 			// DB연결
 			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe","hr","hr");
 			
@@ -37,7 +38,7 @@ public class Main {
 			if(rs!=null) rs.close();
 			if(psmt!=null) psmt.close();
 			if(conn!=null) conn.close();
-			
+			*/
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
