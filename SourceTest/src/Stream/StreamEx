@@ -1,0 +1,31 @@
+// 같은 내용의 코드
+
+public static String languageStringUsingStream(Set<Locale> locales) {
+        return new JSONObject()
+                .put("root", locales.stream()
+                        .map(locale -> new JSONObject()
+                                .put("lcode", locale.toLanguageTag())
+                                .put("ldisplay", locale.getDisplayName(Locale.ENGLISH))
+                        )
+                        .reduce(new JSONArray(), JSONArray::put, (a, b) -> a)) // JSONArray에 담음
+                .toString();
+    }
+    
+    
+
+public static String languageStringUsingStream(Set<Locale> locales) {
+	JSONObject a = new JSONObject();
+	Stream<Locale> b = locales.stream();
+	b.map(locale ->{
+		JSONObject c = new JSONObject();
+		c.put("lcode", locale.toLanguageTag());
+		c.put("ldisplay",locale.getDisplayName(Locale.ENGLISH));
+		
+	}
+	b.reduce(new JSONArray(), JSONArray::put, (a, b) -> a);
+	a.put("root",b);
+	return a.toString();
+}
+
+*참조
+https://futurecreator.github.io/2018/08/26/java-8-streams/
